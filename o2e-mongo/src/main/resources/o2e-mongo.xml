@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/data/mongo
+       http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+       ">
+
+    <bean class="org.o2e.mongo.MongoConfig"/>
+
+    <bean id="mongoOptions" class="com.mongodb.MongoOptions">
+        <property name="autoConnectRetry" value="true"/>
+        <property name="connectionsPerHost" value="50"/>
+        <property name="connectTimeout" value="10000"/>
+        <property name="socketKeepAlive" value="true"/>
+        <property name="socketTimeout" value="60000"/>
+        <property name="threadsAllowedToBlockForConnectionMultiplier" value="200"/>
+        <property name="socketFactory" ref="mongoSocketFactory"/>
+    </bean>
+
+    <mongo:db-factory dbname="o2e"
+                      id="mongoDbFactory"
+                      username="${org.o2e.server.mongodb.o2e.username}"
+                      password="${org.o2e.server.mongodb.o2e.password}"
+                      mongo-ref="mongo"/>
+
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg ref="mongoDbFactory"/>
+    </bean>
+
+    <mongo:repositories base-package="org.o2e.mongo" mongo-template-ref="mongoTemplate"/>
+
+</beans>

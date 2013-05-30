@@ -1,0 +1,7 @@
+# Exclude /target folders built by Maven
+build
+dist
+target
+*.idea
+*.iml
+*.log

@@ -1,0 +1,34 @@
+{
+    "projectName": "O2E",
+    "deployDir": ".",
+    "licenseText": "O2E Framework\nCopyright(c) 2011 JackBe Inc.\nlicensing@jackbe.com\nhttp://www.jackbe.com/o2e",
+    "pkgs": [{
+        "name": "O2E Dashboard JS",
+        "file": "o2e-dashboard.js",
+        "isDebug": true,
+        "fileIncludes": [{
+            "text": "AbstractWorkspace.js",
+            "path": "../javascript/dashboard/workspace/"
+        },{
+            "text": "AbstractQuickPanel.js",
+            "path": "../javascript/dashboard/quickpanel/"
+        },{
+            "text": "QuickPanelContainer.js",
+            "path": "../javascript/dashboard/quickpanel/"
+        },{
+            "text": "WidgetToolbar.js",
+            "path": "../javascript/dashboard/workspace/"
+        },{
+            "text": "WidgetWorkspace.js",
+            "path": "../javascript/dashboard/workspace/"
+        },{
+            "text": "WorkspaceContainer.js",
+            "path": "../javascript/dashboard/workspace/"
+        },{
+            "text": "Application.js",
+            "path": "../javascript/dashboard/"
+        }]
+    }],
+    "resources": []
+
+}

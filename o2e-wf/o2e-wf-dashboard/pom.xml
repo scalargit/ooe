@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.o2e.wf</groupId>
+    <artifactId>o2e-wf-dashboard</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0_RC2</version>
+    <name>O2E :: Widget Framework :: Dashboard</name>
+
+    <parent>
+        <groupId>org.o2e.wf</groupId>
+        <artifactId>o2e-wf</artifactId>
+        <version>1.0.0_RC2</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jslint-maven-plugin</artifactId>
+                <version>1.0.1</version>
+                <executions>
+                    <execution>
+                        <!--<id>jslint</id>-->
+                        <!--<phase>compile</phase>-->
+                        <goals>
+                            <goal>jslint</goal>
+                            <!--<goal>test-jslint</goal>-->
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <!--<predefinedVars>Ext</predefinedVars>-->
+                    <!--<maximumNumberOfErrors>50</maximumNumberOfErrors>-->
+                    <disallowUndefinedVariables>false</disallowUndefinedVariables>
+                    <failOnIssues>false</failOnIssues>
+                    <!--<strictWhiteSpace>true</strictWhiteSpace>-->
+                    <!--<disallowIncrAndDecr>true</disallowIncrAndDecr>-->
+                    <!--<disallowDanglingUnderbarInIdentifiers>true</disallowDanglingUnderbarInIdentifiers>-->
+                    <sourceJsFolder>${project.basedir}/src/main/javascript</sourceJsFolder>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>jsbuilder</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <target>
+                                <property name="compile_classpath" refid="maven.compile.classpath"/>
+                                <echo message="compile classpath: ${compile_classpath}"/>
+                                <java classname="com.extjs.JSBuilder2" fork="true" classpathref="maven.compile.classpath">
+                                    <arg value="-v"/>
+                                    <arg value="--projectFile"/>
+                                    <arg value="${project.basedir}/src/main/config/jsbuilder.jsb2"/>
+                                    <arg value="--homeDir"/>
+                                    <arg value="${project.build.directory}/jsbuilder"/>
+                                    <!-- bootclasspath JVM argument required because of this bug http://yuilibrary.com/forum/viewtopic.php?p=32587 -->
+                                    <jvmarg value="-Xbootclasspath/p:${settings.localRepository}/com/yahoo/yuicompressor/2.4.7/yuicompressor-2.4.7.jar"/>
+                                </java>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <descriptor>src/main/assembly/dist.xml</descriptor>
+                    <tarLongFileMode>gnu</tarLongFileMode>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

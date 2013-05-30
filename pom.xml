@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.o2e</groupId>
+    <artifactId>o2e</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0_RC2</version>
+    <name>O2E Parent</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <izpack.version>4.3.4</izpack.version>
+        <camel.version>2.10.0</camel.version>
+        <cometd.version>2.4.0</cometd.version>
+        <cxf.version>2.6.1</cxf.version>
+        <tomcat.version>7.0.30</tomcat.version>
+        <jetty.version>8.1.3.v20120416</jetty.version>
+        <mongodb.version>2.2.2</mongodb.version>
+        <springframework.version>3.2.0.RELEASE</springframework.version>
+        <spring-security.version>3.1.0.RELEASE</spring-security.version>
+        <spring-data-mongodb.version>1.2.0.RELEASE</spring-data-mongodb.version>
+    </properties>
+
+    <modules>
+        <module>o2e-bootstrap</module>
+        <module>o2e-bootstrap-jetty</module>
+        <module>o2e-cometd</module>
+        <module>o2e-crypto</module>
+        <module>o2e-dynamic-camel</module>
+        <module>o2e-mongo</module>
+        <module>o2e-wf</module>
+        <module>o2e-util</module>
+    </modules>
+
+    <!--<dependencyManagement>  -->
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <!-- have to use older version here because cometd 2.3.0 depends on slf4j-api 1.5.6 -->
+            <version>1.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <!-- have to use older version here because cometd 2.3.0 depends on slf4j-api 1.5.6 -->
+            <version>1.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>apache-log4j-extras</artifactId>
+            <version>1.1</version>
+        </dependency>
+    </dependencies>
+    <!--</dependencyManagement>-->
+
+    <distributionManagement>
+        <downloadUrl>https://github.com/jackbeps/O2E</downloadUrl>
+        <repository>
+            <id>jackbe_releases</id>
+            <name>JackBe Releases</name>
+            <url>http://o2e.jackbe.com:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>jackbe_snapshots</id>
+            <name>JackBe Snapshots</name>
+            <url>http://o2e.jackbe.com:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc>
+    <sources>
+        <source src="../../../../o2e-wf-common/src/main/javascript" match="*.js"/>
+        <source src="../../../../o2e-wf-dashboard/src/main/javascript" match="*.js"/>
+        <source src="../../../../o2e-wf-widget/src/main/javascript" match="*.js"/>
+    </sources>
+    <tags>
+    </tags>
+</doc>

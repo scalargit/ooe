@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.o2e.wf</groupId>
+    <artifactId>o2e-wf</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0_RC2</version>
+    <name>O2E :: Widget Framework</name>
+
+    <parent>
+        <groupId>org.o2e</groupId>
+        <artifactId>o2e</artifactId>
+        <version>1.0.0_RC2</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <modules>
+        <module>o2e-wf-common</module>
+        <module>o2e-wf-dashboard</module>
+        <module>o2e-wf-widget</module>
+        <module>o2e-wf-dist</module>
+    </modules>
+
+    <dependencies>
+
+        <!-- Internal Dependencies -->
+
+        <!-- Third Party Dependencies -->
+
+        <dependency>
+            <groupId>jslint</groupId>
+            <artifactId>jslint</artifactId>
+            <version>2.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mozilla</groupId>
+            <artifactId>rhino</artifactId>
+            <version>1.7R3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.yahoo</groupId>
+            <artifactId>yuicompressor</artifactId>
+            <version>2.4.7</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.extjs</groupId>
+            <artifactId>jsbuilder</artifactId>
+            <version>2.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+   </dependencies>
+
+</project>

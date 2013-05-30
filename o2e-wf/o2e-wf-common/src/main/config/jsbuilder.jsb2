@@ -1,0 +1,40 @@
+{
+    "projectName": "O2E",
+    "deployDir": ".",
+    "licenseText": "O2E Framework\nCopyright(c) 2011 JackBe Inc.\nlicensing@jackbe.com\nhttp://www.jackbe.com/o2e",
+    "pkgs": [{
+        "name": "O2E Common JS",
+        "file": "o2e-common.js",
+        "isDebug": true,
+        "fileIncludes": [{
+            "text": "AbstractDataViewWidget.js",
+            "path": "../javascript/common/widget/"
+        },{
+            "text": "AbstractChartwidget.js",
+            "path": "../javascript/common/widget/"
+        },{
+            "text": "MetadataRegistryCategoryTreePanel.js",
+            "path": "../javascript/common/widget/"
+        },{
+            "text": "LogWidget.js",
+            "path": "../javascript/common/logging/"
+        },{
+            "text": "FramedPanel.js",
+            "path": "../javascript/common/container/"
+        },{
+            "text": "SimplePanel.js",
+            "path": "../javascript/common/container/"
+        },{
+            "text": "LockButton.js",
+            "path": "../javascript/common/plugin/config/"
+        },{
+            "text": "RefreshButton.js",
+            "path": "../javascript/common/plugin/config/"
+        },{
+            "text": "GoogleMapMarkerPlugin.js",
+            "path": "../javascript/common/plugin/data/"
+        }]
+    }],
+    "resources": []
+
+}

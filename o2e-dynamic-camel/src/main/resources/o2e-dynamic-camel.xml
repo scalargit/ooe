@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+
+
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task-3.1.xsd">
+
+    <task:scheduler id="scheduler" pool-size="5"/>
+    <task:annotation-driven scheduler="scheduler" executor="camelTaskExecutor"/>
+
+    <bean id="dataCacheManager" class="org.o2e.camel.cache.EhCacheDataCache">
+        <property name="cache" ref="dataCache"/>
+    </bean>
+
+    <bean id="dataCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean"
+          p:cacheManager-ref="cacheManager" p:cacheName="dataCache"/>
+
+    <bean id="shutdownStrategy" class="org.apache.camel.impl.DefaultShutdownStrategy">
+        <property name="timeout" value="${org.o2e.server.camel.shutdown.timeout.seconds}"/>
+    </bean>
+
+    <!--<bean id="cometDeliveryBean" class="org.o2e.camel.CometDeliveryBean">-->
+    <!--<property name="taskExecutor" ref="cometDeliveryTaskExecutor"/>-->
+    <!--</bean>-->
+
+
+    <task:executor id="cometTaskExecutor" pool-size="100" queue-capacity="200" rejection-policy="CALLER_RUNS"/>
+
+    <task:executor id="camelTaskExecutor" pool-size="5-20" queue-capacity="1000"/>
+
+    <bean id="routeCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean"
+          p:cacheManager-ref="cacheManager" p:cacheName="routeCache"/>
+
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+          p:configLocation="classpath:ehcache.xml"/>
+
+    <bean id="x509HostnameVerifier" class="org.apache.http.conn.ssl.AllowAllHostnameVerifier"/>
+
+</beans>

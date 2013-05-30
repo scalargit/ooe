@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.o2e</groupId>
+    <artifactId>o2e-bootstrap-jetty</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.0_RC2</version>
+    <name>O2E :: Bootstrap :: Jetty</name>
+
+    <parent>
+        <groupId>org.o2e</groupId>
+        <artifactId>o2e</artifactId>
+        <version>1.0.0_RC2</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <properties>
+        <commons.lang.version>2.6</commons.lang.version>
+        <commons.io.version>2.4</commons.io.version>
+        <jasypt.version>1.9.0</jasypt.version>
+        <o2e.crypto.version>1.0.0_RC2</o2e.crypto.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-start</artifactId>
+            <version>${jetty.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.o2e</groupId>
+            <artifactId>o2e-bootstrap</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.o2e</groupId>
+            <artifactId>o2e-crypto</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!--<addClasspath>true</addClasspath>-->
+                            <!--<classpathPrefix>lib/</classpathPrefix>-->
+                            <mainClass>org.o2e.server.JettyBootstrap</mainClass>
+                        </manifest>
+                        <!-- Use custom Class-Path here because start.jar is not versioned nor stored in jetty/lib
+                         like the other dependencies, so the addClasspath and classpathPrefix can't be used -->
+                        <manifestEntries>
+                            <Class-Path>start.jar o2e-crypto-${o2e.crypto.version}.jar
+                                o2e-bootstrap-${project.version}.jar
+                                lib/jetty-http-${jetty.version}.jar lib/jetty-io-${jetty.version}.jar
+                                lib/jetty-util-${jetty.version}.jar lib/jasypt-${jasypt.version}.jar
+                                lib/commons-io-${commons.io.version}.jar lib/commons-lang-${commons.lang.version}.jar
+                            </Class-Path>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/bootstrap.xml</descriptor>
+                    </descriptors>
+                    <tarLongFileMode>gnu</tarLongFileMode>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+
+        <!--<finalName>${project.artifactId}</finalName>-->
+
+    </build>
+
+</project>

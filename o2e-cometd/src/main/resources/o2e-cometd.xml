@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       ">
+
+    <bean id="bayeux" class="org.cometd.server.BayeuxServerImpl" init-method="start" destroy-method="stop">
+        <property name="options">
+            <map>
+                <entry key="logLevel" value="3"/>
+                <entry key="timeout" value="30000"/>
+                <entry key="maxInterval" value="60000"/>
+                <entry key="maxLazyTimeout" value="2500"/>
+                <entry key="ws.maxInterval" value="60000"/>
+            </map>
+        </property>
+        <property name="securityPolicy" ref="authenticator"/>
+    </bean>
+
+    <!--<bean id="authenticator" class="org.o2e.security.UserAssertionAuthenticator"/>-->
+    <bean id="authenticator" class="org.o2e.cometd.security.X509Authenticator"/>
+
+    <bean id="authorizer" class="org.o2e.cometd.security.DefaultAuthorizer"/>
+
+</beans>

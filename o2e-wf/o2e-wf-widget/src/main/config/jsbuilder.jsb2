@@ -1,0 +1,111 @@
+{
+    "projectName": "O2E",
+    "deployDir": ".",
+    "licenseText": "O2E Framework\nCopyright(c) 2011 JackBe Inc.\nlicensing@jackbe.com\nhttp://www.jackbe.com/o2e",
+    "pkgs": [{
+        "name": "Widget Framework JS",
+        "file": "o2e-widget.js",
+        "isDebug": true,
+        "fileIncludes": [{
+            "text": "o2e.js",
+            "path": "../javascript/widget/"
+        },{
+            "text": "Environment.js",
+            "path": "../javascript/widget/"
+        },{
+            "text": "Action.js",
+            "path": "../javascript/widget/action/"
+        },{
+            "text": "ActionMgr.js",
+            "path": "../javascript/widget/action/"
+        },{
+            "text": "AbstractConnector.js",
+            "path": "../javascript/widget/connector/"
+        },{
+            "text": "AjaxConnector.js",
+            "path": "../javascript/widget/connector/"
+        },{
+            "text": "CometConnector.js",
+            "path": "../javascript/widget/connector/"
+        },{
+            "text": "ConnectorMgr.js",
+            "path": "../javascript/widget/connector/"
+        },{
+            "text": "JsonPConnector.js",
+            "path": "../javascript/widget/connector/"
+        },{
+            "text": "UngovernedConnector.js",
+            "path": "../javascript/widget/connector/"
+        },{
+            "text": "AbstractDataComponent.js",
+            "path": "../javascript/widget/data/"
+        },{
+            "text": "DataUtils.js",
+            "path": "../javascript/widget/data/"
+        },{
+            "text": "MetadataRegistry.js",
+            "path": "../javascript/widget/data/"
+        },{
+            "text": "MetadataUtils.js",
+            "path": "../javascript/widget/data/"
+        },{
+            "text": "ModelFactory.js",
+            "path": "../javascript/widget/data/"
+        },{
+            "text": "Service.js",
+            "path": "../javascript/widget/data/"
+        },{
+            "text": "StoreFactory.js",
+            "path": "../javascript/widget/data/"
+        },{
+            "text": "UnionJsonReader.js",
+            "path": "../javascript/widget/data/"
+        },{
+            "text": "AbstractPlugin.js",
+            "path": "../javascript/widget/plugin/"
+        },{
+            "text": "AbstractConfigPlugin.js",
+            "path": "../javascript/widget/plugin/"
+        },{
+            "text": "AbstractDataPlugin.js",
+            "path": "../javascript/widget/plugin/"
+        },{
+            "text": "ConfigPluginMgr.js",
+            "path": "../javascript/widget/plugin/"
+        },{
+            "text": "DataPluginMgr.js",
+            "path": "../javascript/widget/plugin/"
+        },{
+            "text": "ArrayUtils.js",
+            "path": "../javascript/widget/util/"
+        },{
+            "text": "DataBuffer.js",
+            "path": "../javascript/widget/util/"
+        },{
+            "text": "Loader.js",
+            "path": "../javascript/widget/util/"
+        },{
+            "text": "Logger.js",
+            "path": "../javascript/widget/util/"
+        },{
+            "text": "AbstractContainer.js",
+            "path": "../javascript/widget/widget/"
+        },{
+            "text": "AbstractWidget.js",
+            "path": "../javascript/widget/widget/"
+        },{
+            "text": "WidgetFactory.js",
+            "path": "../javascript/widget/widget/"
+        }]
+    },{
+        "name": "Widget Framework CSS",
+        "file": "o2e-widget.css",
+        "isDebug": true,
+        "fileIncludes": [{
+            "text": "capco.css",
+            "path": "../css/widget/"
+        }]
+    }],
+    "resources": []
+
+}
