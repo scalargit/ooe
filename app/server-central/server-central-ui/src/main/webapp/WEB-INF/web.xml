@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="webtop" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <display-name>O2E Webtop</display-name>
+
+    <servlet>
+        <servlet-name>JavascriptServlet</servlet-name>
+        <servlet-class>net.jawr.web.servlet.JawrServlet</servlet-class>
+        <init-param>
+            <param-name>configLocation</param-name>
+            <param-value>/###mil.disa.sw.ui.jawr.propertiesFile.prefix###.jawr.properties</param-value>
+        </init-param>
+        <init-param>
+            <param-name>mapping</param-name>
+            <param-value>/jawrjs/</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>ImageServlet</servlet-name>
+        <servlet-class>net.jawr.web.servlet.JawrServlet</servlet-class>
+        <init-param>
+            <param-name>configLocation</param-name>
+            <param-value>/###mil.disa.sw.ui.jawr.propertiesFile.prefix###.jawr.properties</param-value>
+        </init-param>
+        <init-param>
+            <param-name>type</param-name>
+            <param-value>img</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>CSSServlet</servlet-name>
+        <servlet-class>net.jawr.web.servlet.JawrServlet</servlet-class>
+        <init-param>
+            <param-name>configLocation</param-name>
+            <param-value>/###mil.disa.sw.ui.jawr.propertiesFile.prefix###.jawr.properties</param-value>
+        </init-param>
+        <init-param>
+            <param-name>type</param-name>
+            <param-value>css</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>JavascriptServlet</servlet-name>
+        <url-pattern>/jawrjs/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CSSServlet</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImageServlet</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImageServlet</servlet-name>
+        <url-pattern>*.gif</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <jsp-config>
+        <taglib>
+            <taglib-uri>/jwr</taglib-uri>
+            <taglib-location>/WEB-INF/jawr.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
+    <!--
+       NIPR: UNCLASSIFIED//FOUO
+       SIPR: SECRET//NOFORN
+       JWICS: TOP SECRET
+    -->
+    <context-param>
+        <description>Default classification</description>
+        <param-name>defaultClassification</param-name>
+        <param-value>###mil.disa.sw.ui.classification###</param-value>
+    </context-param>
+
+    <!--
+       NIPR: sw-unclassified
+       SIPR: sw-secret
+       JWICS: sw-topsecret
+    -->
+    <context-param>
+        <description>Default classification style</description>
+        <param-name>defaultClassificationStyle</param-name>
+        <param-value>###mil.disa.sw.ui.classification.style###</param-value>
+    </context-param>
+
+    <context-param>
+        <description>O2E Server Context Override Flag</description>
+        <param-name>o2eContextOverride</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <context-param>
+        <description>The O2E Server Protocol</description>
+        <param-name>o2eServerProtocol</param-name>
+        <param-value>https:</param-value>
+    </context-param>
+    <context-param>
+        <description>The O2E Server Host</description>
+        <param-name>o2eServerHost</param-name>
+        <param-value>changeme</param-value>
+    </context-param>
+    <context-param>
+        <description>The O2E Server Port</description>
+        <param-name>o2eServerPort</param-name>
+        <param-value>443</param-value>
+    </context-param>
+    <context-param>
+        <description>The O2E Server Context</description>
+        <param-name>o2eServerContext</param-name>
+        <param-value>###mil.disa.sw.ui.server.context###</param-value>
+    </context-param>
+
+    <context-param>
+        <description>Redirect page on error or decline</description>
+        <param-name>redirectPage</param-name>
+        <param-value>###mil.disa.sw.ui.redirectPage###</param-value>
+    </context-param>
+
+    <context-param>
+        <description>Default Integrated Presto Server Host</description>
+        <param-name>prestoHost</param-name>
+        <param-value>###mil.disa.sw.ui.presto.host###</param-value>
+    </context-param>
+    <context-param>
+        <description>Default Integrated Presto Server Port</description>
+        <param-name>prestoPort</param-name>
+        <param-value>###mil.disa.sw.ui.presto.port###</param-value>
+    </context-param>
+    <context-param>
+        <description>Default Integrated Presto Server Protocol</description>
+        <param-name>prestoSecure</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <context-param>
+        <description>Default Messaging Service Base</description>
+        <param-name>messagingServiceBase</param-name>
+        <param-value>###mil.disa.sw.ui.messaging.services.endpoint###</param-value>
+    </context-param>
+    <context-param>
+        <description>Default Messaging Delivery Endpoint</description>
+        <param-name>messagingDeliveryEndpoint</param-name>
+        <param-value>/services/ws/wsn/</param-value>
+    </context-param>
+    <context-param>
+        <description>Default Messaging renewal period (millis)</description>
+        <param-name>messagingRenewalMillis</param-name>
+        <param-value>900000</param-value>
+    </context-param>
+
+    <context-param>
+        <description>Default Track History Points</description>
+        <param-name>trackHistoryPoints</param-name>
+        <param-value>20</param-value>
+    </context-param>
+
+    <context-param>
+        <description>Fusion Maps flag</description>
+        <param-name>isFusion</param-name>
+        <param-value>###mil.disa.sw.ui.isFusion###</param-value>
+    </context-param>
+
+    <context-param>
+        <description>Build Version Number</description>
+        <param-name>buildVersion</param-name>
+        <param-value>###mil.disa.sw.ui.version###</param-value>
+    </context-param>
+    <context-param>
+        <description>Build Date</description>
+        <param-name>buildDate</param-name>
+        <param-value>###mil.disa.sw.ui.installDate###</param-value>
+    </context-param>
+</web-app>

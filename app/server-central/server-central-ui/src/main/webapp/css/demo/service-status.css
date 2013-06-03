@@ -1,0 +1,40 @@
+/** sprite: service-status; sprite-image: url('../../images/service-status-sprite.png'); sprite-layout: vertical */
+.sw-status-loading {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/loading.gif") !important; /** sprite-ref: service-status; */
+    float: left;
+    height:16px;
+}
+.sw-status-info {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/information.png") !important; /** sprite-ref: service-status; */
+    float: left;
+    height:16px;
+}
+.sw-status-warn {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/error.png") !important; /** sprite-ref: service-status; */
+    font-weight: bold;
+    float: left;
+    height:16px;
+}
+.sw-status-error {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/exclamation.png") !important; /** sprite-ref: service-status; */
+    font-weight: bold;
+    font-style: italic;
+    float: left;
+    height:16px;
+}
+
+.sw-status-item {
+    text-indent: 2px;
+    border-bottom: 1px solid #dddddd;
+    padding: 2px 2px 2px 20px;
+}
+
+.sw-status-summary-item {
+    text-indent: 2px;
+    padding: 2px 2px 2px 20px;
+    float: left;
+}

@@ -1,0 +1,48 @@
+.x-tool .x-tool-connect {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/lightbulb_off.png") !important; /** sprite-ref: widget-icons; */
+    width: 16px;
+}
+.x-tool .x-tool-disconnect {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/lightbulb.png") !important; /** sprite-ref: widget-icons; */
+    width: 16px;
+}
+.x-tool .x-tool-chatroom {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/comments.png") !important; /** sprite-ref: widget-icons; */
+    width: 16px;
+}
+
+.chatWidgetToLabel {
+	font-weight:bold;
+	padding-left:2px;
+}
+.chatWidgetFromLabel {
+	font-weight:bold;
+	padding-left:2px;
+	color:#15428B;
+}
+.chatWidgetTime {
+
+}
+.chatWidgetFromTimeEstimated {
+	color:#15428B;
+	font-style:italic;
+}
+.chatWidgetFromTime {
+	color:#15428B;
+}
+.chatWidgetToTimeEstimated {
+	font-style:italic;
+}
+.chatWidgetToTime {
+
+}
+.chatWidgetToBody {
+	padding-right:2px;
+}
+.chatWidgetFromBody {
+	padding-right:2px;
+	color:#15428B;
+}

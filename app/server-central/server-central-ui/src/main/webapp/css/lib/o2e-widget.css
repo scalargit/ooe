@@ -1,0 +1,40 @@
+/*!
+ * O2E Framework
+ * Copyright(c) 2011 JackBe Inc.
+ * licensing@jackbe.com
+ * http://www.jackbe.com/o2e
+ */
+.o2e-capco-sci {
+    color: #000000;
+    background-color: #FBF360;
+    border: 1px solid #000000;
+    font-weight: bold;
+}
+
+.o2e-capco-ts {
+    color: #FFFFFF;
+    background-color: #F56600;
+    border: 1px solid #FFFFFF;
+    font-weight: bold;
+}
+
+.o2e-capco-s {
+    color: #FFFFFF;
+    background-color: #CF142B;
+    border: 1px solid #FFFFFF;
+    font-weight: bold;
+}
+
+.o2e-capco-c {
+    color: #FFFFFF;
+    background-color: #0033AB;
+    border: 1px solid #FFFFFF;
+    font-weight: bold;
+}
+
+.o2e-capco-u {
+    color: #FFFFFF;
+    background-color: #007336;
+    border: 1px solid #FFFFFF;
+    font-weight: bold;
+}

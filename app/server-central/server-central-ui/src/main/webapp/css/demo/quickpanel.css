@@ -1,0 +1,34 @@
+/** Smart Sprites were broken in IE so they have been removed */
+.quickpanel-default {
+    cursor: pointer;
+    margin: 0 0 0 2px;
+}
+.quickpanel-refresh {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/arrow_refresh.png") !important;
+    background-position: 0 0;
+    width: 16px;
+}
+.quickpanel-expand {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/expand-all.gif") !important;
+    background-position: 0 0;
+    width: 16px;
+}
+.quickpanel-collapse {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/collapse-all.gif") !important;
+    background-position: 0 0;
+    width: 16px;
+}
+.quickpanel-search {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/magnifier.png") !important;
+    background-position: 0 0;
+    width: 16px;
+}
+
+.mdrtree-leaf {
+    background: none;
+    width: 1px;
+}

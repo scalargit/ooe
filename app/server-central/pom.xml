@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.scalar.ps</groupId>
+    <artifactId>server-central</artifactId>
+    <packaging>pom</packaging>
+    <version>0.5.0</version>
+    <name>Server-Central :: Parent</name>
+
+    <properties>
+        <o2e.version>1.0.0_RC2</o2e.version>
+    </properties>
+
+    <modules>
+        <module>server-central-ui</module>
+    </modules>
+</project>

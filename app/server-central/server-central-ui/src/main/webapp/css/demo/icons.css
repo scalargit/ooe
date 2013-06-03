@@ -1,0 +1,248 @@
+/** sprite: icons; sprite-image: url('../../images/icon-sprite.png'); sprite-layout: vertical */
+.icon-jackbe {
+    background-image: url("../../images/jackbe.gif") !important; /** sprite-ref: icons; */
+    background-repeat: no-repeat;
+}
+.icon-add {
+    background-image: url("../../images/icons/add.png") !important; /** sprite-ref: icons; */
+    background-repeat: no-repeat;
+}
+.icon-delete {
+    background-image: url("../../images/icons/delete.png") !important; /** sprite-ref: icons; */
+    background-repeat: no-repeat;
+}
+.icon-save {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/disk.png") !important; /** sprite-ref: icons; */
+}
+.icon-ok {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/tick.png") !important; /** sprite-ref: icons; */
+}
+.icon-cancel {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/cross.png") !important; /** sprite-ref: icons; */
+}
+.icon-edit {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/pencil.png") !important; /** sprite-ref: icons; */
+}
+.icon-prefs {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/key.png") !important; /** sprite-ref: icons; */
+}
+.icon-logout {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/door_out.png") !important; /** sprite-ref: icons; */
+}
+.icon-profile {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/house.png") !important; /** sprite-ref: icons; */
+}
+.icon-udop {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/report.png") !important; /** sprite-ref: icons; */
+}
+.icon-udop-edit {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/report_edit.png") !important; /** sprite-ref: icons; */
+}
+.icon-widget {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/application.png") !important; /** sprite-ref: icons; */
+}
+.icon-application-home {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/application_home.png") !important; /** sprite-ref: icons; */
+}
+.icon-service {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/server.png") !important; /** sprite-ref: icons; */
+}
+.icon-service-edit {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/server_edit.png") !important; /** sprite-ref: icons; */
+}
+.icon-maplayer {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/map.png") !important; /** sprite-ref: icons; */
+}
+.icon-maplayer-edit {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/map_edit.png") !important; /** sprite-ref: icons; */
+}
+.icon-chat {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/user_comment.png") !important; /** sprite-ref: icons; */
+}
+.icon-find {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/find.png") !important; /** sprite-ref: icons; */
+}
+.icon-manage {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/cog.png") !important; /** sprite-ref: icons; */
+}
+.icon-manage-edit {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/cog_edit.png") !important; /** sprite-ref: icons; */
+}
+.icon-favorites {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/star.png") !important; /** sprite-ref: icons; */
+}
+.icon-tile {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/application_view_tile.png") !important; /** sprite-ref: icons; */
+}
+.icon-cascade {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/application_cascade.png") !important; /** sprite-ref: icons; */
+}
+.icon-back {
+    background-image: url("../../images/icons/bullet_left.png") !important; /** sprite-ref: icons; */
+    background-repeat: no-repeat;
+}
+.icon-forward {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/bullet_right.png") !important; /** sprite-ref: icons; */
+}
+.icon-expand {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/arrow_out.png") !important; /** sprite-ref: icons; */
+}
+.icon-collapse {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/arrow_in.png") !important; /** sprite-ref: icons; */
+}
+.icon-sort-asc {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/bullet_arrow_up.png") !important; /** sprite-ref: icons; */
+}
+.icon-sort-desc {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/bullet_arrow_down.png") !important; /** sprite-ref: icons; */
+}
+.icon-kml {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/kml16.png") !important; /** sprite-ref: icons; */
+}
+.icon-filter {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/filter.png") !important; /** sprite-ref: icons; */
+}
+.icon-trust1 {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/shield_bronze.png") !important; /** sprite-ref: icons; */
+    height:16px;
+}
+.icon-trust2 {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/shield_silver.png") !important; /** sprite-ref: icons; */
+    height:16px;
+}
+.icon-trust3 {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/shield_gold.png") !important; /** sprite-ref: icons; */
+    height:16px;
+}
+.icon-chatroom {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/comments.png") !important; /** sprite-ref: icons; */
+}
+.icon-chatroom-add {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/comments_add.png") !important; /** sprite-ref: icons; */
+}
+.icon-alerts {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/bell.png") !important; /** sprite-ref: icons; */
+}
+.icon-wiring {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/link.png") !important; /** sprite-ref: icons; */
+}
+.icon-pagekey {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/page_key.png") !important; /** sprite-ref: icons; */
+}
+.icon-pagecopy {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/page_copy.png") !important; /** sprite-ref: icons; */
+}
+.icon-pagego {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/page_go.png") !important; /** sprite-ref: icons; */
+}
+.icon-pageadd {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/page_add.png") !important; /** sprite-ref: icons; */
+}
+.icon-pagecode-white {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/page_white_code.png") !important; /** sprite-ref: icons; */
+}
+.icon-chartline {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/chart_line.png") !important; /** sprite-ref: icons; */
+}
+.icon-colorswatch {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/color_swatch.png") !important; /** sprite-ref: icons; */
+}
+.icon-contrast {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/contrast.png") !important; /** sprite-ref: icons; */
+}
+.icon-help {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/help.png") !important; /** sprite-ref: icons; */
+}
+.x-tool-custom-help{
+    background-image: url("../../images/icons/help.png") !important; /** sprite-ref: icons; */
+}
+.icon-stop {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/cancel.png") !important; /** sprite-ref: icons; */
+}
+.icon-layoutedit {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/layout_edit.png") !important; /** sprite-ref: icons; */
+}
+.icon-columns {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/text_columns.png") !important; /** sprite-ref: icons; */
+}
+.icon-tab-add {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/tab_add.png") !important; /** sprite-ref: icons; */
+}
+.icon-tab-edit {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/tab_edit.png") !important; /** sprite-ref: icons; */
+}
+.icon-locked {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/lock.png") !important; /** sprite-ref: icons; */
+}
+.icon-unlocked {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/lock_break.png") !important; /** sprite-ref: icons; */
+}
+.icon-refresh {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/arrow_refresh.png") !important; /** sprite-ref: icons; */
+}
+.icon-magnifier {
+    background-repeat: no-repeat;
+    background-image: url("../../images/icons/magnifier.png") !important; /** sprite-ref: icons; */
+}
+.icon-add-cawidget {
+    background-repeat: no-repeat;
+    background-image: url(../../images/icons/brick_add.png) !important; /** sprite-ref: icons; */
+}
+
+.icon-capanel {
+    background-repeat: no-repeat;
+    background-image: url(../../images/icons/bricks.png) !important; /** sprite-ref: icons; */
+}

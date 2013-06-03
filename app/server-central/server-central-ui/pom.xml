@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>server-central</artifactId>
+        <groupId>com.scalar.ps</groupId>
+        <version>0.5.0</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.scalar.ps</groupId>
+    <artifactId>server-central-ui</artifactId>
+    <version>0.5.0</version>
+    <name>Server-Central :: UI</name>
+    <packaging>war</packaging>
+
+    <dependencies>
+    <!-- Internal Dependencies -->
+        <dependency>
+            <groupId>org.o2e.wf</groupId>
+            <artifactId>o2e-wf-common</artifactId>
+            <version>${o2e.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.o2e.wf</groupId>
+            <artifactId>o2e-wf-dashboard</artifactId>
+            <version>${o2e.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.o2e.wf</groupId>
+            <artifactId>o2e-wf-widget</artifactId>
+            <version>${o2e.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>com.jackbe.ps</groupId>
+            <artifactId>o2e-widget-extensions</artifactId>
+            <version>1.0.0</version>
+            <type>zip</type>
+        </dependency>
+
+        <!-- Third Party Dependencies -->
+        <dependency>
+            <groupId>net.jawr</groupId>
+            <artifactId>jawr</artifactId>
+            <version>3.3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.carrotsearch</groupId>
+            <artifactId>smartsprites</artifactId>
+            <version>0.2.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.collections</groupId>
+            <artifactId>google-collections</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <!-- Exclude O2E Parent dependencies except log4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>apache-log4j-extras</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>unpack-jetty-dist</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.o2e.wf</groupId>
+                                    <artifactId>o2e-wf-common</artifactId>
+                                    <version>${o2e.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.o2e.wf</groupId>
+                                    <artifactId>o2e-wf-dashboard</artifactId>
+                                    <version>${o2e.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.o2e.wf</groupId>
+                                    <artifactId>o2e-wf-widget</artifactId>
+                                    <version>${o2e.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.jackbe.ps</groupId>
+                                    <artifactId>o2e-widget-extensions</artifactId>
+                                    <version>1.0.0</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <!--<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>-->
+                    <webResources>
+                        <resource>
+                            <directory>${project.build.directory}/dependency/js</directory>
+                            <targetPath>js/lib</targetPath>
+                            <excludes>
+                                <exclude>widgets/**/*</exclude>
+                            </excludes>
+                        </resource>
+                        <resource>
+                            <directory>${project.build.directory}/dependency/js</directory>
+                            <targetPath>js</targetPath>
+                            <includes>
+                                <include>widgets/**/*</include>
+                            </includes>
+                        </resource>
+                        <resource>
+                            <directory>${project.build.directory}/dependency/css</directory>
+                            <targetPath>css/lib</targetPath>
+                        </resource>
+                    </webResources>
+                    <!--<warName>${project.artifactId}</warName>-->
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>1.2.2</version>
+                <configuration>
+                    <container>
+                        <containerId>jetty7x</containerId>
+                        <home>${jetty.home}</home>
+                    </container>
+                    <configuration>
+                        <home>${jetty.home}</home>
+                        <type>standalone</type>
+                    </configuration>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+        <finalName>${project.artifactId}</finalName>
+    </build>
+
+</project>
