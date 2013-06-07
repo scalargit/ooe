@@ -15,7 +15,7 @@
 			<author name="Matthew Triner" email="matt@scalar.io"/>
 		</authors>
 		<url>https://github.com/scalargit/ooe</url>
-		<javaversion>1.7</javaversion>
+		<javaversion>1.6</javaversion>
 	</info>
 
 	<variables>
@@ -32,7 +32,7 @@
 		<variable name="org.o2e.keystore.file.location" value=""/>
 		<variable name="org.o2e.keystore.key.alias" value=""/>
 		<variable name="org.o2e.truststore.file.location" value=""/>
-		<variable name="java.io.tmpdir" value="/opt/sw/web/tmp"/>
+		<variable name="java.io.tmpdir" value="/opt/sc/web/tmp"/>
 		<variable name="org.o2e.server.host" value="0.0.0.0"/>
 		<variable name="org.o2e.server.http.port" value="8080"/>
 		<variable name="org.o2e.server.https.port" value="8443"/>

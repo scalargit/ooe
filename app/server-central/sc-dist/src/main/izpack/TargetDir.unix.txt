@@ -1,1 +1,1 @@
-/opt/sw
+/opt/sc

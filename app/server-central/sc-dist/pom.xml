@@ -184,6 +184,7 @@
 
 								<echo message="Deleting demo webapps from jetty distribution..."/>
 								<delete dir="${jetty.unpack.basedir}/webapps.demo"/>
+								<delete file="${jetty.unpack.basedir}/start.d/900-demo.ini"/>
 
 								<echo message="Copying izpack files to staging area."/>
 								<copy todir="${project.build.directory}/dependency">

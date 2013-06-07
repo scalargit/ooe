@@ -9,7 +9,7 @@ echo "Executing from $PWD"
 TMP_DIR=###java.io.tmpdir###
 LOG_FILE=logs/stdout.log
 O2E_MASTER_PASSWORD=""
-read -s -p "Enter SW Master Password: " O2E_MASTER_PASSWORD
+read -s -p "Enter SC Master Password: " O2E_MASTER_PASSWORD
 
 DEBUG_OPTIONS="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -verbose:gc"
 JVM_TUNING_OPTIONS="-server -Xms2g -Xmx2g -XX:NewSize=256m -XX:MaxPermSize=256m -XX:+UseConcMarkSweepGC -XX:+UseParNewGC"

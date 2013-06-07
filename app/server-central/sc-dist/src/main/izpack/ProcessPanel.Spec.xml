@@ -100,11 +100,12 @@
 			<arg>org.o2e.keystore.key.alias=$org.o2e.keystore.key.alias</arg>
 			<arg>java.io.tmpdir='$java.io.tmpdir'</arg>
 			<arg>org.o2e.server.stop.port=$org.o2e.server.stop.port</arg>
-			<arg>org.o2e.server.https.host=$org.o2e.server.https.host</arg>
+			<arg>org.o2e.server.host=$org.o2e.server.host</arg>
+			<arg>org.o2e.server.http.port=$org.o2e.server.http.port</arg>
 			<arg>org.o2e.server.https.port=$org.o2e.server.https.port</arg>
-			<arg>org.o2e.server.start.includes.jetty-ssl=$org.o2e.server.start.includes.jetty-ssl</arg>
 			<arg>org.o2e.server.mongod.host=$org.o2e.server.mongod.host</arg>
 			<arg>org.o2e.server.mongod.port=$org.o2e.server.mongod.port</arg>
+			<arg>com.scalar.ps.sc.version=$APP_VER</arg>
 		</executefile>
 		<executefile name="$INSTALL_PATH/scripts/replace-variables.sh">
 			<arg>jetty-unix</arg>
