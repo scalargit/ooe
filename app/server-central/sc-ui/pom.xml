@@ -3,15 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>server-central</artifactId>
-        <groupId>com.scalar.ps</groupId>
+        <artifactId>sc-parent</artifactId>
+        <groupId>com.scalar.ps.sc</groupId>
         <version>0.5.0</version>
         <relativePath>..</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.scalar.ps</groupId>
-    <artifactId>server-central-ui</artifactId>
+		<artifactId>sc-ui</artifactId>
     <version>0.5.0</version>
     <name>Server-Central :: UI</name>
     <packaging>war</packaging>
@@ -37,7 +36,7 @@
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>com.jackbe.ps</groupId>
+            <groupId>com.scalar.ps</groupId>
             <artifactId>o2e-widget-extensions</artifactId>
             <version>1.0.0</version>
             <type>zip</type>
@@ -116,7 +115,7 @@
                                     <type>zip</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>com.jackbe.ps</groupId>
+                                    <groupId>com.scalar.ps</groupId>
                                     <artifactId>o2e-widget-extensions</artifactId>
                                     <version>1.0.0</version>
                                     <type>zip</type>

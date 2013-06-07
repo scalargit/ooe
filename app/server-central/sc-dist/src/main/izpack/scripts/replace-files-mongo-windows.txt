@@ -1,0 +1,4 @@
+%{INSTALL_PATH}\mongodb\startMongo.bat
+%{INSTALL_PATH}\mongodb\mongodb.conf
+%{INSTALL_PATH}\scripts\startMongoUnsecure.bat
+%{INSTALL_PATH}\scripts\add-mongo-users.bat

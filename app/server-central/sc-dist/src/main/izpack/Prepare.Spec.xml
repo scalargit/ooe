@@ -1,0 +1,23 @@
+<processing id="prepare">
+
+	<!-- Windows -->
+
+	<job name="Backup previous O2E installation">
+		<executeForPack name="Core"/>
+		<os family="windows"/>
+		<executefile name="$INSTALL_PATH/scripts/backup-previous-o2e-install.bat">
+			<arg>$INSTALL_PATH</arg>
+		</executefile>
+	</job>
+
+	<!-- OS X and Unix -->
+
+	<job name="Backup previous O2E installation">
+		<executeForPack name="Core"/>
+		<os family="unix"/>
+		<executefile name="$INSTALL_PATH/scripts/backup-previous-o2e-install.sh">
+			<arg>$INSTALL_PATH</arg>
+		</executefile>
+	</job>
+
+</processing>

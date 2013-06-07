@@ -9,7 +9,7 @@
         <servlet-class>net.jawr.web.servlet.JawrServlet</servlet-class>
         <init-param>
             <param-name>configLocation</param-name>
-            <param-value>/###mil.disa.sw.ui.jawr.propertiesFile.prefix###.jawr.properties</param-value>
+            <param-value>/dev.jawr.properties</param-value>
         </init-param>
         <init-param>
             <param-name>mapping</param-name>
@@ -22,7 +22,7 @@
         <servlet-class>net.jawr.web.servlet.JawrServlet</servlet-class>
         <init-param>
             <param-name>configLocation</param-name>
-            <param-value>/###mil.disa.sw.ui.jawr.propertiesFile.prefix###.jawr.properties</param-value>
+	        <param-value>/dev.jawr.properties</param-value>
         </init-param>
         <init-param>
             <param-name>type</param-name>
@@ -35,7 +35,7 @@
         <servlet-class>net.jawr.web.servlet.JawrServlet</servlet-class>
         <init-param>
             <param-name>configLocation</param-name>
-            <param-value>/###mil.disa.sw.ui.jawr.propertiesFile.prefix###.jawr.properties</param-value>
+	        <param-value>/dev.jawr.properties</param-value>
         </init-param>
         <init-param>
             <param-name>type</param-name>
@@ -80,7 +80,7 @@
     <context-param>
         <description>Default classification</description>
         <param-name>defaultClassification</param-name>
-        <param-value>###mil.disa.sw.ui.classification###</param-value>
+        <param-value>UNCLASSIFIED//FOUO</param-value>
     </context-param>
 
     <!--
@@ -91,7 +91,7 @@
     <context-param>
         <description>Default classification style</description>
         <param-name>defaultClassificationStyle</param-name>
-        <param-value>###mil.disa.sw.ui.classification.style###</param-value>
+        <param-value>sw-unclassified</param-value>
     </context-param>
 
     <context-param>
@@ -117,24 +117,24 @@
     <context-param>
         <description>The O2E Server Context</description>
         <param-name>o2eServerContext</param-name>
-        <param-value>###mil.disa.sw.ui.server.context###</param-value>
+        <param-value>sc-server</param-value>
     </context-param>
 
     <context-param>
         <description>Redirect page on error or decline</description>
         <param-name>redirectPage</param-name>
-        <param-value>###mil.disa.sw.ui.redirectPage###</param-value>
+        <param-value>http://www.google.com</param-value>
     </context-param>
 
     <context-param>
         <description>Default Integrated Presto Server Host</description>
         <param-name>prestoHost</param-name>
-        <param-value>###mil.disa.sw.ui.presto.host###</param-value>
+        <param-value>sw-dev.jackbe.com</param-value>
     </context-param>
     <context-param>
         <description>Default Integrated Presto Server Port</description>
         <param-name>prestoPort</param-name>
-        <param-value>###mil.disa.sw.ui.presto.port###</param-value>
+        <param-value>443</param-value>
     </context-param>
     <context-param>
         <description>Default Integrated Presto Server Protocol</description>
@@ -145,7 +145,7 @@
     <context-param>
         <description>Default Messaging Service Base</description>
         <param-name>messagingServiceBase</param-name>
-        <param-value>###mil.disa.sw.ui.messaging.services.endpoint###</param-value>
+        <param-value>http://www.google.com</param-value>
     </context-param>
     <context-param>
         <description>Default Messaging Delivery Endpoint</description>
@@ -167,17 +167,17 @@
     <context-param>
         <description>Fusion Maps flag</description>
         <param-name>isFusion</param-name>
-        <param-value>###mil.disa.sw.ui.isFusion###</param-value>
+        <param-value>false</param-value>
     </context-param>
 
     <context-param>
         <description>Build Version Number</description>
         <param-name>buildVersion</param-name>
-        <param-value>###mil.disa.sw.ui.version###</param-value>
+        <param-value>###com.scalar.ps.sc.version###</param-value>
     </context-param>
     <context-param>
         <description>Build Date</description>
         <param-name>buildDate</param-name>
-        <param-value>###mil.disa.sw.ui.installDate###</param-value>
+        <param-value>###com.scalar.ps.sc.installDate###</param-value>
     </context-param>
 </web-app>

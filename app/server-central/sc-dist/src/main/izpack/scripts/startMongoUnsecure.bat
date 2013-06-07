@@ -1,0 +1,2 @@
+if not exist "%{INSTALL_PATH}/repository" mkdir "%{INSTALL_PATH}/repository"
+"%{org.o2e.server.mongodb.home}/bin/mongod" --dbpath "%{INSTALL_PATH}/repository" --noauth --nojournal --port ###org.o2e.server.mongod.port###

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actactions>
+
+	<pack name="Core">
+		<antcall
+				order="beforepack"
+				buildresource="build.xml"
+				quiet="yes">
+			<property name="install.dir" value="$INSTALL_PATH"/>
+			<target name="backup-o2e"/>
+		</antcall>
+	</pack>
+
+	<!--<pack name="Jetty Web Server">-->
+	<!--<antcall-->
+	<!--order="beforepack"-->
+	<!--buildresource="build.xml"-->
+	<!--quiet="yes"> -->
+	<!--<property name="install.dir" value="$INSTALL_PATH"/>-->
+	<!--<target name="clean-existing"/>-->
+	<!--</antcall>-->
+	<!--</pack>-->
+
+</actactions>

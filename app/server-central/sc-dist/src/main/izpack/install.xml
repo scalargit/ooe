@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<installation version="1.0">
+
+	<!-- TODO support migrating data from previous installation -->
+	<!-- TODO delete all installation related scripts when finished -->
+	<!-- TODO Make previous version backup configurable -->
+
+	<info>
+		<appname>Server Central</appname>
+		<appversion>%{sc.version}</appversion>
+		<authors>
+			<author name="Michael Ho" email="mike@scalar.io"/>
+			<author name="Jeffrey Segal" email="jeff@scalar.io"/>
+			<author name="Matthew Triner" email="matt@scalar.io"/>
+		</authors>
+		<url>https://github.com/scalargit/ooe</url>
+		<javaversion>1.7</javaversion>
+	</info>
+
+	<variables>
+		<variable name="InstallerFrame.logfilePath" value="$INSTALL_PATH/o2e-install.log"/>
+		<variable name="org.o2e.bootstrap.version" value="%{o2e-bootstrap.version}"/>
+		<variable name="org.o2e.crypto.version" value="%{o2e-crypto.version}"/>
+		<variable name="org.o2e.crypto.masterPassword" value=""/>
+		<variable name="org.o2e.server.mongodb.admin.password" value=""/>
+		<variable name="org.o2e.server.mongodb.o2e.password" value=""/>
+		<variable name="org.o2e.previousInstall.path" value=""/>
+		<variable name="org.o2e.backup.path" value=""/>
+		<variable name="org.o2e.jre.home" value=""/>
+		<variable name="org.o2e.keystore.skipValidation" value="false"/>
+		<variable name="org.o2e.keystore.file.location" value=""/>
+		<variable name="org.o2e.keystore.key.alias" value=""/>
+		<variable name="org.o2e.truststore.file.location" value=""/>
+		<variable name="java.io.tmpdir" value="/opt/sw/web/tmp"/>
+		<variable name="org.o2e.server.host" value="0.0.0.0"/>
+		<variable name="org.o2e.server.http.port" value="8080"/>
+		<variable name="org.o2e.server.https.port" value="8443"/>
+		<variable name="org.o2e.server.stop.port" value="8079"/>
+		<variable name="org.o2e.server.https.enable" value=""/>
+		<variable name="org.o2e.server.mongod.host" value="localhost"/>
+		<variable name="org.o2e.server.mongod.port" value="27017"/>
+		<variable name="org.eclipse.jetty.ssl.password" value=""/>
+		<variable name="org.eclipse.jetty.ssl.keypassword" value=""/>
+		<variable name="TargetPanel.noWhitespaces" value="true"/>
+	</variables>
+
+	<dynamicvariables>
+		<variable name="org.o2e.server.jetty.home" value="$INSTALL_PATH/jetty"/>
+		<variable name="org.o2e.server.mongodb.home" value="$INSTALL_PATH/mongodb"/>
+		<!--<variable name="org.o2e.server.start.includes.jetty-ssl" value="etc/jetty-ssl.xml"-->
+		          <!--condition="org.o2e.server.https.enabled"/>-->
+		<!--<variable name="org.o2e.server.start.includes.jetty-ssl" value="#etc/jetty-ssl.xml"-->
+		          <!--condition="!org.o2e.server.https.enabled"/>-->
+		<variable name="shell.extension" value="sh" condition="izpack.linuxinstall"/>
+		<variable name="shell.extension" value="bat" condition="izpack.windowsinstall"/>
+	</dynamicvariables>
+
+	<!--<conditions>-->
+		<!--<condition type="variable" id="org.o2e.server.https.enabled">-->
+			<!--<name>org.o2e.server.https.enable</name>-->
+			<!--<value>on</value>-->
+		<!--</condition>-->
+	<!--</conditions>-->
+
+	<guiprefs width="800" height="800" resizable="yes"/>
+
+	<locale>
+		<langpack iso3="eng"/>
+	</locale>
+
+	<resources>
+		<res id="LicencePanel.licence" src="License.txt"/>
+		<res id="InfoPanel.info" src="successPanel.txt" parse="yes" type="shell"/>
+		<res id="userInputSpec.xml" src="userInputSpec.xml"/>
+		<res id="userInputLang.xml_eng" src="userInputLang.xml"/>
+		<res id="ProcessPanel.Spec.xml" src="ProcessPanel.Spec.xml"/>
+		<!--<res id="AntActionsSpec.xml" src="AntActionsSpec.xml"/>-->
+
+		<!-- Set the default installation directory shown in the TargetPanel -->
+		<res id="TargetPanel.dir.mac" src="TargetDir.mac.txt"/>
+		<res id="TargetPanel.dir.macosx" src="TargetDir.mac.txt"/>
+		<res id="TargetPanel.dir.windows" src="TargetDir.windows.txt"/>
+		<res id="TargetPanel.dir.unix" src="TargetDir.unix.txt"/>
+	</resources>
+
+	<!--
+			The panels section.
+			We indicate here which panels we want to use. The order will be respected.
+	-->
+	<panels>
+		<!--<panel classname="LicencePanel"/>-->
+		<panel classname="TargetPanel"/>
+		<panel classname="PacksPanel"/>
+		<panel classname="InstallPanel"/>
+		<!--<panel classname="UserInputPanel" id="core"/>-->
+		<panel classname="UserInputPanel" id="jetty"/>
+		<panel classname="UserInputPanel" id="sc-server"/>
+		<panel classname="UserInputPanel" id="mongo_install"/>
+		<panel classname="ProcessPanel"/>
+		<!--<panel classname="InfoPanel"/>-->
+		<panel classname="FinishPanel"/>
+	</panels>
+
+	<!--<jar src="dependency/plexus-utils.jar"/>-->
+	<!--<jar src="../izpack-maven-plugin-example.jar"/>-->
+
+	<!-- TODO: add support for using 32 or 64 bit mongo versions-->
+
+	<packs>
+		<pack name="Core" required="yes">
+			<description>O2E Core functionality.</description>
+			<file src="successPanel.txt" targetdir="$INSTALL_PATH" override="true"/>
+			<file src="README" targetdir="$INSTALL_PATH" override="true"/>
+			<file src="License.txt" targetdir="$INSTALL_PATH" override="true"/>
+			<file src="scripts" targetdir="$INSTALL_PATH" override="true"/>
+			<!--<parsable targetfile="$INSTALL_PATH/successPanel.txt" type="shell"/>-->
+			<parsable targetfile="$INSTALL_PATH/scripts/backup-previous-install.bat" type="shell" os="windows"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/insert-timestamp.bat" type="shell" os="windows"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/replace-variables.bat" type="shell" os="windows"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/sed.bat" type="shell" os="windows"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/backup-previous-install.sh" type="shell" os="unix"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/insert-timestamp.sh" type="shell" os="unix"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/append-properties.sh" type="shell" os="unix"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/replace-variables.sh" type="shell" os="unix"/>
+			<executable targetfile="$INSTALL_PATH/scripts/append-properties.sh" stage="never" os="unix"/>
+			<executable targetfile="$INSTALL_PATH/scripts/replace-variables.sh" stage="never" os="unix"/>
+			<executable targetfile="$INSTALL_PATH/scripts/insert-timestamp.sh" stage="never" os="unix"/>
+			<executable targetfile="$INSTALL_PATH/scripts/backup-previous-install.sh" stage="never" os="unix"/>
+		</pack>
+		<pack name="Jetty Web Server" required="no">
+			<description>Jetty provides an HTTP server, HTTP client, and javax.servlet container. These components are
+				open source and available for commercial use and distribution.
+			</description>
+			<!--<fileset dir="${INSTALL_PATH}" includes="jetty-distribution-*" targetdir="$INSTALL_PATH/jetty"/>-->
+
+			<file src="jetty" targetdir="$INSTALL_PATH" override="true"/>
+			<file src="startJetty.bat" targetdir="$org.o2e.server.jetty.home" os="windows" override="true"/>
+			<file src="startJetty.sh" targetdir="$org.o2e.server.jetty.home" os="unix" override="true"/>
+			<file src="stopJetty.sh" targetdir="$org.o2e.server.jetty.home" os="unix" override="true"/>
+			<file src="sc-server" targetdir="$org.o2e.server.jetty.home/webapps" override="true"/>
+			<file src="sc-ui" targetdir="$org.o2e.server.jetty.home/webapps" override="true"/>
+			<file src="o2e-crypto-%{o2e-crypto.version}.zip" targetdir="$org.o2e.server.jetty.home" override="true"
+			      unpack="true"/>
+			<file src="o2e-bootstrap-jetty-%{o2e-bootstrap.version}.zip" targetdir="$org.o2e.server.jetty.home"
+			      override="true" unpack="true"/>
+
+			<parsable targetfile="$INSTALL_PATH/scripts/replace-files-jetty-windows.txt" type="shell" os="windows"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/replace-files-jetty-unix.txt" type="shell" os="unix"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/encrypt-passwords.bat" type="shell" os="windows"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/encrypt-passwords.sh" type="shell" os="unix"/>
+			<parsable targetfile="$org.o2e.server.jetty.home/startJetty.bat" type="shell" os="windows"/>
+			<parsable targetfile="$org.o2e.server.jetty.home/startJetty.sh" type="shell" os="unix"/>
+			<parsable targetfile="$org.o2e.server.jetty.home/stopJetty.sh" type="shell" os="unix"/>
+
+			<executable targetfile="$INSTALL_PATH/scripts/encrypt-passwords.sh" stage="never" os="unix"/>
+			<executable targetfile="$org.o2e.server.jetty.home/startJetty.sh" stage="never" os="unix"/>
+			<executable targetfile="$org.o2e.server.jetty.home/stopJetty.sh" stage="never" os="unix"/>
+			<executable targetfile="$org.o2e.server.jetty.home/run-crypto.sh" stage="never" os="unix"/>
+		</pack>
+		<pack name="MongoDB - Linux" condition="izpack.linuxinstall" required="no">
+			<description>MongoDB (from "humongous") is a scalable, high-performance, open source, document-oriented
+				database.
+			</description>
+			<!--<fileset dir="." targetdir="$INSTALL_PATH/mongodb" includes="mongodb-linux-x86_64-*"/>-->
+			<file src="linux/mongodb" targetdir="$INSTALL_PATH" override="true"/>
+			<file src="startMongo.sh" targetdir="$INSTALL_PATH/mongodb" override="true"/>
+			<file src="stopMongo.sh" targetdir="$INSTALL_PATH/mongodb" override="true"/>
+			<file src="mongodb.conf" targetdir="$INSTALL_PATH/mongodb" override="true"/>
+
+			<parsable targetfile="$INSTALL_PATH/scripts/replace-files-mongo-unix.txt" type="shell"/>
+			<parsable targetfile="$org.o2e.server.mongodb.home/startMongo.sh" type="shell"/>
+			<parsable targetfile="$org.o2e.server.mongodb.home/stopMongo.sh" type="shell"/>
+			<parsable targetfile="$org.o2e.server.mongodb.home/mongodb.conf" type="shell"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/startMongoUnsecure.sh" type="shell"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/add-mongo-users.sh" type="shell"/>
+
+			<executable targetfile="$org.o2e.server.mongodb.home/startMongo.sh" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/stopMongo.sh" stage="never"/>
+			<executable targetfile="$INSTALL_PATH/scripts/startMongoUnsecure.sh" stage="never"/>
+			<executable targetfile="$INSTALL_PATH/scripts/add-mongo-users.sh" stage="never" keep="false"/>
+
+			<!-- chmod +x all mongod executables -->
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/bsondump" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongo" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongod" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongodump" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongoexport" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongofiles" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongoimport" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongorestore" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongos" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongosniff" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongostat" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongotop" stage="never"/>
+
+		</pack>
+		<pack name="MongoDB - Mac OS X" condition="izpack.macinstall" required="no">
+			<description>MongoDB (from "humongous") is a scalable, high-performance, open source, document-oriented
+				database.
+			</description>
+			<!--<fileset dir="." targetdir="$INSTALL_PATH/mongodb" includes="mongodb-osx-x86_64-*"/>-->
+			<file src="osx/mongodb" targetdir="$INSTALL_PATH" override="true"/>
+			<file src="startMongo.sh" targetdir="$INSTALL_PATH/mongodb" override="true"/>
+			<file src="stopMongo.sh" targetdir="$INSTALL_PATH/mongodb" override="true"/>
+			<file src="mongodb.conf" targetdir="$INSTALL_PATH/mongodb" override="true"/>
+
+			<parsable targetfile="$INSTALL_PATH/scripts/replace-files-mongo-unix.txt" type="shell"/>
+			<parsable targetfile="$org.o2e.server.mongodb.home/startMongo.sh" type="shell"/>
+			<parsable targetfile="$org.o2e.server.mongodb.home/stopMongo.sh" type="shell"/>
+			<parsable targetfile="$org.o2e.server.mongodb.home/mongodb.conf" type="shell"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/startMongoUnsecure.sh" type="shell"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/add-mongo-users.sh" type="shell"/>
+
+			<executable targetfile="$org.o2e.server.mongodb.home/startMongo.sh" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/stopMongo.sh" stage="never"/>
+			<executable targetfile="$INSTALL_PATH/scripts/startMongoUnsecure.sh" stage="never"/>
+			<executable targetfile="$INSTALL_PATH/scripts/add-mongo-users.sh" stage="never" keep="false"/>
+
+			<!-- chmod +x all mongod executables -->
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/bsondump" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongo" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongod" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongodump" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongoexport" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongofiles" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongoimport" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongorestore" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongos" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongosniff" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongostat" stage="never"/>
+			<executable targetfile="$org.o2e.server.mongodb.home/bin/mongotop" stage="never"/>
+		</pack>
+		<pack name="MongoDB - Windows" condition="izpack.windowsinstall" required="no">
+			<description>MongoDB (from "humongous") is a scalable, high-performance, open source, document-oriented
+				database.
+			</description>
+			<!--<fileset dir="." targetdir="$INSTALL_PATH/mongodb" includes="mongodb-win32-x86_64-*"/>-->
+			<file src="win32/mongodb" targetdir="$INSTALL_PATH" override="true"/>
+			<file src="startMongo.bat" targetdir="$INSTALL_PATH/mongodb" override="true"/>
+			<file src="mongodb.conf" targetdir="$INSTALL_PATH/mongodb" override="true"/>
+
+			<parsable targetfile="$INSTALL_PATH/scripts/replace-files-mongo-windows.txt" type="shell"/>
+			<parsable targetfile="$org.o2e.server.mongodb.home/startMongo.bat" type="shell"/>
+			<parsable targetfile="$org.o2e.server.mongodb.home/mongodb.conf" type="shell"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/startMongoUnsecure.bat" type="shell"/>
+			<parsable targetfile="$INSTALL_PATH/scripts/add-mongo-users.bat" type="shell"/>
+
+			<executable targetfile="$INSTALL_PATH/scripts/add-mongo-users.bat" stage="never" keep="false"/>
+		</pack>
+	</packs>
+
+</installation>

@@ -1,0 +1,149 @@
+<processing>
+
+	<!-- Windows -->
+
+	<job name="Perform variable replacement - Windows">
+		<executeForPack name="MongoDB - Windows"/>
+		<os family="windows"/>
+		<executefile name="$INSTALL_PATH/scripts/replace-variables.bat">
+			<arg>mongo-windows</arg>
+			<arg>org.o2e.server.mongod.host</arg>
+			<arg>$org.o2e.server.mongod.host</arg>
+			<arg>org.o2e.server.mongod.port</arg>
+			<arg>$org.o2e.server.mongod.port</arg>
+		</executefile>
+	</job>
+
+	<job name="Perform variable replacement - Windows">
+		<executeForPack name="Jetty Web Server"/>
+		<os family="windows"/>
+		<executefile name="$INSTALL_PATH/scripts/replace-variables.bat">
+			<arg>jetty-windows</arg>
+			<arg>JRE_HOME</arg>
+			<arg>"$org.o2e.jre.home"</arg>
+			<arg>org.o2e.keystore.file</arg>
+			<arg>$org.o2e.keystore.file.location</arg>
+			<arg>org.o2e.keystore.key.alias</arg>
+			<arg>$org.o2e.keystore.key.alias</arg>
+			<arg>org.o2e.server.stop.port</arg>
+			<arg>$org.o2e.server.stop.port</arg>
+			<arg>org.o2e.server.host</arg>
+			<arg>$org.o2e.server.host</arg>
+			<arg>org.o2e.server.http.port</arg>
+			<arg>$org.o2e.server.http.port</arg>
+			<arg>org.o2e.server.https.port</arg>
+			<arg>$org.o2e.server.https.port</arg>
+			<!--<arg>org.o2e.server.start.includes.jetty-ssl</arg>-->
+			<!--<arg>$org.o2e.server.start.includes.jetty-ssl</arg>-->
+			<arg>org.o2e.server.mongod.host</arg>
+			<arg>$org.o2e.server.mongod.host</arg>
+			<arg>org.o2e.server.mongod.port</arg>
+			<arg>$org.o2e.server.mongod.port</arg>
+			<arg>com.scalar.ps.sc.version</arg>
+			<arg>$APP_VER</arg>
+		</executefile>
+		<executefile name="$INSTALL_PATH/scripts/insert-timestamp.bat">
+			<arg>"$INSTALL_PATH\jetty\webapps\sc-ui\WEB-INF\web.xml"</arg>
+			<arg>###com.scalar.ps.sc.installDate###</arg>
+		</executefile>
+	</job>
+
+	<job name="Encrypt passwords - Windows">
+		<executeForPack name="Jetty Web Server"/>
+		<os family="windows"/>
+		<executefile name="$INSTALL_PATH/scripts/encrypt-passwords.bat">
+			<arg>$org.o2e.jre.home</arg>
+			<arg>$org.o2e.crypto.masterPassword</arg>
+			<arg>org.o2e.server.mongodb.o2e.password</arg>
+			<arg>$org.o2e.server.mongodb.o2e.password</arg>
+			<arg>org.eclipse.jetty.ssl.password</arg>
+			<arg>$org.eclipse.jetty.ssl.password</arg>
+			<arg>org.eclipse.jetty.ssl.keypassword</arg>
+			<arg>$org.eclipse.jetty.ssl.keypassword</arg>
+			<arg>javax.net.ssl.keyStorePassword</arg>
+			<arg>$org.eclipse.jetty.ssl.password</arg>
+			<arg>javax.net.ssl.trustStorePassword</arg>
+			<arg>$org.eclipse.jetty.ssl.password</arg>
+		</executefile>
+	</job>
+
+	<job name="Create admin user in MongoDB - Windows">
+		<executeForPack name="MongoDB - Windows"/>
+		<os family="windows"/>
+		<executefile name="$INSTALL_PATH/scripts/add-mongo-users.bat">
+			<arg>$org.o2e.server.mongodb.admin.password</arg>
+			<arg>$org.o2e.server.mongodb.o2e.password</arg>
+		</executefile>
+	</job>
+
+	<!-- OS X and Unix -->
+
+	<job name="Perform variable replacement - Mongo, Unix">
+		<executeForPack name="MongoDB - Linux"/>
+		<executeForPack name="MongoDB - Mac OS X"/>
+		<os family="unix"/>
+		<executefile name="$INSTALL_PATH/scripts/append-properties.sh">
+			<arg>org.o2e.server.mongod.host=$org.o2e.server.mongod.host</arg>
+			<arg>org.o2e.server.mongod.port=$org.o2e.server.mongod.port</arg>
+		</executefile>
+		<executefile name="$INSTALL_PATH/scripts/replace-variables.sh">
+			<arg>mongo-unix</arg>
+		</executefile>
+	</job>
+
+	<job name="Perform variable replacement - Jetty, Unix">
+		<executeForPack name="Jetty Web Server"/>
+		<os family="unix"/>
+		<executefile name="$INSTALL_PATH/scripts/append-properties.sh">
+			<arg>JRE_HOME='$org.o2e.jre.home'</arg>
+			<arg>org.o2e.keystore.file='$org.o2e.keystore.file.location'</arg>
+			<arg>org.o2e.keystore.key.alias=$org.o2e.keystore.key.alias</arg>
+			<arg>java.io.tmpdir='$java.io.tmpdir'</arg>
+			<arg>org.o2e.server.stop.port=$org.o2e.server.stop.port</arg>
+			<arg>org.o2e.server.https.host=$org.o2e.server.https.host</arg>
+			<arg>org.o2e.server.https.port=$org.o2e.server.https.port</arg>
+			<arg>org.o2e.server.start.includes.jetty-ssl=$org.o2e.server.start.includes.jetty-ssl</arg>
+			<arg>org.o2e.server.mongod.host=$org.o2e.server.mongod.host</arg>
+			<arg>org.o2e.server.mongod.port=$org.o2e.server.mongod.port</arg>
+		</executefile>
+		<executefile name="$INSTALL_PATH/scripts/replace-variables.sh">
+			<arg>jetty-unix</arg>
+		</executefile>
+		<executefile name="$INSTALL_PATH/scripts/insert-timestamp.sh">
+			<arg>'$INSTALL_PATH/jetty/webapps/sc-ui/WEB-INF/web.xml'</arg>
+			<arg>###com.scalar.ps.sc.installDate###</arg>
+		</executefile>
+	</job>
+
+	<job name="Encrypt passwords - Unix">
+		<executeForPack name="Jetty Web Server"/>
+		<os family="unix"/>
+		<executefile name="$INSTALL_PATH/scripts/encrypt-passwords.sh">
+			<arg>$org.o2e.jre.home</arg>
+			<arg>$org.o2e.crypto.masterPassword</arg>
+			<arg>org.o2e.server.mongodb.o2e.password</arg>
+			<arg>$org.o2e.server.mongodb.o2e.password</arg>
+			<arg>org.eclipse.jetty.ssl.password</arg>
+			<arg>$org.eclipse.jetty.ssl.password</arg>
+			<arg>org.eclipse.jetty.ssl.keypassword</arg>
+			<arg>$org.eclipse.jetty.ssl.keypassword</arg>
+			<arg>javax.net.ssl.keyStorePassword</arg>
+			<arg>$org.eclipse.jetty.ssl.password</arg>
+			<arg>javax.net.ssl.trustStorePassword</arg>
+			<arg>$org.eclipse.jetty.ssl.password</arg>
+		</executefile>
+	</job>
+
+	<job name="Create admin user in MongoDB - Unix">
+		<executeForPack name="MongoDB - Mac OS X"/>
+		<executeForPack name="MongoDB - Linux"/>
+		<executefile name="$INSTALL_PATH/scripts/add-mongo-users.sh">
+			<arg>$org.o2e.server.mongodb.admin.password</arg>
+			<arg>$org.o2e.server.mongodb.o2e.password</arg>
+		</executefile>
+	</job>
+
+	<onFail previous="true" next="false"/>
+	<onSuccess previous="false" next="true"/>
+	<logfiledir>$INSTALL_PATH</logfiledir>
+</processing>

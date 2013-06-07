@@ -1,0 +1,5 @@
+%{INSTALL_PATH}/jetty/startJetty.sh
+%{INSTALL_PATH}/jetty/stopJetty.sh
+%{INSTALL_PATH}/jetty/start.ini
+%{INSTALL_PATH}/jetty/webapps/sc-server/WEB-INF/classes/application.properties
+%{INSTALL_PATH}/jetty/webapps/sc-ui/WEB-INF/web.xml

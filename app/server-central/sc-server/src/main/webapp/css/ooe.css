@@ -1,0 +1,9 @@
+html, body {
+    font-size: 11px;
+    font-family: tahoma, arial, verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    overflow: hidden;
+    height: 100%;
+}

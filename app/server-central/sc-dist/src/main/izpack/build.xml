@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="upgrade">
+
+	<target name="backup-o2e">
+		<echo message="Backing up Previous O2E installation..."/>
+		<tstamp/>
+		<mkdir dir="${install.dir}/o2e-backup"/>
+		<tar basedir="${install.dir}"
+		     destfile="${install.dir}/o2e-backup/o2e-${DSTAMP}-${TSTAMP}.tgz"
+		     compression="gzip">
+			<exclude name="**/o2e-backup/**/*"/>
+		</tar>
+	</target>
+
+	<target name="clean-existing">
+		<echo message="Cleaning out existing files..."/>
+		<delete dir="${install.dir}/jetty" failonerror="false"/>
+	</target>
+
+	<!--<target name="init" depends="-setupConditions,-shutdown"/> -->
+	<!--<target name="beforeGlassfishUpgrade" description="Pre-upgrade glassfish processiong" depends="init" if="isGlassfishUpgradeRequired"> -->
+	<!--<antcall target="-backupGlassfishFiles"/> -->
+	<!--</target> -->
+	<!--<target name="beforeJavaDBUpgrade" description="Pre-upgrade JavaDB processiong" depends="init" if="isJavaDBUpgradeRequired"> -->
+	<!--<delete dir="${install.dir}/glassfish/javadb" quiet="true" includeemptydirs="true"/> -->
+	<!--</target> -->
+	<!--<target name="beforeAppUpgrade" description="Pre-upgrade app processiong" depends="init" if="isUpgrade"> -->
+	<!--<antcall target="-backupAppFiles"/> -->
+	<!--</target> -->
+	<!--<target name="afterGlassfishUpgrade" description="Post-upgrade glassfish processing" depends="init" if="isGlassfishUpgradeRequired"> -->
+	<!--<antcall target="-restoreGlassfishFiles"/> -->
+	<!--<antcall target="-removeBackupGlassfishFiles"/> -->
+	<!--</target> -->
+	<!--<target name="afterAppUpgrade" description="Post-upgrade app processing" depends="init" if="isUpgrade"> -->
+	<!--<antcall target="-restoreAppFiles"/> -->
+	<!--<antcall target="-removeBackupAppFiles"/> -->
+	<!--</target> -->
+	<!--<target name="-setupConditions"> -->
+	<!--<fail message="property install.dir must be set" unless="install.dir"/> -->
+	<!--<fail message="property install.type must be set" unless="install.type"/> -->
+	<!--<condition property="isWin32"> -->
+	<!--<os family="winnt"/> -->
+	<!--</condition> -->
+	<!--<condition property="isSolaris8"> -->
+	<!--<os family="unix" name="SunOS" arch="sparc" version="5.8"/> -->
+	<!--</condition> -->
+	<!--<condition property="isSolaris10"> -->
+	<!--<os family="unix" name="SunOS" version="5.10"/> -->
+	<!--</condition> -->
+	<!--<condition property="isUpgrade"> -->
+	<!--<equals arg1="${install.type}" arg2="upgrade" trim="true"/> -->
+	<!--</condition> -->
+	<!--<condition property="isGlassfishUpgradeRequired"> -->
+	<!--<and> -->
+	<!--<isset property="isUpgrade"/> -->
+	<!--<equals arg1="${upgrade.version}" arg2="2.0" trim="true"/> -->
+	<!--</and> -->
+	<!--</condition> -->
+	<!--<condition property="isJavaDBUpgradeRequired"> -->
+	<!--<and> -->
+	<!--<isset property="isUpgrade"/> -->
+	<!--<or> -->
+	<!--<equals arg1="${upgrade.version}" arg2="2.0" trim="true"/> -->
+	<!--<equals arg1="${upgrade.version}" arg2="2.1" trim="true"/> -->
+	<!--</or> -->
+	<!--</and> -->
+	<!--</condition> -->
+	<!--<condition property="isShutdownRequired"> -->
+	<!--<or> -->
+	<!--<isset property="isGlassfishUpgradeRequired"/> -->
+	<!--<isset property="isJavaDBUpgradeRequired"/> -->
+	<!--</or> -->
+	<!--</condition> -->
+	<!--<condition property="isShutdownWin32Required"> -->
+	<!--<and> -->
+	<!--<isset property="isShutdownRequired"/> -->
+	<!--<isset property="isWin32"/> -->
+	<!--</and> -->
+	<!--</condition> -->
+	<!--<condition property="isShutdownSolaris8Required"> -->
+	<!--<and> -->
+	<!--<isset property="isShutdownRequired"/> -->
+	<!--<isset property="isSolaris8"/> -->
+	<!--</and> -->
+	<!--</condition> -->
+	<!--<condition property="isShutdownSolaris10Required"> -->
+	<!--<and> -->
+	<!--<isset property="isShutdownRequired"/> -->
+	<!--<isset property="isSolaris10"/> -->
+	<!--</and> -->
+	<!--</condition> -->
+	<!--</target> -->
+	<!--<target name="-shutdown" description="Shutdown CanogaView" depends="-shutdownWin32, -shutdownSolaris8, -shutdownSolaris10"> -->
+	<!--</target> -->
+	<!--<target name="-backupGlassfishFiles" description="Make a backup of needed glassfish files" depends="init"> -->
+	<!--<move file="${install.dir}/glassfish" tofile="${install.dir}/glassfish.old"/> -->
+	<!--</target> -->
+	<!--<target name="-backupAppFiles" description="Make a backup of needed app files" depends="init"> -->
+	<!--<move file="${install.dir}/app/pkg/dependencies.xml" tofile="${install.dir}/app/pkg/dependencies.xml.bak"/> -->
+	<!--</target> -->
+	<!--<target name="-restoreGlassfishFiles" description="Restore backup glassfish files" depends="init"> -->
+	<!--<copy todir="${install.dir}/glassfish/databases" overwrite="true" includeEmptyDirs="true"> -->
+	<!--<fileset dir="${install.dir}/glassfish.old/databases"/> -->
+	<!--</copy> -->
+	<!--</target> -->
+	<!--<target name="-restoreAppFiles" description="Restore backup app files" depends="init"> -->
+	<!--<copy file="${install.dir}/app/pkg/dependencies.xml.bak" tofile="${install.dir}/app/pkg/dependencies.xml" overwrite="true"/> -->
+	<!--</target> -->
+	<!--<target name="-removeBackupGlassfishFiles" description="Restore backup files" depends="init"> -->
+	<!--<delete dir="${install.dir}/glassfish.old"/> -->
+	<!--</target> -->
+	<!--<target name="-removeBackupAppFiles" description="Restore backup files" depends="init"> -->
+	<!--<delete file="${install.dir}/app/pkg/dependencies.xml.bak"/> -->
+	<!--</target> -->
+	<!--<target name="-shutdownWin32" description="Shutdown CanogaView on Windows installation" depends="-setupConditions" if="isShutdownWin32Required"> -->
+	<!--<exec executable="cmd"> -->
+	<!--<arg value="/c"/> -->
+	<!--<arg value="${install.dir}\app\scripts\win32\csemstop.bat"/> -->
+	<!--</exec> -->
+	<!--</target> -->
+	<!--<target name="-shutdownSolaris8" description="Shutdown CanogaView on Solaris 8 installation" depends="-setupConditions" if="isShutdownSolaris8Required"> -->
+	<!--<exec executable="/bin/sh"> -->
+	<!--<arg value="/etc/init.d/canogaview"/> -->
+	<!--<arg value="stop"/> -->
+	<!--</exec> -->
+	<!--</target> -->
+	<!--<target name="-shutdownSolaris10" description="Shutdown CanogaView on Solaris 10 installation" depends="-setupConditions" if="isShutdownSolaris10Required"> -->
+	<!--<exec executable="/usr/sbin/svcadm"> -->
+	<!--<arg value="disable"/> -->
+	<!--<arg value="-s"/> -->
+	<!--<arg value="canogaview"/> -->
+	<!--</exec> -->
+	<!--<exec executable="/usr/sbin/svcadm"> -->
+	<!--<arg value="disable"/> -->
+	<!--<arg value="-s"/> -->
+	<!--<arg value="csemdb"/> -->
+	<!--</exec> -->
+	<!--</target> -->
+</project> 

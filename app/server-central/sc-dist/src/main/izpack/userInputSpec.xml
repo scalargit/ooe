@@ -1,0 +1,163 @@
+<userInput>
+
+	<panel id="jetty">
+		<createForPack name="Jetty Web Server"/>
+		<field type="title" txt="Server Central Installation - Core" bold="true" size="2"/>
+		<field type="divider" align="top"/>
+
+		<field type="password" align="left" variable="org.o2e.crypto.masterPassword">
+			<spec>
+				<pwd txt="SC Master Password" size="25"/>
+				<pwd txt="Re-enter SC Master Password" size="25"/>
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Passwords must match."/>
+		</field>
+
+		<field type="divider" align="bottom"/>
+
+		<!--<field type="space"/>-->
+		<!--<field type="staticText" align="left" txt="Previous O2E Installation directory"/>-->
+		<!--<field type="dir" align="left" variable="org.o2e.previousInstall.path">-->
+		<!--<spec txt="" size="25" mustExist="false" create="false"/>-->
+		<!--</field>-->
+
+		<!--<field type="space"/>-->
+		<!--<field type="staticText" align="left" txt="O2E Backup directory"/>-->
+		<!--<field type="dir" align="left" variable="org.o2e.backup.path">-->
+		<!--<spec txt="" size="25" mustExist="true" create="true"/>-->
+		<!--</field>-->
+		<!--<field type="text" variable="org.o2e.backup.path">-->
+		<!--<description align="left" txt="O2E Backup directory"/>-->
+		<!--<spec txt="Enter some text:" size="50"/>-->
+		<!--</field>-->
+
+		<field type="space"/>
+		<field type="staticText" align="left" txt="JDK Home"/>
+		<field type="dir" align="left" variable="org.o2e.jre.home">
+			<spec txt="" size="25" mustExist="true" create="false"/>
+		</field>
+
+		<!-- Keystore / Truststore -->
+		<field type="staticText" align="left" txt="Keystore/Truststore (combined):"/>
+		<field type="file" align="left" variable="org.o2e.keystore.file.location">
+			<spec txt="" size="25"/>
+		</field>
+		<field type="space"/>
+		<field type="combo" variable="keystore.file.type">
+			<spec txt="Keystore type:">
+				<choice txt="JKS" value="JKS" set="true"/>
+				<choice txt="PKCS12" value="PKCS12"/>
+			</spec>
+		</field>
+		<field type="space"/>
+		<field type="text" align="left" variable="org.o2e.keystore.key.alias">
+			<spec txt="Keystore key alias:" size="25"/>
+		</field>
+		<field type="space"/>
+		<field type="password" align="left" variable="org.eclipse.jetty.ssl.password">
+			<spec>
+				<pwd txt="Keystore Password:" size="25"/>
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordKeystoreValidator"
+			           txt="Could not validate keystore with password and alias provided.">
+				<param name="keystoreFile" value="${org.o2e.keystore.file.location}"/>
+				<param name="keystoreType" value="${keystore.file.type}"/>
+				<param name="keystoreAlias" value="${org.o2e.keystore.key.alias}"/>
+				<param name="skipValidation" value="false"/>
+			</validator>
+		</field>
+		<field type="space"/>
+		<field type="password" align="left" variable="org.eclipse.jetty.ssl.keypassword">
+			<spec>
+				<pwd txt="Key alias password" size="20"/>
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordKeystoreValidator"
+			           txt="Could not validate key alias password.">
+				<param name="keystoreFile" value="${org.o2e.keystore.file.location}"/>
+				<param name="keystoreType" value="${keystore.file.type}"/>
+				<param name="keystoreAlias" value="${org.o2e.keystore.key.alias}"/>
+				<param name="keystorePassword" value="${org.eclipse.jetty.ssl.password}"/>
+				<param name="skipValidation" value="${org.o2e.keystore.skipValidation}"/>
+			</validator>
+		</field>
+
+		<field type="divider" align="bottom"/>
+	</panel>
+
+	<panel id="sc-server">
+		<createForPack name="Jetty Web Server"/>
+		<field type="title" txt="SC Installation - sc-server Config" bold="true" size="2"/>
+		<field type="divider" align="top"/>
+
+		<field type="text" variable="org.o2e.server.host">
+			<spec txt="Host" size="5" set="${org.o2e.server.host}"/>
+		</field>
+		<field type="space"/>
+		<field type="text" variable="org.o2e.server.http.port">
+			<spec txt="HTTP Port" size="5" set="${org.o2e.server.http.port}"/>
+			<validator class="com.izforge.izpack.util.IsPortValidator" txt="Please enter a valid port number."/>
+		</field>
+		<field type="space"/>
+		<field type="text" variable="org.o2e.server.https.port">
+			<spec txt="HTTPS Port" size="5" set="${org.o2e.server.https.port}"/>
+			<validator class="com.izforge.izpack.util.IsPortValidator" txt="Please enter a valid port number."/>
+		</field>
+		<!--<field type="space"/>-->
+		<!--<field type="check" variable="org.o2e.server.https.enable">-->
+			<!--<spec txt="Enable HTTPS Port" true="on" false="off" set="true"/>-->
+		<!--</field>-->
+
+		<field type="space"/>
+		<field type="text" variable="org.o2e.server.stop.port">
+			<spec txt="Jetty Stop Port" size="5" set="${org.o2e.server.stop.port}"/>
+			<validator class="com.izforge.izpack.util.IsPortValidator" txt="Please enter a valid port number."/>
+		</field>
+
+		<field type="space"/>
+		<field type="text" align="left" variable="java.io.tmpdir">
+			<spec txt="Java temp directory" size="50"/>
+		</field>
+
+		<field type="divider" align="bottom"/>
+	</panel>
+
+	<panel id="mongo_install">
+		<createForPack name="MongoDB - Windows"/>
+		<createForPack name="MongoDB - Linux"/>
+		<createForPack name="MongoDB - Mac OS X"/>
+		<field type="title" txt="SW Installation - Mongo Install" bold="true" size="2"/>
+		<field type="divider" align="top"/>
+
+		<field type="text" variable="org.o2e.server.mongod.host">
+			<spec txt="Mongod Host" size="30" set="${org.o2e.server.mongod.host}"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+			           txt="Please enter a valid Mongod host address."/>
+		</field>
+		<field type="text" variable="org.o2e.server.mongod.port">
+			<spec txt="Mongod Port" size="5" set="${org.o2e.server.mongod.port}"/>
+			<validator class="com.izforge.izpack.util.IsPortValidator" txt="Please enter a valid Mongod port number."/>
+		</field>
+
+		<field type="password" align="left" variable="org.o2e.server.mongodb.admin.password">
+			<spec>
+				<pwd txt="MongDB 'admin' user Password:" size="25"/>
+				<pwd txt="Re-enter MongDB 'admin' user Password:" size="25"/>
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Both passwords must match."/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="You must enter a non-empty password."/>
+		</field>
+
+		<field type="space"/>
+		<field type="password" align="left" variable="org.o2e.server.mongodb.o2e.password">
+			<spec>
+				<pwd txt="MongDB 'o2e' user Password:" size="25"/>
+				<pwd txt="Re-enter MongDB 'o2e' user Password:" size="25"/>
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Both passwords must match."/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="You must enter a non-empty password."/>
+		</field>
+
+		<field type="divider" align="bottom"/>
+	</panel>
+
+</userInput>

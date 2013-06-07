@@ -2,19 +2,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.scalar.ps</groupId>
-    <artifactId>server-central</artifactId>
-    <packaging>pom</packaging>
-    <version>0.5.0</version>
-    <name>Server-Central :: Parent</name>
+	<groupId>com.scalar.ps.sc</groupId>
+	<artifactId>sc-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>0.5.0</version>
+	<name>Server-Central :: Parent</name>
 
-    <properties>
-        <o2e.version>1.0.0_RC2</o2e.version>
-    </properties>
+	<properties>
+		<o2e.version>1.0.0_RC2</o2e.version>
+		<jetty.version>9.0.3.v20130506</jetty.version>
+		<cometd.version>2.6.0</cometd.version>
+		<mongodb.version>2.4.3</mongodb.version>
+	</properties>
 
-    <modules>
-        <module>server-central-ui</module>
-    </modules>
+	<modules>
+		<module>sc-ui</module>
+		<module>sc-server</module>
+		<module>sc-dist</module>
+	</modules>
+
 </project>

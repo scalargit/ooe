@@ -1,0 +1,52 @@
+version: 1
+
+dn: dc=jackbe, dc=com
+objectClass: organization
+objectClass: dcObject
+objectClass: top
+dc: jackbe
+o: JackBe Corporation
+description: Top level Organization for JackBe
+
+dn: ou=ps, dc=jackbe, dc=com
+objectClass: organizationalUnit
+objectClass: top
+ou: ps
+
+dn: cn=jsegal, ou=ps, dc=jackbe, dc=com
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: jsegal
+sn: Segal
+givenName: Jeffrey
+mail: jsegal@jackbe.com
+uid: jsegal
+userPassword:: e1NIQX1XNnBoNU1tNVB6OEdnaVVMYlBnekczN21qOWc9
+
+dn: cn=mho,ou=ps,dc=jackbe,dc=com
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: mho
+sn: Ho
+givenName: Michael
+mail: mho@jackbe.com
+uid: mho
+userPassword:: e1NIQX1XNnBoNU1tNVB6OEdnaVVMYlBnekczN21qOWc9
+
+dn: ou=groups,dc=jackbe,dc=com
+objectClass: organizationalUnit
+objectClass: top
+ou: groups
+
+dn: ou=users,ou=groups,dc=jackbe,dc=com
+objectClass: groupOfNames
+objectClass: top
+cn: users
+member: cn=jsegal, ou=ps, dc=jackbe, dc=com
+member: cn=mho, ou=ps,dc=jackbe,dc=com
+ou: users
+

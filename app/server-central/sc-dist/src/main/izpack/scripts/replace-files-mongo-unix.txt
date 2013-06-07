@@ -1,0 +1,4 @@
+%{INSTALL_PATH}/mongodb/startMongo.sh
+%{INSTALL_PATH}/mongodb/mongodb.conf
+%{INSTALL_PATH}/scripts/startMongoUnsecure.sh
+%{INSTALL_PATH}/scripts/add-mongo-users.sh
