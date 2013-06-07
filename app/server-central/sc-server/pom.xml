@@ -21,6 +21,11 @@
 		<!-- Internal Dependencies -->
 
 		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
 			<groupId>org.o2e</groupId>
 			<artifactId>o2e-mongo</artifactId>
 			<version>${o2e.version}</version>
