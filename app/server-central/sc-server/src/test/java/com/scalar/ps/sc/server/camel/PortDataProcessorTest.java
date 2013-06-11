@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,30 +25,29 @@ public class PortDataProcessorTest {
 
 	@Test
 	public void test() throws IOException {
+
 		String json = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("sample-port-data.json"), "UTF-8");
 		Object o = JSON.getDefault().fromJSON(json);
+
+		Map<String, Map> flow = new HashMap<>();
+		List<Map> dataList = new ArrayList<>();
+
 		if (o instanceof Object[]) {
 			Object[] data = (Object[]) o;
 			for (Object datum : data) {
 				if (datum instanceof HashMap) {
 					HashMap<String, Object> datumMap = (HashMap<String, Object>) datum;
-					String target = null;
-					for (Map.Entry<String, Object> entry : datumMap.entrySet()) {
-						String key = entry.getKey();
-						if ("target".equalsIgnoreCase(key)) target = (String) entry.getValue();
-						else if ("datapoints".equalsIgnoreCase(key)) {
-							Object[] datapoints = (Object[]) entry.getValue();
-							for (Object datapoint : datapoints) {
-								if (datapoint instanceof Object[]) {
-									Object[] datapointArray = (Object[]) datapoint;
-									if (datapointArray.length == 2) {
-										Double value = (Double) datapointArray[0];
-										Long timestamp = (Long) datapointArray[1];
-										log.info(value + "; "  + timestamp);
-									}
-									else log.warn("Expected datapoints array of size 2.");
-								}
+					String target = (String) datumMap.get("target");
+					Object[] datapoints = (Object[]) datumMap.get("datapoints");
+					for (Object datapoint : datapoints) {
+						if (datapoint instanceof Object[]) {
+							Object[] datapointArray = (Object[]) datapoint;
+							if (datapointArray.length == 2) {
+								Double value = (Double) datapointArray[0];
+								Long timestamp = (Long) datapointArray[1];
+								log.info("target:" + target + ", value: " + value + "; "  + timestamp);
 							}
+							else log.warn("Expected datapoints array of size 2.");
 						}
 					}
 				}

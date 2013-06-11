@@ -12,7 +12,7 @@ import org.apache.camel.model.RouteDefinition;
 import org.apache.http.HttpStatus;
 import org.cometd.bayeux.server.BayeuxServer;
 import org.cometd.bayeux.server.ServerSession;
-import org.cometd.java.annotation.Session;
+import org.cometd.annotation.Session;
 import org.o2e.camel.AsynchRouteMapper;
 import org.o2e.camel.RoutePropertyManager;
 import org.o2e.camel.ServiceRegistry;
@@ -60,7 +60,7 @@ import java.util.concurrent.locks.ReentrantLock;
 //@org.springframework.stereotype.Service
 @Named
 @Singleton
-@org.cometd.java.annotation.Service("routeService")
+@org.cometd.annotation.Service("routeService")
 @ManagedResource
 public class DefaultRouteService extends RoutePolicySupport implements CamelContextAware, RouteService {
 

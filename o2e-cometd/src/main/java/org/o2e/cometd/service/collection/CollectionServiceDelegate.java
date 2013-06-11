@@ -4,7 +4,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.apache.http.HttpStatus;
 import org.cometd.bayeux.server.*;
-import org.cometd.java.annotation.Session;
+import org.cometd.annotation.Session;
 import org.o2e.cometd.service.CometDCrudServiceDelegate;
 import org.o2e.cometd.service.CometDHelper;
 import org.slf4j.Logger;

@@ -5,7 +5,7 @@ import org.apache.http.HttpStatus;
 import org.cometd.bayeux.server.BayeuxServer;
 import org.cometd.bayeux.server.ServerChannel;
 import org.cometd.bayeux.server.ServerSession;
-import org.cometd.java.annotation.Session;
+import org.cometd.annotation.Session;
 import org.o2e.cometd.security.AbstractAuthenticator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ import java.util.UUID;
  */
 @Named
 @Singleton
-@org.cometd.java.annotation.Service("cometDBayeuxListener")
+@org.cometd.annotation.Service("cometDBayeuxListener")
 @ManagedResource
 public class CometDBayeuxListener implements BayeuxServer.SessionListener, BayeuxServer.SubscriptionListener {
 

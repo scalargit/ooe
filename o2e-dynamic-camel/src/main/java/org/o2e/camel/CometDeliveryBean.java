@@ -6,7 +6,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.cometd.bayeux.server.BayeuxServer;
 import org.cometd.bayeux.server.ServerSession;
-import org.cometd.java.annotation.Session;
+import org.cometd.annotation.Session;
 import org.json.JSONObject;
 import org.o2e.camel.builders.AbstractOoeRouteBuilder;
 import org.o2e.camel.builders.AsynchOoeRouteBuilder;
@@ -30,7 +30,7 @@ import java.util.Set;
  * To change this template use File | Settings | File Templates.
  */
 @Component
-@org.cometd.java.annotation.Service("cometDeliveryBean")
+@org.cometd.annotation.Service("cometDeliveryBean")
 public class CometDeliveryBean {
 
     Logger log = LoggerFactory.getLogger(this.getClass());

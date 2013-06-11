@@ -1,5 +1,6 @@
 package org.o2e.test.cometd;
 
+import org.apache.camel.component.http4.HttpMethods;
 import org.cometd.bayeux.Message;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +37,7 @@ public class MetadataServiceTest extends CometdBaseTest {
     @Override
     public CometDTestConfig getConfig() {
         CometDTestConfig config = new CometDTestConfig();
-        config.setCometdUrl("https://localhost:9443/sw-server/cometd");
+        config.setCometdUrl("https://localhost:8443/sw-server/cometd");
         config.setUsername("CN=sw.jackbe.com, OU=DISA, OU=PKI, OU=DoD, O=U.S. Government, C=US");
         config.setUserPassword("mockPassword");
         config.setKeyManagerPassword("password");
@@ -75,6 +76,13 @@ public class MetadataServiceTest extends CometdBaseTest {
 //
 ////        assertEquals(initial.size(), afterRemove.size());
 //    }
+
+    @Test
+    public void saveRestService() {
+        dynamicRouteTestHelper.saveService(client, "/service/metadata/save", dynamicRouteTestHelper.constructRestService(
+                "https://api.twitter.com/1/statuses/user_timeline.json?include_entities=true&include_rts=true&screen_name=mralexgray&count=1",
+                HttpMethods.GET, 60, new HashMap<String, Object>(), null));
+    }
 
     private List<String> saveServices() {
         List<String> ids = new ArrayList<String>();
@@ -184,7 +192,7 @@ public class MetadataServiceTest extends CometdBaseTest {
         } else log.error("Invocation failed - not handshaken to cometd server.");
     }
 
-    @Test
+//    @Test
     public void findAllMetadata() {
         String channel = "/service/metadata/find";
         log.info("Invoking serviceSpecification at '" + channel + "'");

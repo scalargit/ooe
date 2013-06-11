@@ -1,7 +1,7 @@
 package org.o2e.cometd.service;
 
 import org.cometd.bayeux.server.BayeuxServer;
-import org.cometd.java.annotation.ServerAnnotationProcessor;
+import org.cometd.annotation.ServerAnnotationProcessor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor;
 import org.springframework.stereotype.Component;

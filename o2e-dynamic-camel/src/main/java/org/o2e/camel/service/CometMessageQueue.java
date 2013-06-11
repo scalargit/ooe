@@ -4,7 +4,7 @@ import com.mongodb.BasicDBObject;
 import org.apache.http.HttpStatus;
 import org.cometd.bayeux.server.BayeuxServer;
 import org.cometd.bayeux.server.ServerSession;
-import org.cometd.java.annotation.Session;
+import org.cometd.annotation.Session;
 import org.o2e.cometd.service.CometDHelper;
 import org.o2e.cometd.service.DataService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,7 +23,7 @@ import java.util.UUID;
  * To change this template use File | Settings | File Templates.
  */
 @Component
-@org.cometd.java.annotation.Service("cometMessageQueue")
+@org.cometd.annotation.Service("cometMessageQueue")
 public class CometMessageQueue extends AbstractMessageQueue {
 
     @Inject

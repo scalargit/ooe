@@ -5,9 +5,9 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import org.apache.http.HttpStatus;
 import org.cometd.bayeux.server.*;
-import org.cometd.java.annotation.Configure;
-import org.cometd.java.annotation.Listener;
-import org.cometd.java.annotation.Session;
+import org.cometd.annotation.Configure;
+import org.cometd.annotation.Listener;
+import org.cometd.annotation.Session;
 import org.o2e.camel.ServiceRegistry;
 import org.o2e.mongo.BeanValidator;
 import org.o2e.mongo.ServiceRepository;
@@ -77,7 +77,7 @@ import java.util.Set;
  */
 @Named
 @Singleton
-@org.cometd.java.annotation.Service("metadata")
+@org.cometd.annotation.Service("metadata")
 public class MetadataService {
 
     Logger log = LoggerFactory.getLogger(this.getClass());

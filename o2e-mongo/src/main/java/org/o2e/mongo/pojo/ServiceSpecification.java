@@ -34,14 +34,16 @@ public class ServiceSpecification extends BaseDocument {
     @Min(5)
     protected long refreshIntervalSeconds;
 
-    protected Map<String, Object> requestParameters = new HashMap<String, Object>();
+    protected Map<String, Object> requestParameters;
 
     boolean shared = true;
 
     public ServiceSpecification() {
+        requestParameters = new HashMap<String, Object>();
     }
 
     public ServiceSpecification(String name, String dataType, int refreshIntervalSeconds) {
+        super();
         this.name = name;
         this.dataType = dataType;
         this.refreshIntervalSeconds = refreshIntervalSeconds;

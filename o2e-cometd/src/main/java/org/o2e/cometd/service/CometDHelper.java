@@ -8,7 +8,7 @@ import com.mongodb.util.JSON;
 import org.apache.http.HttpStatus;
 import org.cometd.bayeux.server.ServerMessage;
 import org.cometd.bayeux.server.ServerSession;
-import org.cometd.java.annotation.Session;
+import org.cometd.annotation.Session;
 import org.o2e.mongo.MongoHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ import java.util.*;
  */
 @Named
 @Singleton
-@org.cometd.java.annotation.Service("cometDHelper")
+@org.cometd.annotation.Service("cometDHelper")
 public class CometDHelper {
 
     final Logger log = LoggerFactory.getLogger(this.getClass());
