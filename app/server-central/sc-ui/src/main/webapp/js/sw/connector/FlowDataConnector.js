@@ -11,11 +11,15 @@ Ext.define('sw.connector.FlowDataConnector', {
     timeout: 30000,
 
     activeRequests: null,
+    currentData: null,
+    listenerCount: null,
 
     constructor : function(cfg) {
         Ext.apply(this, cfg);
 
         this.activeRequests = {};
+        this.currentData = {};
+        this.listenerCount = {};
     },
 
     invoke: function(cfg) {
@@ -48,13 +52,23 @@ Ext.define('sw.connector.FlowDataConnector', {
                 scope: this,
                 interval: Number(cfg.metadata.ext.refreshInterval) * 1000 || 1000
             });
+            this.listenerCount[cfg.serviceKey] = 1;
+        } else if (this.currentData[cfg.serviceKey]) {
+            o2e.connectorMgr.receiveData(cfg.serviceKey, this.currentData[cfg.serviceKey]);
+            this.listenerCount[cfg.serviceKey] = this.listenerCount[cfg.serviceKey] + 1;
         }
     },
 
     uninvoke: function(cfg) {
         if (this.activeRequests[cfg.serviceKey]) {
-            Ext.TaskManager.stop(this.activeRequests[cfg.serviceKey]);
-            delete this.activeRequests[cfg.serviceKey];
+            if (this.listenerCount[cfg.serviceKey] === 1){
+                Ext.TaskManager.stop(this.activeRequests[cfg.serviceKey]);
+                delete this.activeRequests[cfg.serviceKey];
+                delete this.currentData[cfg.serviceKey];
+                delete this.listenerCount[cfg.serviceKey];
+            } else {
+                this.listenerCount[cfg.serviceKey] = this.listener[cfg.serviceKey] - 1;
+            }
         }
     },
 
@@ -80,6 +94,8 @@ Ext.define('sw.connector.FlowDataConnector', {
                 resp.flow.data.push(timestamps[t]);
             }
         }
+
+        this.currentData[serviceKey] = resp;
 
         o2e.connectorMgr.receiveData(serviceKey, resp);
     },
