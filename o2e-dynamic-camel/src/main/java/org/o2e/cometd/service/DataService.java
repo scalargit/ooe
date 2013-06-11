@@ -7,9 +7,9 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.CamelContextAware;
 import org.apache.http.HttpStatus;
 import org.cometd.bayeux.server.*;
-import org.cometd.java.annotation.Configure;
-import org.cometd.java.annotation.Listener;
-import org.cometd.java.annotation.Session;
+import org.cometd.annotation.Configure;
+import org.cometd.annotation.Listener;
+import org.cometd.annotation.Session;
 import org.o2e.camel.ServiceRegistry;
 import org.o2e.camel.cache.OoeDataCache;
 import org.o2e.camel.service.RouteService;
@@ -48,7 +48,7 @@ import java.util.Set;
  */
 @Named
 @Singleton
-@org.cometd.java.annotation.Service("data")
+@org.cometd.annotation.Service("data")
 public class DataService implements CamelContextAware {
 
     Logger log = LoggerFactory.getLogger(this.getClass());

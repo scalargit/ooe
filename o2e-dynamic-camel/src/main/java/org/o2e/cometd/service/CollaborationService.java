@@ -1,9 +1,9 @@
 package org.o2e.cometd.service;
 
 import org.cometd.bayeux.server.*;
-import org.cometd.java.annotation.Configure;
-import org.cometd.java.annotation.Listener;
-import org.cometd.java.annotation.Session;
+import org.cometd.annotation.Configure;
+import org.cometd.annotation.Listener;
+import org.cometd.annotation.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jmx.export.annotation.ManagedOperation;
@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @Named
 @Singleton
-@org.cometd.java.annotation.Service("collaboration")
+@org.cometd.annotation.Service("collaboration")
 @ManagedResource
 public class CollaborationService {
 

@@ -1,9 +1,9 @@
 package org.o2e.cometd.service.collection;
 
 import org.cometd.bayeux.server.*;
-import org.cometd.java.annotation.Configure;
-import org.cometd.java.annotation.Listener;
-import org.cometd.java.annotation.Session;
+import org.cometd.annotation.Configure;
+import org.cometd.annotation.Listener;
+import org.cometd.annotation.Session;
 import org.o2e.cometd.service.CometDCrudService;
 import org.o2e.cometd.service.CometDCrudServiceDelegate;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Named
 @Singleton
-@org.cometd.java.annotation.Service("collection")
+@org.cometd.annotation.Service("collection")
 public class CometDCollectionService implements CometDCrudService {
 
     final Logger log = LoggerFactory.getLogger(this.getClass());

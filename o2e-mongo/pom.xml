@@ -4,8 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.o2e</groupId>
-    <artifactId>o2e-mongo</artifactId>
+		<artifactId>o2e-mongo</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0_RC2</version>
     <name>O2E :: Mongo</name>
@@ -77,6 +76,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
             <version>${springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-http</artifactId>
+            <version>${camel.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

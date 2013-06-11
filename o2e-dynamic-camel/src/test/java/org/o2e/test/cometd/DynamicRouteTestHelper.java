@@ -1,5 +1,6 @@
 package org.o2e.test.cometd;
 
+import org.apache.camel.component.http4.HttpMethods;
 import org.cometd.bayeux.Message;
 import org.cometd.client.BayeuxClient;
 
@@ -109,6 +110,22 @@ public class DynamicRouteTestHelper {
         widgetMetadata.put("lastUpdatedTime", new Date().getTime());
         widgetMetadata.put("actions", new String[]{"action1", "action2"});
         return widgetMetadata;
+    }
+
+    public Map<String, Object> constructRestService(String url, HttpMethods method, long refreshInterval,
+                                                    Map<String, Object> requestParameters,
+                                                    @Nullable Map<String, String> httpHeaders) {
+        Map<String, Object> service = new HashMap<String, Object>();
+        service.put("name", url);
+        service.put("dataType", "rest");
+        service.put("append", "false");
+        service.put("url", url);
+        service.put("method", method);
+        service.put("requestParameters", requestParameters);
+        service.put("append", "false");
+        service.put("refreshIntervalSeconds", refreshInterval);
+        if (httpHeaders != null) service.put("httpHeaders", httpHeaders);
+        return service;
     }
 
     public Map<String, Object> constructPrestoService(String prestoHost, int prestoPort, String sid, String oid,
