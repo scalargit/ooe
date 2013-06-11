@@ -13,7 +13,7 @@ Ext.define('sw.WidgetContainer', {
             dock: 'bottom'
         }
     ],
-    height: 200,
+    height: 400,
     flex: 1,
 
     desiredPlugins: ['refresh', 'lock', 'status', 'widgetTitle', 'manageServices', 'filters', 'inputs', 'wiring', 'embedUrl', 'launchInOzone'],

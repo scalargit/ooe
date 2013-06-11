@@ -6,7 +6,7 @@ Ext.define('sw.widget.HBoxWrapper', {
         type: 'hbox',
         align: 'stretch'
     },
-    height: 200,
+    height: 400,
     anchor: '100%',
     resizable: { transparent: true },
     resizeHandles: 'n s',
