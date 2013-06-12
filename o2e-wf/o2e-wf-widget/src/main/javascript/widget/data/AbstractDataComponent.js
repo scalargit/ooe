@@ -686,7 +686,7 @@ Ext.define('o2e.data.AbstractDataComponent', {
 
     //Private
     categorizeAppendData: function(serviceKey, records, forceRefresh, metadata) {
-        var add, remove = [], removeField, removeVal, clear = false, i;
+        var add, remove = [], recordToRemove, uidField, found, oldRecord, removeField, removeVal, clear = false, i;
 
         //TODO: we should do update matching here too. Append is the data flow style, not an indicator as to how to treat the stores
 
@@ -695,13 +695,20 @@ Ext.define('o2e.data.AbstractDataComponent', {
             add = records;
             clear = true;
         } else {
-            if (metadata.removeFlagAnnotationIdx !== -1) {
-                removeField = o2e.data.DataUtils.getFieldWithAnnotation('removeFlag', metadata);
+            removeField = o2e.data.DataUtils.getFieldWithAnnotation('removeFlag', metadata);
+            if (removeField !== null) {
+                uidField = o2e.data.DataUtils.getFieldWithAnnotation('uid', metadata);
                 for (i=0; i<records.length;) {
                     removeVal = records[i].get(removeField);
                     if (removeVal && removeVal !== 'false') {
-                        // TODO: might need to do store matching for !this.useOwnStores. See "diff and collect" below
-                        remove.push(records.splice(i, 1)[0]);
+                        recordToRemove = records.splice(i, 1)[0];
+                        found = o2e.data.DataUtils.findMatchingRecord(this.currentRecords[serviceKey], uidField, recordToRemove);
+                        if (found !== false && found >= 0) {
+                            oldRecord = this.currentRecords[serviceKey].splice(found, 1)[0];
+                            if (uidField !== null && o2e.data.DataUtils.isStrictMatch(oldRecord, recordToRemove)) {
+                                remove.push(oldRecord);
+                            }
+                        }
                     } else {
                         i++;
                     }
