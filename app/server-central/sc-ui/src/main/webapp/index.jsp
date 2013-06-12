@@ -148,20 +148,25 @@
             },{
                 xtype: 'textfield',
                 fieldLabel: 'Username',
-                value: 'sw-admin',
                 name: 'username'
             },{
                 xtype: 'textfield',
                 inputType: 'password',
                 fieldLabel: 'Password',
-                value: 'password',
                 name: 'password'
             }],
             bbar: ['->', {
                 text: 'Login',
                 handler: function(btn) {
-                    btn.up('window').close();
-                    var env = Ext.create(sw.envCls, {
+                    var env, window = btn.up('window'),
+                        authToken = o2e.util.Base64.encode(
+                            window.getComponent(1).getValue() +
+                            ':' +
+                            window.getComponent(2).getValue()
+                        );
+                    window.close();
+                    env = Ext.create(sw.envCls, {
+                        basicAuthToken: authToken,
                         o2eContextOverride: <%= ((String)application.getInitParameter("o2eContextOverride")) %>,
                         o2eServerProtocol: '<%= ((String)application.getInitParameter("o2eServerProtocol")) %>',
                         o2eServerHost: '<%= ((String)application.getInitParameter("o2eServerHost")) %>',
