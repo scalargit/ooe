@@ -7,11 +7,14 @@ import org.o2e.mongo.ServiceRepository;
 import org.o2e.mongo.WidgetMetadataRepository;
 import org.o2e.mongo.pojo.ServiceSpecification;
 import org.o2e.mongo.pojo.WidgetMetadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,49 +27,61 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class MetadataCache {
 
-    @Autowired
-    WidgetMetadataRepository widgetMetadataRepository;
+	final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    ServiceRepository serviceRepository;
+	@Autowired
+	WidgetMetadataRepository widgetMetadataRepository;
 
-    LoadingCache<String, WidgetMetadata> widgetMetadataCache;
-    LoadingCache<String, ServiceSpecification> serviceSpecificationCache;
+	@Autowired
+	ServiceRepository serviceRepository;
 
-    @Value("${org.o2e.server.mongodb.metadata.cache.ttl.seconds}")
-    protected long ttlSeconds;
+	LoadingCache<String, WidgetMetadata> widgetMetadataCache;
+	LoadingCache<String, ServiceSpecification> serviceSpecificationCache;
 
-    @Value("${org.o2e.server.mongodb.metadata.cache.size}")
-    protected long cacheSize;
+	@Value("${org.o2e.server.mongodb.metadata.cache.ttl.seconds}")
+	protected long ttlSeconds;
 
-    @PostConstruct
-    public void init() {
-        widgetMetadataCache = CacheBuilder.newBuilder().
-                maximumSize(cacheSize).
-                expireAfterWrite(ttlSeconds, TimeUnit.SECONDS).
-                build(new CacheLoader<String, WidgetMetadata>() {
-                    @Override
-                    public WidgetMetadata load(String widgetMetadataId) throws Exception {
-                        return widgetMetadataRepository.findOne(widgetMetadataId);
-                    }
-                });
-        serviceSpecificationCache = CacheBuilder.newBuilder().
-                maximumSize(cacheSize).
-                expireAfterWrite(ttlSeconds, TimeUnit.SECONDS).
-                build(new CacheLoader<String, ServiceSpecification>() {
-                    @Override
-                    public ServiceSpecification load(String serviceSpecificationId) throws Exception {
-                        return serviceRepository.findOne(serviceSpecificationId);
-                    }
-                });
-    }
+	@Value("${org.o2e.server.mongodb.metadata.cache.size}")
+	protected long cacheSize;
 
-    public WidgetMetadata getWidgetMetadata(String widgetMetadataId) {
-        return widgetMetadataCache.getUnchecked(widgetMetadataId);
-    }
+	@PostConstruct
+	public void init() {
+		widgetMetadataCache = CacheBuilder.newBuilder().
+				maximumSize(cacheSize).
+				expireAfterWrite(ttlSeconds, TimeUnit.SECONDS).
+				build(new CacheLoader<String, WidgetMetadata>() {
+					@Override
+					public WidgetMetadata load(String widgetMetadataId) throws Exception {
+						return widgetMetadataRepository.findOne(widgetMetadataId);
+					}
+				});
+		serviceSpecificationCache = CacheBuilder.newBuilder().
+				maximumSize(cacheSize).
+				expireAfterWrite(ttlSeconds, TimeUnit.SECONDS).
+				build(new CacheLoader<String, ServiceSpecification>() {
+					@Override
+					public ServiceSpecification load(String serviceSpecificationId) throws Exception {
+						return serviceRepository.findOne(serviceSpecificationId);
+					}
+				});
+	}
 
-    public ServiceSpecification getServiceSpecification(String serviceSpecificationId) {
-        return serviceSpecificationCache.getUnchecked(serviceSpecificationId);
-    }
+	public WidgetMetadata getWidgetMetadata(String widgetMetadataId) {
+		try {
+			return widgetMetadataCache.get(widgetMetadataId);
+		} catch (Exception e) {
+			log.warn("Error loading WidgetMetadata with id '" + widgetMetadataId + "'", e);
+			return null;
+		}
+	}
+
+	public ServiceSpecification getServiceSpecification(String serviceSpecificationId) {
+		try {
+			return serviceSpecificationCache.get(serviceSpecificationId);
+		} catch (Exception e) {
+			log.warn("Error loading ServiceSpecification with id '" + serviceSpecificationId + "'", e);
+			return null;
+		}
+	}
 
 }

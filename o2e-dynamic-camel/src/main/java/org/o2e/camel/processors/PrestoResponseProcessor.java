@@ -5,6 +5,7 @@ import com.mongodb.util.JSON;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
+import org.o2e.mongo.annotations.MappedByDataType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
  * Time: 4:12 PM
  * To change this template use File | Settings | File Templates.
  */
+@MappedByDataType("presto")
 public class PrestoResponseProcessor implements Processor {
 
     final Logger log = LoggerFactory.getLogger(this.getClass());

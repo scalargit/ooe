@@ -32,10 +32,10 @@ public class DataServiceTest extends CometdBaseTest {
     @Override
     public CometDTestConfig getConfig() {
         CometDTestConfig config = new CometDTestConfig();
-        config.setCometdUrl("https://localhost:8443/sw-server/cometd");
+        config.setCometdUrl("https://localhost:8443/sc-server/cometd");
 //        config.setCometdUrl("http://localhost:9191/turnkey-server/cometd");
-        config.setUsername("CN=sw-user, OU=DISA, OU=PKI, OU=DoD, O=U.S. Government, C=US");
-//        config.setUsername("jsegal");
+//        config.setUsername("CN=sw-user, OU=DISA, OU=PKI, OU=DoD, O=U.S. Government, C=US");
+        config.setUsername("jsegal");
         config.setUserPassword("password");
         config.setKeyManagerPassword("password");
         config.setUseBasicAuth(true);
@@ -97,7 +97,7 @@ public class DataServiceTest extends CometdBaseTest {
         if (handshaken) {
 //            String localRssServiceId = "4eb921e4535c8eea89b41f93";
             String localPrestoServiceId = "50cf28a2656f1436d499277a";
-            String localRestServiceId = "519b8466df3736458c3a452a";
+            String localRestServiceId = "51b86ec1591788ad62576011";
             String serviceSpecificationId = localRestServiceId;
             String widgetMetadataId = DataService.DEFAULT_WIDGETMETADATA_ID;
 

@@ -1,11 +1,10 @@
 package org.o2e.camel;
 
 import org.o2e.camel.builders.AbstractOoeRouteBuilder;
+import org.o2e.camel.processors.AbstractOoeRequestProcessor;
+import org.o2e.camel.processors.AbstractOoeResponseProcessor;
 import org.o2e.camel.security.Authorizer;
 import org.o2e.mongo.pojo.ServiceSpecification;
-import org.springframework.context.ApplicationContext;
-
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,10 +15,14 @@ import java.util.Map;
  */
 public interface ServiceRegistry {
 
-    public Class<? extends ServiceSpecification> getServiceSubClass(ServiceSpecification serviceSpecification);
+	public Class<? extends ServiceSpecification> getServiceSubClass(ServiceSpecification serviceSpecification);
 
-    public Class<AbstractOoeRouteBuilder> getRouteBuilder(ServiceSpecification serviceSpecification);
+	public Class<AbstractOoeRouteBuilder> getRouteBuilder(ServiceSpecification serviceSpecification);
 
-    public Authorizer getAuthorizer(ServiceSpecification serviceSpecification);
+	public Authorizer getAuthorizer(ServiceSpecification serviceSpecification);
+
+	public Class<AbstractOoeRequestProcessor> getRequestProcessor(ServiceSpecification serviceSpecification);
+
+	public Class<AbstractOoeResponseProcessor> getResponseProcessor(ServiceSpecification serviceSpecification);
 
 }

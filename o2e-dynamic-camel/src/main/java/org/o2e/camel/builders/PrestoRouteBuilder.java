@@ -44,10 +44,10 @@ public class PrestoRouteBuilder extends AbstractOoeRouteBuilder {
         // Set this Route ID to this ServiceSpecification's ID
         PrestoServiceSpecification prestoService = (PrestoServiceSpecification) serviceSpecification;
 
-        RouteDefinition routeDefinition = from("timer://" + UUID.randomUUID().toString() + "?period=" + prestoService.getRefreshIntervalSeconds() + "s").
-                process(new PrestoRequestProcessor()).
-//                setHeader(Exchange.HTTP_METHOD, constant(HttpMethods.POST)).
-        setHeader(Exchange.HTTP_METHOD, constant(org.apache.camel.component.http.HttpMethods.POST));
+        RouteDefinition routeDefinition = from("timer://" + UUID.randomUUID().toString() + "?period=" +
+		        prestoService.getRefreshIntervalSeconds() + "s").
+		        setHeader(Exchange.HTTP_METHOD, constant(org.apache.camel.component.http.HttpMethods.POST));
+	    if (requestProcessor != null) routeDefinition.process(requestProcessor);
 
         // Add HTTP Headers if they exist
         if (prestoService.getHttpHeaders() != null) {
@@ -93,8 +93,7 @@ public class PrestoRouteBuilder extends AbstractOoeRouteBuilder {
         }
         routeDefinition.
                 to(scheme + "://" + prestoService.getPrestoHostname() + ":" + prestoService.getPrestoPort() +
-                        "/presto/edge/api" + params).
-                process(new PrestoResponseProcessor());
+                        "/presto/edge/api" + params);
         routeDefinition.onException(ProtocolException.class).handled(true).logStackTrace(true).stop();
         return routeDefinition;
     }

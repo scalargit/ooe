@@ -9,6 +9,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicNameValuePair;
 import org.o2e.camel.builders.AbstractOoeRouteBuilder;
+import org.o2e.mongo.annotations.MappedByDataType;
 import org.o2e.mongo.pojo.RestServiceSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,8 @@ import java.util.Map;
  * Time: 2:56 PM
  * To change this template use File | Settings | File Templates.
  */
-public class RestRequestProcessor implements Processor {
+@MappedByDataType("rest")
+public class RestRequestProcessor extends AbstractOoeRequestProcessor {
 
     final Logger log = LoggerFactory.getLogger(this.getClass());
 

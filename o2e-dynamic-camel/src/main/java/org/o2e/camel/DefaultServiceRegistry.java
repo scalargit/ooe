@@ -1,8 +1,10 @@
 package org.o2e.camel;
 
-import org.o2e.mongo.annotations.MappedByDataType;
 import org.o2e.camel.builders.AbstractOoeRouteBuilder;
+import org.o2e.camel.processors.AbstractOoeRequestProcessor;
+import org.o2e.camel.processors.AbstractOoeResponseProcessor;
 import org.o2e.camel.security.Authorizer;
+import org.o2e.mongo.annotations.MappedByDataType;
 import org.o2e.mongo.pojo.ServiceSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,103 +28,121 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultServiceRegistry implements ApplicationContextAware, ServiceRegistry {
 
-    final Logger log = LoggerFactory.getLogger(this.getClass());
+	final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    Map<String, Class<ServiceSpecification>> serviceRegistry = new ConcurrentHashMap<String, Class<ServiceSpecification>>();
-    Map<String, Class<AbstractOoeRouteBuilder>> routeBuilderRegistry = new ConcurrentHashMap<String, Class<AbstractOoeRouteBuilder>>();
-    Map<String, Authorizer> authorizerRegistry = new ConcurrentHashMap<String, Authorizer>();
+	Map<String, Class<ServiceSpecification>> serviceRegistry = new ConcurrentHashMap<>();
+	Map<String, Class<AbstractOoeRouteBuilder>> routeBuilderRegistry = new ConcurrentHashMap<>();
+	Map<String, Authorizer> authorizerRegistry = new ConcurrentHashMap<>();
+	Map<String, Class<AbstractOoeRequestProcessor>> requestProcessorRegistry = new ConcurrentHashMap<>();
+	Map<String, Class<AbstractOoeResponseProcessor>> responseProcessorRegistry = new ConcurrentHashMap<>();
 
-    protected ApplicationContext applicationContext;
-    protected List<String> packages;
-    protected Authorizer defaultAuthorizer;
+	protected ApplicationContext applicationContext;
+	protected List<String> packages;
+	protected Authorizer defaultAuthorizer;
 
-    @PostConstruct
-    public void init() {
-        log.info("Initializing DefaultServiceRegistry...");
-        scanClassPath();
-        scanBeans();
-    }
+	@PostConstruct
+	public void init() {
+		log.info("Initializing DefaultServiceRegistry...");
+		scanClassPath();
+		scanBeans();
+	}
 
-    private void scanClassPath() {
-        log.info("Scanning classpath to build registries...");
-        ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
-        scanner.addIncludeFilter(new AnnotationTypeFilter(MappedByDataType.class));
-        for (String basePackage : packages) {
-            for (BeanDefinition bd : scanner.findCandidateComponents(basePackage)) {
-                try {
-                    Class clazz = Class.forName(bd.getBeanClassName());
-                    log.trace("Looking for '" + MappedByDataType.class + "' annotation on class '" +
-                            clazz.getCanonicalName() + "'");
-                    MappedByDataType annotation = (MappedByDataType) clazz.getAnnotation(MappedByDataType.class);
-                    if (annotation != null) {
-                        if (annotation.value() != null) {
-                            if (ServiceSpecification.class.isAssignableFrom(clazz)) {
-                                log.debug("Mapping '" + annotation.value() + "' to ServiceSpecification '" +
-                                        clazz.getCanonicalName() + "'");
-                                serviceRegistry.put(annotation.value(), clazz);
-                            }
-                            else if (AbstractOoeRouteBuilder.class.isAssignableFrom(clazz)) {
-                                log.debug("Mapping '" + annotation.value() + "' to RouteBuilder '" +
-                                        clazz.getCanonicalName() + "'");
-                                routeBuilderRegistry.put(annotation.value(), clazz);
-                            }
-                        }
-                    }
-                } catch (ClassNotFoundException e) {
-                    log.error("Could not load class with name '" + bd.getBeanClassName() + "'", e);
-                }
-            }
-        }
-    }
+	private void scanClassPath() {
+		log.info("Scanning classpath to build registries...");
+		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
+		scanner.addIncludeFilter(new AnnotationTypeFilter(MappedByDataType.class));
+		for (String basePackage : packages) {
+			for (BeanDefinition bd : scanner.findCandidateComponents(basePackage)) {
+				try {
+					Class clazz = Class.forName(bd.getBeanClassName());
+					log.trace("Looking for '" + MappedByDataType.class + "' annotation on class '" +
+							clazz.getCanonicalName() + "'");
+					MappedByDataType annotation = (MappedByDataType) clazz.getAnnotation(MappedByDataType.class);
+					if (annotation != null) {
+						if (annotation.value() != null) {
+							if (ServiceSpecification.class.isAssignableFrom(clazz)) {
+								log.debug("Mapping '" + annotation.value() + "' to ServiceSpecification '" +
+										clazz.getCanonicalName() + "'");
+								serviceRegistry.put(annotation.value(), clazz);
+							} else if (AbstractOoeRouteBuilder.class.isAssignableFrom(clazz)) {
+								log.debug("Mapping '" + annotation.value() + "' to RouteBuilder '" +
+										clazz.getCanonicalName() + "'");
+								routeBuilderRegistry.put(annotation.value(), clazz);
+							} else if (AbstractOoeRequestProcessor.class.isAssignableFrom(clazz)) {
+								log.debug("Mapping '" + annotation.value() + "' to Request Processor '" +
+										clazz.getCanonicalName() + "'");
+								requestProcessorRegistry.put(annotation.value(), clazz);
+							} else if (AbstractOoeResponseProcessor.class.isAssignableFrom(clazz)) {
+								log.debug("Mapping '" + annotation.value() + "' to Response Processor '" +
+										clazz.getCanonicalName() + "'");
+								responseProcessorRegistry.put(annotation.value(), clazz);
+							}
+						}
 
-    private void scanBeans() {
-        log.info("Scanning bean instances to build registries...");
-        Map<String, Object> beans = applicationContext.getBeansWithAnnotation(MappedByDataType.class);
-        for (Map.Entry<String, Object> entry : beans.entrySet()) {
-            String name = entry.getKey();
-            Object bean = entry.getValue();
-            log.trace("Looking for '" + MappedByDataType.class + "' annotation on class '" + bean.getClass() + "'");
-            MappedByDataType annotation = bean.getClass().getAnnotation(MappedByDataType.class);
-            if (bean instanceof Authorizer && annotation != null) {
-                if (authorizerRegistry.get(annotation.value()) != null)
-                    log.warn("Found multiple Authorizers specified for data type '" + annotation.value() + "'");
-                else {
-                    log.debug("Mapping '" + annotation.value() + "' to bean '" +
-                            bean.getClass().getCanonicalName() + "'");
-                    authorizerRegistry.put(annotation.value(), (Authorizer) bean);
-                }
-            }
-        }
-    }
+					}
+				} catch (ClassNotFoundException e) {
+					log.error("Could not load class with name '" + bd.getBeanClassName() + "'", e);
+				}
+			}
+		}
+	}
 
-    public Class<? extends ServiceSpecification> getServiceSubClass(ServiceSpecification serviceSpecification) {
-        if (serviceSpecification == null || serviceSpecification.getDataType() == null)
-            throw new IllegalArgumentException("ServiceSpecificastion cannot be null.");
-        else return serviceRegistry.get(serviceSpecification.getDataType());
-    }
+	private void scanBeans() {
+		log.info("Scanning bean instances to build registries...");
+		Map<String, Object> beans = applicationContext.getBeansWithAnnotation(MappedByDataType.class);
+		for (Map.Entry<String, Object> entry : beans.entrySet()) {
+			String name = entry.getKey();
+			Object bean = entry.getValue();
+			log.trace("Looking for '" + MappedByDataType.class + "' annotation on class '" + bean.getClass() + "'");
+			MappedByDataType annotation = bean.getClass().getAnnotation(MappedByDataType.class);
+			if (bean instanceof Authorizer && annotation != null) {
+				if (authorizerRegistry.get(annotation.value()) != null)
+					log.warn("Found multiple Authorizers specified for data type '" + annotation.value() + "'");
+				else {
+					log.debug("Mapping '" + annotation.value() + "' to bean '" +
+							bean.getClass().getCanonicalName() + "'");
+					authorizerRegistry.put(annotation.value(), (Authorizer) bean);
+				}
+			}
+		}
+	}
 
-    public Class<AbstractOoeRouteBuilder> getRouteBuilder(ServiceSpecification serviceSpecification) {
-        return routeBuilderRegistry.get(serviceSpecification.getDataType());
-    }
+	public Class<? extends ServiceSpecification> getServiceSubClass(ServiceSpecification serviceSpecification) {
+		if (serviceSpecification == null || serviceSpecification.getDataType() == null)
+			throw new IllegalArgumentException("ServiceSpecificastion cannot be null.");
+		else return serviceRegistry.get(serviceSpecification.getDataType());
+	}
 
-    public Authorizer getAuthorizer(ServiceSpecification serviceSpecification) {
-        Authorizer authorizer = authorizerRegistry.get(serviceSpecification.getDataType());
-        return authorizer != null ? authorizer : defaultAuthorizer;
-    }
+	public Class<AbstractOoeRouteBuilder> getRouteBuilder(ServiceSpecification serviceSpecification) {
+		return routeBuilderRegistry.get(serviceSpecification.getDataType());
+	}
 
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
+	public Class<AbstractOoeRequestProcessor> getRequestProcessor(ServiceSpecification serviceSpecification) {
+		return requestProcessorRegistry.get(serviceSpecification.getDataType());
+	}
 
-    public void setAuthorizerRegistry(Map<String, Authorizer> authorizerRegistry) {
-        this.authorizerRegistry = authorizerRegistry;
-    }
+	public Class<AbstractOoeResponseProcessor> getResponseProcessor(ServiceSpecification serviceSpecification) {
+		return responseProcessorRegistry.get(serviceSpecification.getDataType());
+	}
 
-    public void setPackages(List<String> packages) {
-        this.packages = packages;
-    }
+	public Authorizer getAuthorizer(ServiceSpecification serviceSpecification) {
+		Authorizer authorizer = authorizerRegistry.get(serviceSpecification.getDataType());
+		return authorizer != null ? authorizer : defaultAuthorizer;
+	}
 
-    public void setDefaultAuthorizer(Authorizer defaultAuthorizer) {
-        this.defaultAuthorizer = defaultAuthorizer;
-    }
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
+
+	public void setAuthorizerRegistry(Map<String, Authorizer> authorizerRegistry) {
+		this.authorizerRegistry = authorizerRegistry;
+	}
+
+	public void setPackages(List<String> packages) {
+		this.packages = packages;
+	}
+
+	public void setDefaultAuthorizer(Authorizer defaultAuthorizer) {
+		this.defaultAuthorizer = defaultAuthorizer;
+	}
 }

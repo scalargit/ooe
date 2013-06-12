@@ -9,6 +9,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.o2e.camel.builders.AbstractOoeRouteBuilder;
+import org.o2e.mongo.annotations.MappedByDataType;
 import org.o2e.mongo.pojo.PrestoServiceSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ import java.util.*;
  * Time: 2:22 PM
  * To change this template use File | Settings | File Templates.
  */
+@MappedByDataType("presto")
 public class PrestoRequestProcessor implements Processor {
 
     Logger log = LoggerFactory.getLogger(this.getClass());

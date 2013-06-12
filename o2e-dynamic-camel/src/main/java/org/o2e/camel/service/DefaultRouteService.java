@@ -18,6 +18,8 @@ import org.o2e.camel.RoutePropertyManager;
 import org.o2e.camel.ServiceRegistry;
 import org.o2e.camel.builders.AbstractOoeRouteBuilder;
 import org.o2e.camel.builders.AsynchOoeRouteBuilder;
+import org.o2e.camel.processors.AbstractOoeRequestProcessor;
+import org.o2e.camel.processors.AbstractOoeResponseProcessor;
 import org.o2e.cometd.service.CometDHelper;
 import org.o2e.cometd.service.DataService;
 import org.o2e.meter.PerformanceMeter;
@@ -141,23 +143,26 @@ public class DefaultRouteService extends RoutePolicySupport implements CamelCont
                 .concurrencyLevel(1)
                 .build(
                         new CacheLoader<ServiceSpecification, RouteSet>() {
-                            public RouteSet load(ServiceSpecification serviceSpecification) {
+                            public RouteSet load(ServiceSpecification serviceSpecification) throws
+		                            NoSuchMethodException, InstantiationException, IllegalAccessException,
+		                            InvocationTargetException {
                                 log.debug("Constructing new RouteSet...");
-                                AbstractOoeRouteBuilder routeBuilder = null;
                                 try {
-                                    routeBuilder = constructRouteBuilder(serviceSpecification, AbstractOoeRouteBuilder.Destination.cache);
+	                                AbstractOoeRouteBuilder routeBuilder = constructRouteBuilder(serviceSpecification,
+			                                AbstractOoeRouteBuilder.Destination.cache);
                                     routeBuilder.setGroup(AbstractOoeRouteBuilder.Group.SHARED);
+		                                if (routeBuilder instanceof AsynchOoeRouteBuilder) {
+		                                    // This mapping allows us to connect data arriving asynchronously with the ServiceSpecification and
+		                                    // WidgetMetadata it's associated with
+		                                    asynchRouteMapper.addRouteMapping(((AsynchOoeRouteBuilder) routeBuilder).getAsynchKey(),
+		                                            serviceSpecification);
+		                                }
+	                                return new RouteSet(serviceSpecification.getId(), routeBuilder);
                                 } catch (Exception e) {
                                     log.warn("Error constructing route building for ServiceSpecification '" +
                                             serviceSpecification + "'", e);
+	                                throw e;
                                 }
-                                if (routeBuilder instanceof AsynchOoeRouteBuilder) {
-                                    // This mapping allows us to connect data arriving asynchronously with the ServiceSpecification and
-                                    // WidgetMetadata it's associated with
-                                    asynchRouteMapper.addRouteMapping(((AsynchOoeRouteBuilder) routeBuilder).getAsynchKey(),
-                                            serviceSpecification);
-                                }
-                                return new RouteSet(serviceSpecification.getId(), routeBuilder);
                             }
                         });
     }
@@ -470,13 +475,29 @@ public class DefaultRouteService extends RoutePolicySupport implements CamelCont
     }
 
     private AbstractOoeRouteBuilder constructRouteBuilder(ServiceSpecification serviceSpecification,
-                                                          AbstractOoeRouteBuilder.Destination destination) throws InvocationTargetException, IllegalAccessException,
-            InstantiationException, NoSuchMethodException {
-        Class<AbstractOoeRouteBuilder> clazz = serviceRegistry.getRouteBuilder(serviceSpecification);
-        Constructor<AbstractOoeRouteBuilder> constructor = clazz.getDeclaredConstructor(
-                serviceSpecification.getClass(), AbstractOoeRouteBuilder.Destination.class, RoutePropertyManager.class);
-        return constructor.newInstance(serviceSpecification, destination, routePropertyManager);
+                                                          AbstractOoeRouteBuilder.Destination destination)
+		    throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
+        Class<AbstractOoeRouteBuilder> routeBuilderClass = serviceRegistry.getRouteBuilder(serviceSpecification);
+	    AbstractOoeRequestProcessor requestProcessor = constructRequestProcessor(serviceSpecification);
+	    AbstractOoeResponseProcessor responseProcessor = constructResponseProcessor(serviceSpecification);
+        Constructor<AbstractOoeRouteBuilder> constructor = routeBuilderClass.getDeclaredConstructor(
+                serviceSpecification.getClass(), AbstractOoeRouteBuilder.Destination.class,
+		        RoutePropertyManager.class, requestProcessor.getClass(), responseProcessor.getClass());
+        return constructor.newInstance(serviceSpecification, destination, routePropertyManager,
+		        requestProcessor, responseProcessor);
     }
+
+	private AbstractOoeRequestProcessor constructRequestProcessor(ServiceSpecification serviceSpecification)
+			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+		Class<AbstractOoeRequestProcessor> clazz = serviceRegistry.getRequestProcessor(serviceSpecification);
+		return clazz.getConstructor().newInstance();
+	}
+
+	private AbstractOoeResponseProcessor constructResponseProcessor(ServiceSpecification serviceSpecification)
+			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+		Class<AbstractOoeResponseProcessor> clazz = serviceRegistry.getResponseProcessor(serviceSpecification);
+		return clazz.getConstructor().newInstance();
+	}
 
     @ManagedOperation
     @ManagedOperationParameters({

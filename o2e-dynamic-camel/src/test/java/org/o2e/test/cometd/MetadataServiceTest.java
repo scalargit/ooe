@@ -37,11 +37,11 @@ public class MetadataServiceTest extends CometdBaseTest {
     @Override
     public CometDTestConfig getConfig() {
         CometDTestConfig config = new CometDTestConfig();
-        config.setCometdUrl("https://localhost:8443/sw-server/cometd");
-        config.setUsername("CN=sw.jackbe.com, OU=DISA, OU=PKI, OU=DoD, O=U.S. Government, C=US");
-        config.setUserPassword("mockPassword");
+        config.setCometdUrl("https://localhost:8443/sc-server/cometd");
+        config.setUsername("jsegal");
+        config.setUserPassword("password");
         config.setKeyManagerPassword("password");
-        config.setUseBasicAuth(false);
+        config.setUseBasicAuth(true);
         return config;
     }
 
