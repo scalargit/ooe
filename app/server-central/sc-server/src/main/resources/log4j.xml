@@ -5,7 +5,7 @@
 
 	<appender name="file" class="org.apache.log4j.rolling.RollingFileAppender">
 		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="logs/o2e-turnkey-server.%d.log.gz"/>
+			<param name="FileNamePattern" value="logs/sc-server.%d.log.gz"/>
 		</rollingPolicy>
 
 		<layout class="org.apache.log4j.PatternLayout">
@@ -19,6 +19,10 @@
 			<param name="ConversionPattern" value="%d %-4r [%t] %-5p %c %x - %m%n"/>
 		</layout>
 	</appender>
+
+	<logger name="com.scalar.ps.sc">
+		<level value="debug"/>
+	</logger>
 
 	<logger name="org.o2e">
 		<level value="debug"/>
