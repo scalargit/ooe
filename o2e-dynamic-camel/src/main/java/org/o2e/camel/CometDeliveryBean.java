@@ -4,6 +4,8 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
+import org.apache.camel.util.IOHelper;
+import org.apache.commons.io.IOUtils;
 import org.cometd.bayeux.server.BayeuxServer;
 import org.cometd.bayeux.server.ServerSession;
 import org.cometd.annotation.Session;
@@ -18,6 +20,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -64,6 +69,17 @@ public class CometDeliveryBean {
             }
         } else log.warn("No ServiceSpecifications associated with this Route, so no deliveries can be sent.");
     }
+
+	public void deliverError(Exchange exchange) throws Exception {
+		Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
+		log.debug("Attempting to deliver error: " + cause.getMessage());
+		ServiceSpecification serviceSpecification = (ServiceSpecification) exchange.getProperty(
+				AsynchOoeRouteBuilder.SERVICE_SPECIFICATION_PROPERTY);
+		if (serviceSpecification != null) {
+			routeService.sendToListeners(serviceSpecification.getId(), "Error: " + cause.getClass());
+			routeService.removeAllListeners(serviceSpecification);
+		} else log.warn("No ServiceSpecifications associated with this Route, so no deliveries can be sent.");
+	}
 
     /**
      * Attempts to extract the Exchange Body in the most appropriate way. Will look for the Exchange property

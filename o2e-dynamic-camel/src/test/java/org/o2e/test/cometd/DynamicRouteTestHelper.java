@@ -113,11 +113,11 @@ public class DynamicRouteTestHelper {
     }
 
     public Map<String, Object> constructRestService(String url, HttpMethods method, long refreshInterval,
-                                                    Map<String, Object> requestParameters,
+                                                    String dataType, Map<String, Object> requestParameters,
                                                     @Nullable Map<String, String> httpHeaders) {
         Map<String, Object> service = new HashMap<String, Object>();
         service.put("name", url);
-        service.put("dataType", "rest");
+        service.put("dataType", dataType);
         service.put("append", "false");
         service.put("url", url);
         service.put("method", method);

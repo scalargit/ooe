@@ -1,5 +1,7 @@
 package com.scalar.ps.sc.server.sensor;
 
+import com.mongodb.BasicDBList;
+import com.mongodb.util.JSON;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -26,7 +28,8 @@ public class SensorDataProcessorTest {
 	@Test
 	public void testProcess() throws IOException {
 		String json = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("sample-port-data.json"), "UTF-8");
-		List<Map> allData = sensorDataProcessor.process(json);
+		BasicDBList allData = sensorDataProcessor.process(json);
+
 		log.info("Done.");
 	}
 

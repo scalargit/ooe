@@ -4,6 +4,8 @@ import org.apache.camel.Exchange;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.commons.httpclient.ProtocolException;
 import org.o2e.camel.RoutePropertyManager;
+import org.o2e.camel.processors.AbstractOoeRequestProcessor;
+import org.o2e.camel.processors.AbstractOoeResponseProcessor;
 import org.o2e.camel.processors.RestRequestProcessor;
 import org.o2e.camel.processors.RestResponseProcessor;
 import org.o2e.mongo.annotations.MappedByDataType;
@@ -22,8 +24,8 @@ import java.util.UUID;
 public class RestRouteBuilder extends AbstractOoeRouteBuilder {
 
 	public RestRouteBuilder(RestServiceSpecification serviceSpecification, Destination destination,
-	                        RoutePropertyManager routePropertyManager, RestRequestProcessor restRequestProcessor,
-	                        RestResponseProcessor restResponseProcessor) {
+	                        RoutePropertyManager routePropertyManager, AbstractOoeRequestProcessor restRequestProcessor,
+	                        AbstractOoeResponseProcessor restResponseProcessor) {
 		super(serviceSpecification, destination, routePropertyManager, restRequestProcessor, restResponseProcessor);
 	}
 
@@ -34,7 +36,9 @@ public class RestRouteBuilder extends AbstractOoeRouteBuilder {
 		RouteDefinition routeDefinition = from("timer://" + UUID.randomUUID().toString() + "?period=" +
 				restServiceSpecification.getRefreshIntervalSeconds() + "s").
 				setHeader(Exchange.HTTP_METHOD, constant(restServiceSpecification.getMethod()));
-		if (requestProcessor != null) routeDefinition.process(requestProcessor);
+		if (requestProcessor != null) {
+			routeDefinition.process(requestProcessor);
+		}
 
 		routeDefinition.setHeader("User-Agent", constant("Apache-HttpClient/4.x)"));
 
@@ -56,9 +60,6 @@ public class RestRouteBuilder extends AbstractOoeRouteBuilder {
 			url = url.replace("https", "https4");
 		} else url = url.replace("http", "http4");
 
-		routeDefinition.
-				to(url + params).
-				onException(ProtocolException.class).handled(true).logStackTrace(true).stop();
-		return routeDefinition;
+		return routeDefinition.to(url + params);
 	}
 }

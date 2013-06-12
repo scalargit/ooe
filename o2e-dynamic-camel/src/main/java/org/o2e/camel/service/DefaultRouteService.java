@@ -225,6 +225,19 @@ public class DefaultRouteService extends RoutePolicySupport implements CamelCont
         }
     }
 
+	public void removeAllListeners(ServiceSpecification serviceSpecification) throws Exception {
+		log.info("Attempting to remove all listeners to serviceSpecificationId '" + serviceSpecification.getId() + "'");
+		Lock lock = null;
+		try {
+			lock = lockMap.get(serviceSpecification.getId().intern());
+			if (lock != null) lock.lock();
+			RouteSet routeSet = routeCache.get(serviceSpecification);
+			routeSet.getListenerMap().clear();
+		} finally {
+			if (lock != null) lock.unlock();
+		}
+	}
+
     @Scheduled(fixedDelay = 60000)
     public void garbageCollect() {
         // Make a copy of the Route array since we will modify the original
@@ -482,7 +495,7 @@ public class DefaultRouteService extends RoutePolicySupport implements CamelCont
 	    AbstractOoeResponseProcessor responseProcessor = constructResponseProcessor(serviceSpecification);
         Constructor<AbstractOoeRouteBuilder> constructor = routeBuilderClass.getDeclaredConstructor(
                 serviceSpecification.getClass(), AbstractOoeRouteBuilder.Destination.class,
-		        RoutePropertyManager.class, requestProcessor.getClass(), responseProcessor.getClass());
+		        RoutePropertyManager.class, AbstractOoeRequestProcessor.class, AbstractOoeResponseProcessor.class);
         return constructor.newInstance(serviceSpecification, destination, routePropertyManager,
 		        requestProcessor, responseProcessor);
     }
@@ -490,13 +503,13 @@ public class DefaultRouteService extends RoutePolicySupport implements CamelCont
 	private AbstractOoeRequestProcessor constructRequestProcessor(ServiceSpecification serviceSpecification)
 			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		Class<AbstractOoeRequestProcessor> clazz = serviceRegistry.getRequestProcessor(serviceSpecification);
-		return clazz.getConstructor().newInstance();
+		return clazz != null ? clazz.getConstructor().newInstance() : null;
 	}
 
 	private AbstractOoeResponseProcessor constructResponseProcessor(ServiceSpecification serviceSpecification)
 			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		Class<AbstractOoeResponseProcessor> clazz = serviceRegistry.getResponseProcessor(serviceSpecification);
-		return clazz.getConstructor().newInstance();
+		return clazz != null ? clazz.getConstructor().newInstance() : null;
 	}
 
     @ManagedOperation

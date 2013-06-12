@@ -79,9 +79,18 @@ public class MetadataServiceTest extends CometdBaseTest {
 
     @Test
     public void saveRestService() {
-        dynamicRouteTestHelper.saveService(client, "/service/metadata/save", dynamicRouteTestHelper.constructRestService(
-                "https://api.twitter.com/1/statuses/user_timeline.json?include_entities=true&include_rts=true&screen_name=mralexgray&count=1",
-                HttpMethods.GET, 60, new HashMap<String, Object>(), null));
+//        dynamicRouteTestHelper.saveService(client, "/service/metadata/save", dynamicRouteTestHelper.constructRestService(
+//                "http://198.186.190.22/render?target=system.bb.port1.hash1.port.all.bytes&target=system.bb.port1." +
+//		                "hash1.port.119.bytes&target=system.bb.port1.hash1.port.20000.bytes&target=system.bb.port1." +
+//		                "hash1.port.7788.bytes&from=-1minutes&format=json&until=now&targets=all%2C119%2C20000&jsonp=&_=" +
+//		                "1370279924660",
+//                HttpMethods.GET, 60, "rest", new HashMap<String, Object>(), null));
+	    dynamicRouteTestHelper.saveService(client, "/service/metadata/save", dynamicRouteTestHelper.constructRestService(
+             "http://198.186.190.22/render?target=system.bb.port1.hash1.port.all.bytes&target=system.bb.port1." +
+               "hash1.port.119.bytes&target=system.bb.port1.hash1.port.20000.bytes&target=system.bb.port1." +
+               "hash1.port.7788.bytes&from=-1minutes&format=json&until=now&targets=all%2C119%2C20000&jsonp=&_=" +
+               "1370279924660",
+             HttpMethods.GET, 60, "sensor", new HashMap<String, Object>(), null));
     }
 
     private List<String> saveServices() {

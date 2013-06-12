@@ -98,4 +98,11 @@ public interface RouteService {
      */
     public void garbageCollect();
 
+	/**
+	 * Removes all listening sessions from this ServiceSpecification
+	 * @param serviceSpecification
+	 * @throws Exception
+	 */
+	public void removeAllListeners(ServiceSpecification serviceSpecification) throws Exception;
+
 }

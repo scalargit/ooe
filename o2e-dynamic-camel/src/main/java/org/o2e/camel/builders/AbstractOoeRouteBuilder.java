@@ -75,7 +75,18 @@ public abstract class AbstractOoeRouteBuilder extends RouteBuilder {
 
 		// Build routes according to sub-class
 		RouteDefinition routeDefinition = doConfigure();
-		if (responseProcessor != null) routeDefinition.process(responseProcessor);
+		routeDefinition.onException(Exception.class).logStackTrace(true).to(
+				"bean:cometDeliveryBean?method=deliverError&cache=true")
+				.stop();
+		if (responseProcessor != null) {
+//			routeDefinition
+//					.doTry().process(responseProcessor)
+//					.doCatch(Exception.class).log("caught exception").to(
+//					"bean:cometDeliveryBean?method=deliverError&cache=true");
+			routeDefinition.process(responseProcessor);
+		}
+
+
 		if (Destination.cache.equals(destination)) {
 			routeDefinition.
 					to("bean:dataCacheManager?method=onData&cache=true");

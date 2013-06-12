@@ -1,5 +1,6 @@
 package com.scalar.ps.sc.server.sensor;
 
+import com.mongodb.BasicDBList;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.eclipse.jetty.util.ajax.JSON;
@@ -28,7 +29,7 @@ public class SensorDataResponseProcessor extends AbstractOoeResponseProcessor {
 	public void process(Exchange exchange) throws Exception {
 		Message in = exchange.getIn();
 		String body = in.getBody(String.class);
-		List<Map> allData = process(body);
+		BasicDBList allData = process(body);
 		if (allData.size() > 0) in.setBody(allData);
 		else {
 			log.warn("Could not parse message body into JSON: '" + body + "'");
@@ -36,7 +37,12 @@ public class SensorDataResponseProcessor extends AbstractOoeResponseProcessor {
 		}
 	}
 
-	public List<Map> process(String body) {
+	public BasicDBList process(String body) {
+		// Strip enclosing parenthesis
+		if (body != null && body.length() > 1) {
+			body = body.substring(1, body.length() -1);
+		}
+
 		List<Map> allData = new ArrayList<>();
 		if (body != null && body.length() > 0) {
 			Object o = JSON.getDefault().fromJSON(body);
@@ -61,7 +67,6 @@ public class SensorDataResponseProcessor extends AbstractOoeResponseProcessor {
 										flow.put(timestamp, values);
 									}
 									values.put(target, value);
-									log.info("target:" + target + ", value: " + value + "; "  + timestamp);
 								}
 								else log.warn("Expected datapoints array of size 2.");
 							}
@@ -84,7 +89,9 @@ public class SensorDataResponseProcessor extends AbstractOoeResponseProcessor {
 			}
 
 		}
-		return allData;
+		BasicDBList list = new BasicDBList();
+		list.addAll(allData);
+		return list;
 	}
 
 	public String reduceTargetString(String in) {
