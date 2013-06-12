@@ -79,6 +79,9 @@
             "text": "ArrayUtils.js",
             "path": "../javascript/widget/util/"
         },{
+            "text": "Base64.js",
+            "path": "../javascript/widget/util/"
+        },{
             "text": "DataBuffer.js",
             "path": "../javascript/widget/util/"
         },{
