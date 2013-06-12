@@ -167,10 +167,10 @@
 				<configuration>
 					<container>
 						<containerId>jetty9x</containerId>
-						<home>${jetty.home}</home>
+						<home>${sc.home}</home>
 					</container>
 					<configuration>
-						<home>${jetty.home}</home>
+						<home>${sc.home}</home>
 						<type>standalone</type>
 					</configuration>
 				</configuration>
