@@ -16,10 +16,7 @@
 
 	<context:property-placeholder location="classpath*:*.properties"/>
 	<context:annotation-config/>
-	<context:component-scan base-package="org.o2e">
-		<context:exclude-filter type="regex" expression="org.o2e.util.KeyStoreUtil"/>
-		<context:exclude-filter type="regex" expression="org.o2e.camel.OoeHttpClientConfigurer*"/>
-	</context:component-scan>
+	<context:component-scan base-package="org.o2e"/>
 	<context:mbean-export/>
 	<aop:aspectj-autoproxy proxy-target-class="false"/>
 	<task:scheduled-tasks scheduler="scheduler">
