@@ -66,7 +66,10 @@ Ext.define('o2e.connector.CometConnector', {
 
         // Remap toolkit-specific transport calls (this is required)
         this.cometd.LongPollingTransport = function() {
-            var _super = new org.cometd.LongPollingTransport(), transport = org.cometd.Transport.derive(_super);
+            var _super = new org.cometd.LongPollingTransport(), transport = org.cometd.Transport.derive(_super), headers = {};
+            if (me.basicAuthToken) {
+                headers['Authorization'] = 'Basic ' + me.basicAuthToken;
+            }
             transport.xhrSend = function(packet) {
                 var x,xlen,j = Ext.decode(packet.body);
                 for (x=0,xlen=j.length;x<xlen;x++) {
@@ -79,7 +82,7 @@ Ext.define('o2e.connector.CometConnector', {
                     method: 'POST',
                     contentType: 'application/json;charset=UTF-8',
                     jsonData: packet.body,
-                    headers: packet.header,
+                    headers: Ext.apply(headers, packet.header || {}),
                     success: function(response, options) {
                         if (response && response.responseText) {
                             packet.onSuccess(Ext.decode(response.responseText));
@@ -396,11 +399,12 @@ Ext.define('o2e.connector.CometConnector', {
         else {
             Ext.Msg.show({
                title:'Handshake failure',
-               msg: 'Comet Server handshake failed: ' + message.ext.authStatus.message,
+               msg: 'Server authentication failed, please try again.',
                buttons: Ext.Msg.OK,
                fn: function(btn) {
                    window.location.href = this.redirectUrl;
-               }
+               },
+               scope: this
             });
         }
     },

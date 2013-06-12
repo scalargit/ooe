@@ -57,6 +57,7 @@ Ext.define('o2e.Environment', {
         // Construct Comet Server connector
         me.connector = Ext.create('o2e.connector.CometConnector', {
             url: me.url,
+            basicAuthToken: me.basicAuthToken,
             maxConnections: me.maxConnections,
             maxNetworkDelay: me.maxNetworkDelay,
             autoBatch: me.autoBatch,
