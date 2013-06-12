@@ -15,7 +15,7 @@
 	</http>
 
 	<authentication-manager alias="authenticationManager">
-		<ldap-authentication-provider user-dn-pattern="cn={0},ou=ps"
+		<ldap-authentication-provider user-dn-pattern="cn={0},ou=sc"
 		                              role-prefix="none"
 		                              group-search-base="ou=groups"
 		                              group-search-filter="member={0}"/>
