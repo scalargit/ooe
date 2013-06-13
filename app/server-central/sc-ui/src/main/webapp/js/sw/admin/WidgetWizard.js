@@ -3,20 +3,12 @@ Ext.define('sw.admin.WidgetWizard', {
     alias: 'widget.sw-widgetwizard',
 
     dataSources: [
-        { name: 'Flow Data Sensor', value: 'flowdata' },
-        { name: 'Presto Mashable', value: 'presto' },
+        { name: 'Flow Data Sensor', value: 'sensor' },
         { name: 'REST/RSS Feed', value: 'rest' },
-        { name: 'URL (HTML)', value: 'url'},
-        { name: 'Messaging Topic', value: 'em'}
+        { name: 'URL (HTML)', value: 'url'}
+        //,{ name: 'Messaging Topic', value: 'em'}
     ],
 
-    trustLevels: [
-        { name: 'Gold', value: 3 },
-        { name: 'Silver', value: 2 },
-        { name: 'Bronze', value: 1 }
-    ],
-
-    attrTest: /\.content$/,
     wid: null,
 
     initComponent: function () {
@@ -103,17 +95,6 @@ Ext.define('sw.admin.WidgetWizard', {
                             fieldLabel: 'Tags',
                             name: 'tags',
                             allowBlank: false
-                        },
-                        {
-                            xtype: 'combobox',
-                            itemId: 'trustLevelCombo',
-                            fieldLabel: 'Trust Level',
-                            name: 'trust',
-                            store: Ext.create('Ext.data.Store', { fields: ['name', 'value'], data: this.trustLevels }),
-                            queryMode: 'local',
-                            displayField: 'name',
-                            valueField: 'value',
-                            value: 1
                         }
                     ]
                 }
@@ -424,77 +405,10 @@ Ext.define('sw.admin.WidgetWizard', {
     },
     setupDataSourceFieldset: function (dsCombo, recs) {
         var f = this.serviceFormPanel.getComponent('dsFieldSet'),
-            sType = recs[0].get('value'),
-            pf = this.serviceFormPanel.getComponent('prestoServiceFieldSet');
+            sType = recs[0].get('value');
         f.removeAll();
-        if (pf) {
-            this.serviceFormPanel.remove(pf);
-        }
 
-        if (sType === 'presto') {
-            f.add([
-                {
-                    fieldLabel: 'Presto URL',
-                    name: 'prestoHostname',
-                    allowBlank: false,
-                    value: o2e.env.prestoHost
-                },
-                {
-                    fieldLabel: 'Presto Port',
-                    name: 'prestoPort',
-                    allowBlank: false,
-                    value: o2e.env.prestoPort
-                },
-                {
-                    xtype: 'button',
-                    text: 'Use this Presto Instance',
-                    handler: function (btn) {
-                        var prestoServiceFieldSet = this.serviceFormPanel.getComponent('prestoServiceFieldSet'),
-                            prestoServer = this.serviceFormPanel.getForm().getValues();
-                        if (prestoServiceFieldSet) {
-                            prestoServiceFieldSet.removeAll();
-                        } else {
-                            this.serviceFormPanel.add({
-                                xtype: 'fieldset',
-                                itemId: 'prestoServiceFieldSet',
-                                title: 'Presto Service Info',
-                                collapsible: false,
-                                defaultType: 'textfield',
-                                defaults: {anchor: '100%'},
-                                layout: 'anchor',
-                                items: []
-                            });
-                        }
-
-                        this.ownerCt.getEl().mask('Communicating with Presto, please wait...');
-                        o2e.connectorMgr.query({
-                            componentId: 'console',
-                            serviceId: 'SYSTEM_data_getSynch',
-                            serviceKey: 'AdminConsole|getSynch|MetaRepositoryService|getListOfAllServicesGists',
-                            params: {
-                                name: 'synchtest',
-                                prestoHostname: prestoServer.prestoHostname,
-                                prestoPort: Number(prestoServer.prestoPort) || o2e.env.prestoPort,
-                                refreshIntervalSeconds: 300,
-                                prestoSid: 'MetaRepositoryService',
-                                prestoOid: 'getListOfAllServicesGists',
-                                append: false,
-                                version: '1.1',
-                                svcVersion: '0.1',
-                                paramMap: null,
-                                paramList: null,
-                                isSecure: o2e.env.prestoSecure,
-                                dataType: 'presto'
-                            },
-                            success: this.handlePrestoServiceList,
-                            failure: this._onError,
-                            scope: this
-                        });
-                    },
-                    scope: this
-                }
-            ]);
-        } else if (sType === 'em') {
+        if (sType === 'em') {
             f.add([
                 {
                     fieldLabel: 'Topic Name',
@@ -648,28 +562,8 @@ Ext.define('sw.admin.WidgetWizard', {
                     scope: this
                 }
             ]);
-        } else if (sType === 'flowdata') {
+        } else if (sType === 'sensor') {
             f.add([
-                {
-                    fieldLabel: 'Name',
-                    name: 'name',
-                    allowBlank: false
-                },
-                {
-                    fieldLabel: 'Description',
-                    name: 'description',
-                    allowBlank: false
-                },
-                {
-                    fieldLabel: 'Category',
-                    name: 'category',
-                    allowBlank: false
-                },
-                {
-                    fieldLabel: 'Tags',
-                    name: 'tags',
-                    allowBlank: false
-                },
                 {
                     fieldLabel: 'URL',
                     name: 'url',
@@ -714,76 +608,26 @@ Ext.define('sw.admin.WidgetWizard', {
                 },
                 {
                     xtype: 'button',
-                    text: 'Save Flow Data Source',
+                    text: 'Save Sensor Data Source',
                     handler: function () {
                         var vals = this.serviceFormPanel.getForm().getValues(),
                             targets = vals.targets.split(','),
-                            x=0, xlen=targets.length, resp = [],
-                            meta = Ext.apply({
-                                clientConnector: 'flowdata',
-                                connectorAction: 'invoke',
-                                connectionType: 'flowdata',
-                                recordBreak: 'flow.data',
+                            x=0, xlen=targets.length,
+                            url = vals.url +
+                                '?format=json&from=' + vals.from +
+                                '&until=' + vals.until,
+                            meta = {
+                                dataType: 'sensor',
+                                method: 'GET',
                                 append: false,
-                                request: [
-                                    {
-                                        name: 'targets',
-                                        header: 'Targets',
-                                        defaultValue: vals.targets
-                                    }
-                                ],
-                                response: [
-                                    {
-                                        name: 'time',
-                                        header: 'Time',
-                                        defaultValue: '',
-                                        annotations: ['uid', 'line_x_axis', 'area_x_axis'],
-                                        ignore: false
-                                    }
-                                ],
-                                type: 'line',
-                                refreshIntervalSeconds: vals.refreshInterval,
-                                viz: {
-                                    grid: {}, line: {
-                                        xLabel: 'Time',
-                                        yLabel: 'Total',
-                                        markerStyle: 'circle',
-                                        markerSize: '4',
-                                        markerRadius: '4',
-                                        markerStrokeWidth: '0'
-                                    }, area: {
-                                        xLabel: 'Time',
-                                        yLabel: 'Total',
-                                        showSeriesLabel: false
-                                    }
-                                },
-                                ext: vals
-                            }, vals);
+                                refreshIntervalSeconds: Number(vals.refreshInterval) || 1
+                            };
 
                         for (;x<xlen;x++) {
-                            meta.response.push({
-                                name: Ext.String.trim(targets[x]),
-                                header: Ext.String.trim(targets[x]),
-                                defaultValue: '',
-                                annotations: ['line_y_axis', 'area_y_axis'],
-                                ignore: false
-                            });
+                            url = url + '&target=' + vals.targetSystem + '.' + targets[x] + '.' + vals.targetType;
                         }
-
-                        if (this.wid) {
-                            meta._id = meta.id = this.wid;
-                            meta.creator = this.currentMetadata.creator;
-                            meta.createdTime = this.currentMetadata.createdTime;
-                            o2e.serviceRegistry.update(this.wid, meta, function (d) {
-                                this.ownerCt.ownerCt.close();
-                                o2e.env.notifyMgr.send('service', { action: 'update', metadata: d});
-                            }, this);
-                        } else {
-                            o2e.serviceRegistry.insert(null, meta, function (d) {
-                                this.ownerCt.ownerCt.close();
-                                o2e.env.notifyMgr.send('service', { action: 'add', metadata: d});
-                            }, this);
-                        }
+                        meta.name = meta.url = url;
+                        this.saveDataSource(meta);
                     },
                     scope: this
                 }
@@ -952,200 +796,6 @@ Ext.define('sw.admin.WidgetWizard', {
         }
     },
 
-    handlePrestoServiceList: function (serviceKey, data, fr) {
-        Ext.define('prestoServiceGist', {
-            extend: 'Ext.data.Model',
-            fields: [
-                { name: 'name', type: 'string' },
-                { name: 'description', type: 'string' },
-                { name: 'uid', type: 'string', mapping: 'id.uid' }
-            ],
-            idProperty: 'uid'
-        });
-
-        var c = this.serviceFormPanel.getComponent('prestoServiceFieldSet').add({
-            xtype: 'combo',
-            fieldLabel: 'Presto Service ID',
-            name: 'prestoSid',
-            store: Ext.create('Ext.data.Store', { model: 'prestoServiceGist', sorters: [
-                {property: 'name', direction: 'ASC'}
-            ], data: data.response }),
-            queryMode: 'local',
-            displayField: 'name',
-            valueField: 'id',
-            typeAhead: true,
-            lazyRender: true,
-            listeners: {
-                select: {
-                    fn: function (combo, records) {
-                        var prestoServer = this.serviceFormPanel.getForm().getFieldValues(),
-                            fs = this.serviceFormPanel.getComponent('prestoServiceFieldSet');
-                        while (!!fs.items.getAt(1)) {
-                            fs.remove(fs.items.getAt(1));
-                        }
-                        this.ownerCt.getEl().mask('Retrieving information, please wait...');
-                        Ext.Function.defer(o2e.connectorMgr.query, 250, o2e.connectorMgr, [
-                            {
-                                componentId: 'console',
-                                serviceId: 'SYSTEM_data_getSynch',
-                                serviceKey: 'AdminConsole|getSynch|MetaRepositoryService|getServiceNSD',
-                                params: {
-                                    name: 'synchtest',
-                                    prestoHostname: prestoServer.prestoHostname,
-                                    prestoPort: Number(prestoServer.prestoPort) || o2e.env.prestoPort,
-                                    refreshIntervalSeconds: 300,
-                                    prestoSid: 'MetaRepositoryService',
-                                    prestoOid: 'getServiceNSD',
-                                    append: false,
-                                    version: '1.1',
-                                    svcVersion: '0.1',
-                                    paramMap: null,
-                                    paramList: [combo.getValue().uid],
-                                    isSecure: o2e.env.prestoSecure,
-                                    dataType: 'presto'
-                                },
-                                success: this.handlePrestoServiceInfo,
-                                failure: this._onError,
-                                scope: this
-                            }
-                        ]);
-                    },
-                    scope: this
-                }
-            }
-        });
-        this.ownerCt.getEl().unmask();
-        if (this.prestoServiceOverride) {
-            var match = c.store.getAt(c.store.findBy(function (rec) {
-                if (rec.data.id.uid === this.prestoServiceOverride.sid) {
-                    return true;
-                }
-            }, this));
-            c.select(match);
-            c.fireEvent('select', c, [match]);
-        }
-    },
-
-    handlePrestoServiceInfo: function (serviceKey, data, fr) {
-        var fs = this.serviceFormPanel.getComponent('prestoServiceFieldSet');
-
-        var c = fs.add({
-            xtype: 'combo',
-            fieldLabel: 'Presto Operation ID',
-            itemId: 'prestoOid',
-            name: 'prestoOid',
-            store: Ext.create('Ext.data.Store', { fields: ['id', 'name', 'inputMessage'], data: data.response.operations }),
-            queryMode: 'local',
-            displayField: 'name',
-            valueField: 'id',
-            typeAhead: true,
-            lazyRender: true,
-            listeners: {
-                select: {
-                    fn: function (combo, records) {
-                        var inputs = records[0].get('inputMessage').inputs;
-
-                        fs.add([
-                            {
-                                fieldLabel: 'Refresh Interval (seconds)',
-                                name: 'refreshIntervalSeconds',
-                                allowBlank: false,
-                                value: '60'
-                            },
-                            {
-                                xtype: 'checkboxfield',
-                                fieldLabel: 'Append data',
-                                name: 'append'
-                            },
-                            {
-                                fieldLabel: 'Requires User Authorization',
-                                name: 'assertUser',
-                                xtype: 'checkboxfield'
-                            }
-                        ]);
-
-                        if (inputs.length) {
-                            fs.add(Ext.create('Ext.grid.Panel', {
-                                itemId: 'inputs',
-                                store: Ext.create('Ext.data.Store', { fields: ['name', 'header', 'defaultValue', 'type', 'annotations'], data: inputs}),
-                                columns: [
-                                    { header: 'Name', dataIndex: 'name', flex: 1, editor: false },
-                                    { header: 'Type', dataIndex: 'type', flex: 1, editor: false },
-                                    { header: 'Header (*)', dataIndex: 'header', flex: 1, editor: { allowBlank: false } },
-                                    { header: 'Value (*)', dataIndex: 'defaultValue', flex: 1, editor: 'textfield' },
-                                    { header: 'Annotations (*)', dataIndex: 'annotations', flex: 1, editor: 'textfield' }
-                                ],
-                                selModel: { selType: 'cellmodel' },
-                                title: 'Manage Inputs - Click to edit (*)',
-                                frame: true,
-                                margin: '5 0',
-                                plugins: [ Ext.create('Ext.grid.plugin.CellEditing', { clicksToEdit: 1 }) ],
-                                viewConfig: { emptyText: 'No inputs available' }
-                            }));
-                        }
-
-                        var b = fs.add({
-                            xtype: 'button',
-                            text: 'Save Presto Data Source',
-                            handler: function () {
-                                var md = Ext.apply({
-                                        isSecure: o2e.env.prestoSecure,
-                                        version: '1.1',
-                                        svcVersion: '0.1',
-                                        paramMap: null,
-                                        paramList: null
-                                    }, this.serviceFormPanel.getForm().getValues()),
-                                    inputGrid = fs.getComponent('inputs'), inputs;
-
-                                this.generalInfoFormPanel.getForm().setValues({
-                                    name: data.response.name,
-                                    description: data.response.description,
-                                    tags: data.response.tags.toString()
-                                });
-
-                                md.refreshIntervalSeconds = Number(md.refreshIntervalSeconds) || 60;
-                                md.prestoSid = md.prestoSid.uid;
-                                if (!md.name) {
-                                    md.name = md.prestoSid;
-                                }
-                                if (md.assertUser === true) {
-                                    md.shared = false;
-                                }
-
-                                if (!!inputGrid) {
-                                    md.paramMap = {};
-                                    this.inputs = {};
-                                    inputs = inputGrid.getStore().getRange();
-                                    for (var x = 0, xlen = inputs.length; x < xlen; x++) {
-                                        md.paramMap[inputs[x].get('name')] = inputs[x].get('defaultValue');
-                                        this.inputs[inputs[x].get('name')] = inputs[x].data;
-                                    }
-                                } else {
-                                    this.inputs = null;
-                                }
-                                this.saveDataSource(md);
-                            },
-                            scope: this
-                        });
-
-                        if (this.prestoServiceOverride) {
-                            b.fireHandler(null);
-                        }
-                    },
-                    scope: this
-                }
-            }
-        });
-
-        this.ownerCt.getEl().unmask();
-
-        if (this.prestoServiceOverride) {
-            var match = c.store.getAt(0);
-            c.select(match);
-            c.fireEvent('select', c, [match]);
-        }
-    },
-
     loadMetadata: function (meta) {
         this.ownerCt.ownerCt.body.mask('Loading metadata, please wait...');
         this.currentMetadata = meta;
@@ -1163,16 +813,6 @@ Ext.define('sw.admin.WidgetWizard', {
                 tags: meta.tags,
                 url: meta.request[0].defaultValue
             });
-            this.wid = meta._id;
-            this.ownerCt.ownerCt.body.unmask();
-            return;
-        } else if (meta.clientConnector === 'flowdata') {
-            var combo = this.serviceFormPanel.getComponent('dsCombo'),
-                comboRec = combo.getStore().getAt(combo.getStore().findExact('value', 'flowdata'));
-            combo.setValue('flowdata'); // URL (HTML)
-
-            this.setupDataSourceFieldset(combo, [comboRec]);
-            this.serviceFormPanel.getForm().setValues(meta.ext);
             this.wid = meta._id;
             this.ownerCt.ownerCt.body.unmask();
             return;
@@ -1201,94 +841,15 @@ Ext.define('sw.admin.WidgetWizard', {
     finishLoadMetadata: function (meta, serviceKey, data, fr) {
         var dsCombo = this.serviceFormPanel.getComponent('dsCombo'),
             dsStore = dsCombo.getStore(),
-            dsFs = this.serviceFormPanel.getComponent('dsFieldSet');
+            dsFs = this.serviceFormPanel.getComponent('dsFieldSet'),
+            vizSetupData = data;
         this.currentServiceSpec = data;
         this.assertUser = data.assertUser || false;
         dsCombo.setValue(data.dataType);
         this.setupDataSourceFieldset(dsCombo, [dsStore.getAt(dsStore.findExact('value', data.dataType))]);
+        this.serviceFormPanel.getForm().setValues(data);
 
-        if (data.dataType === 'presto') {
-            this.serviceFormPanel.getForm().setValues(data);
-            dsFs.items.each(function (item) {
-                item.disable();
-            });
-            var fs = this.serviceFormPanel.add({
-                xtype: 'fieldset',
-                itemId: 'prestoServiceFieldSet',
-                title: 'Presto Service Info',
-                collapsible: false,
-                defaultType: 'textfield',
-                defaults: {anchor: '100%'},
-                layout: 'anchor',
-                items: [
-                    {
-                        fieldLabel: 'Presto Service ID',
-                        value: data.prestoSid,
-                        disabled: true
-                    },
-                    {
-                        fieldLabel: 'Presto Operation ID',
-                        value: data.prestoOid,
-                        disabled: true
-                    },
-                    {
-                        fieldLabel: 'Refresh Interval',
-                        name: 'refreshIntervalSeconds',
-                        value: data.refreshIntervalSeconds,
-                        listeners: { change: { fn: function () {
-                            this.serviceEdited = true;
-                        }, scope: this }}
-                    },
-                    {
-                        fieldLabel: 'Append data',
-                        name: 'append',
-                        xtype: 'checkboxfield',
-                        checked: data.append,
-                        listeners: { change: { fn: function () {
-                            this.serviceEdited = true;
-                        }, scope: this }}
-                    },
-                    {
-                        fieldLabel: 'Requires User Authorization',
-                        name: 'assertUser',
-                        xtype: 'checkboxfield',
-                        checked: data.assertUser,
-                        listeners: { change: { fn: function () {
-                            this.serviceEdited = true;
-                        }, scope: this }}
-                    }
-                ]
-            });
-            if (meta.ext && meta.ext.inputs) {
-                this.inputs = meta.ext.inputs;
-                var inputs = [];
-                for (var input in meta.ext.inputs) {
-                    if (meta.ext.inputs.hasOwnProperty(input)) {
-                        inputs.push(meta.ext.inputs[input]);
-                    }
-                }
-                fs.add(Ext.create('Ext.grid.Panel', {
-                    itemId: 'inputs',
-                    store: Ext.create('Ext.data.Store', { fields: ['name', 'header', 'defaultValue', 'type', 'annotations'], data: inputs}),
-                    columns: [
-                        { header: 'Name', dataIndex: 'name', flex: 1, editor: false },
-                        { header: 'Type', dataIndex: 'type', flex: 1, editor: false },
-                        { header: 'Header (*)', dataIndex: 'header', flex: 1, editor: { allowBlank: false } },
-                        { header: 'Value (*)', dataIndex: 'defaultValue', flex: 1, editor: 'textfield' },
-                        { header: 'Annotations (*)', dataIndex: 'annotations', flex: 1, editor: 'textfield' }
-                    ],
-                    selModel: { selType: 'cellmodel' },
-                    title: 'Manage Inputs - Click to edit (*)',
-                    frame: true,
-                    margin: '5 0',
-                    plugins: [ Ext.create('Ext.grid.plugin.CellEditing', { clicksToEdit: 1, listeners: { edit: {fn: function () {
-                        this.serviceEdited = true;
-                    }, scope: this }}}) ],
-                    viewConfig: { emptyText: 'No inputs available' }
-                }));
-            }
-        } else {
-            this.serviceFormPanel.getForm().setValues(data);
+        if (data.dataType === 'em')  {
             dsFs.items.each(function (item) {
                 if (item.getName) {
                     if (item.getName() === 'topic') {
@@ -1302,9 +863,10 @@ Ext.define('sw.admin.WidgetWizard', {
                     item.disable();
                 }
             }, this);
+            vizSetupData = null;
         }
 
-        this.setupVizForm(data.dataType === 'presto' ? data : null, Ext.bind(function (meta) {
+        this.setupVizForm(vizSetupData, Ext.bind(function (meta) {
             this.items.getAt(0).setActiveTab(this.vizFormPanel);
             this.generalInfoFormPanel.getForm().setValues({
                 name: meta.name,
@@ -1314,17 +876,10 @@ Ext.define('sw.admin.WidgetWizard', {
                 trust: meta.ext ? (meta.ext.trust || 1) : 1
             });
 
-            if (data.dataType === 'presto') {
-                this.repElemCombo.setValue(meta.recordBreak.substr(9));
-                if (this.repElemCombo.getValue() !== null) {
-                    this.getResponse(this.repElemCombo.responseObj);
-                }
-            } else {
-                this.repElemStore.loadData([
-                    [meta.recordBreak, meta.recordBreak]
-                ]);
-                this.repElemCombo.setValue(meta.recordBreak);
-            }
+            this.repElemStore.loadData([
+                [meta.recordBreak, meta.recordBreak]
+            ]);
+            this.repElemCombo.setValue(meta.recordBreak);
 
             for (var curr, col, y = 0, ylen = meta.response.length; y < ylen; y++) {
                 curr = meta.response[y];
@@ -1377,7 +932,6 @@ Ext.define('sw.admin.WidgetWizard', {
             success: cb ? cb : function (k, m) {
                 this.sid = m._id;
                 this.append = m.append;
-                this.assertUser = m.assertUser || false;
                 this.setupVizForm(m);
             },
             failure: this._onError,
@@ -1436,7 +990,7 @@ Ext.define('sw.admin.WidgetWizard', {
                 serviceKey: 'AdminConsole|getSynch|setupVizForm',
                 params: sid,
                 success: function (serviceKey, metadata) {
-                    var response = metadata.response,
+                    var response = metadata,
                         repElemOpts = [];
 
                     for (i in response) {
@@ -1573,7 +1127,7 @@ Ext.define('sw.admin.WidgetWizard', {
         var meta = {
             clientConnector: 'comet',
             connectorAction: 'invoke',
-            connectionType: this.assertUser === true ? 'data/private/listen' : 'data/shared/listen',
+            connectionType: 'data/shared/listen',
             append: this.append || false,
             request: [
                 {
@@ -1593,7 +1147,7 @@ Ext.define('sw.admin.WidgetWizard', {
             description: genInfo.description,
             category: genInfo.category,
             tags: genInfo.tags,
-            ext: { trust: genInfo.trust, inputs: this.inputs || null }
+            ext: { inputs: this.inputs || null }
         });
 
         // Viz info
@@ -1628,7 +1182,7 @@ Ext.define('sw.admin.WidgetWizard', {
         }
 
         // Response info
-        meta.recordBreak = this.serviceFormPanel.getForm().getValues().dataType === 'presto' ? 'response.' + this.repElemCombo.getValue() : this.repElemCombo.getValue();
+        meta.recordBreak = this.repElemCombo.getValue();
         var responseFields = this.widgetColumnStore.getRange();
         for (var x = 0, xlen = responseFields.length; x < xlen; x++) {
             var data = responseFields[x].data;
