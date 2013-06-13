@@ -17,7 +17,7 @@ do
                     read -rd '' property <<< "$property"
                     if [ -n "$property" ]; then
                         splitidx=`expr index "$property" '[=:]'` # get the first index of the equals sign or colon
-                        if [ $splitidx = 0 ]; then
+                        if [ "$splitidx" = 0 ]; then
                             key="$property"
                             value=""
                         else
