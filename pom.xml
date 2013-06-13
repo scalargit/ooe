@@ -32,6 +32,7 @@
 		<module>o2e-mongo</module>
 		<module>o2e-wf</module>
 		<module>o2e-util</module>
+		<module>o2e-xmpp</module>
 	</modules>
 
 	<!--<dependencyManagement>  -->

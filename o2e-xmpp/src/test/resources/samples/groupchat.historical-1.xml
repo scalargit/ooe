@@ -1,0 +1,7 @@
+<message id="Rmtrj-6" to="jeffrey.segal@chat.dco.dod.mil/Smack"
+         from="test12345@conference2.chat.dco.dod.mil/jeffrey.segal" type="groupchat">
+    <body>asdf2</body>
+    <delay xmlns="urn:xmpp:delay" stamp="2012-10-26T21:13:45.000Z" from="jeffrey.segal@chat.dco.dod.mil/Smack"></delay>
+    <x xmlns="jabber:x:delay" stamp="20121026T21:11:00" from="jeffrey.segal@chat.dco.dod.mil/Smack"></x>
+    <x xmlns="http://www.jabber.com/protocol/muc#history"></x>
+</message>
