@@ -19,7 +19,7 @@ Ext.define('sw.udop.Browser', {
                     iconCls: 'icon-application-home',
                     menuAlign: 'bl-tl',
                     menu: [{
-                        text: 'New UDOP',
+                        text: 'New Dashboard',
                         iconCls: 'icon-pageadd',
                         handler: function() {
                             this.createUdop();
@@ -152,7 +152,7 @@ Ext.define('sw.udop.Browser', {
                     fontSize: '24px',
                     padding: '20px'
                 },
-                html: '<b>Click on a Dashboard, Registered Service, Map Layer or Presto App to begin. Or, click the Start button for more options.</b>'
+                html: '<b>Click on a Dashboard, Registered Service, or Map Layer to begin. Or, click the Start button for more options.</b>'
             }]
         });
 

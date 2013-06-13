@@ -36,7 +36,7 @@ Ext.define('sw.udop.BuilderBrowser', {
 	        				});
                     	}
                     },**/{
-                        text: 'New UDOP',
+                        text: 'New Dashboard',
                         iconCls: 'icon-pageadd',
                         handler: function() {
                             this.createUdop();
@@ -175,12 +175,12 @@ Ext.define('sw.udop.BuilderBrowser', {
                 		'<!-- content 1 -->'+
                 		'<div id="intro-content" style="opacity: 1; margin: 35 50; width: 100%; color: #FFFFFF"><p id="intro-header" style="font-size: 22px;"></p>'+
                 		'<div style="width: 100%; border-left: 1px solid #444444; padding: 0 0 50 20; margin: 0 0 0 6">Use the left-sidebar <b>Quick Panel</b> to browse and edit Registered Services and widget visualizations.'+
-                		'<br/><br/>Use the <b>Start</b> menu at the bottom of the dashboard to access your <b>Admin Console</b>, saved Templates and New UDOP options.'+
+                		'<br/><br/>Use the <b>Start</b> menu at the bottom of the dashboard to access your <b>Admin Console</b>, saved Templates and New Dashboard options.'+
                 		'<br/><br/>Widget configuration is also available through the <b>Admin Console</b>.'+
-                		'<br/><br/>When you begin work with a UDOP you will have access to special options available in the upper right corner of the main panel.'+
+                		'<br/><br/>When you begin work with a Dashboard you will have access to special options available in the upper right corner of the main panel.'+
                 		'<br/><br/>Consult the <b>Help</b> documentation for questions and remember to <b>Logout</b> when you are done.</div>'+
                 		'<!-- content 2-->'+
-                		'<div id="intro-content2" style="opacity: 1; margin: 2000 50 0 0; width: 100%; color: #FFFFFF"><p id="intro-header2" style="font-size: 22px;">REGISTERED SERVICES & UDOPs</p><br/>'+
+                		'<div id="intro-content2" style="opacity: 1; margin: 2000 50 0 0; width: 100%; color: #FFFFFF"><p id="intro-header2" style="font-size: 22px;">REGISTERED SERVICES & DASHBOARDS</p><br/>'+
                 		'<div style="width: 100%; border-left: 1px solid #444444; padding: 0 0 50 20; margin: 0 0 0 6"><p>Use the left-sidebar <b>Quick Panel</b> to browse and edit Registered Services and widget visualizations.</p>'+
                 		'<p>Widget configuration is also available through the <b>Admin Console</b>.</p>'+
                 		'<p>Consult the <b>Help</b> documentation for questions and remember to <b>Logout</b> when you are done.</p>'+
