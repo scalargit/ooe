@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<smackProviders>
+    <extensionProvider>
+        <elementName>x</elementName>
+        <namespace>jabber:x:delay</namespace>
+        <className>org.o2e.xmpp.OoeDelayInformationProvider</className>
+    </extensionProvider>
+    <extensionProvider>
+        <elementName>x</elementName>
+        <namespace>urn:xmpp:delay</namespace>
+        <className>org.o2e.xmpp.OoeDelayInfoProvider</className>
+    </extensionProvider>
+</smackProviders>

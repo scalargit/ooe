@@ -1,6 +1,7 @@
 package com.scalar.ps.sc.server.sensor;
 
 import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -28,12 +29,11 @@ public class SensorDataProcessorTest {
 	@Test
 	public void testProcess() throws IOException {
 		String json = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("sample-port-data.json"), "UTF-8");
-		BasicDBList allData = sensorDataProcessor.process(json);
-
+		BasicDBObject allData = sensorDataProcessor.process(json);
 		log.info("Done.");
 	}
 
-//	@Test
+	@Test
 	public void testReduceString() {
 		String target = "system.bb.port1.hash1.port.20000.bytes";
 		String reduced = sensorDataProcessor.reduceTargetString(target);

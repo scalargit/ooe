@@ -102,10 +102,6 @@
 			<spec txt="HTTPS Port" size="5" set="${org.o2e.server.https.port}"/>
 			<validator class="com.izforge.izpack.util.IsPortValidator" txt="Please enter a valid port number."/>
 		</field>
-		<!--<field type="space"/>-->
-		<!--<field type="check" variable="org.o2e.server.https.enable">-->
-			<!--<spec txt="Enable HTTPS Port" true="on" false="off" set="true"/>-->
-		<!--</field>-->
 
 		<field type="space"/>
 		<field type="text" variable="org.o2e.server.stop.port">
@@ -116,6 +112,23 @@
 		<field type="space"/>
 		<field type="text" align="left" variable="java.io.tmpdir">
 			<spec txt="Java temp directory" size="50"/>
+		</field>
+
+		<field type="space"/>
+		<field type="text" variable="org.o2e.server.xmpp.host">
+			<spec txt="XMPP Host" size="30" set="${org.o2e.server.xmpp.host}"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Please enter a valid XMPP host address."/>
+		</field>
+		<field type="space"/>
+		<field type="text" variable="org.o2e.server.xmpp.port">
+			<spec txt="XMPP Port" size="5" set="${org.o2e.server.xmpp.port}"/>
+			<validator class="com.izforge.izpack.util.IsPortValidator" txt="Please enter a valid port number."/>
+		</field>
+		<field type="space"/>
+		<field type="text" variable="org.o2e.server.xmpp.conferenceService">
+			<spec txt="XMPP Conference Server" size="30" set="${org.o2e.server.xmpp.conferenceService}"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+			           txt="Please enter a valid XMPP Conference server host address."/>
 		</field>
 
 		<field type="divider" align="bottom"/>

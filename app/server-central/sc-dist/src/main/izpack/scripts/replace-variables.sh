@@ -1,6 +1,6 @@
 #!/bin/bash
 
-install_type=$1 # should be 'jetty' or 'mongo'
+install_type=$1 # should be 'jetty-unix', 'jetty-windows', 'mongo-unix' or 'mongo-windows'
 properties_file="%{INSTALL_PATH}/scripts/install.properties"
 replace_file="%{INSTALL_PATH}/scripts/replace-files-$install_type.txt"
 
@@ -16,7 +16,7 @@ do
                 do
                     read -rd '' property <<< "$property"
                     if [ -n "$property" ]; then
-                        splitidx=`expr index "$property" '[=:]'` # get the first index of the equals sign or colon
+                        splitidx=`echo "$property" | sed -n "s/[\=\:].*//p" | wc -c`
                         if [ "$splitidx" = 0 ]; then
                             key="$property"
                             value=""

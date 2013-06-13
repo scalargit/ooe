@@ -42,6 +42,9 @@
 		<variable name="org.o2e.server.mongod.port" value="27017"/>
 		<variable name="org.eclipse.jetty.ssl.password" value=""/>
 		<variable name="org.eclipse.jetty.ssl.keypassword" value=""/>
+		<variable name="org.o2e.server.xmpp.host" value="talk.google.com"/>
+	  <variable name="org.o2e.server.xmpp.port" value="5222"/>
+	  <variable name="org.o2e.server.xmpp.conferenceService" value="groupchat.google.com"/>
 		<variable name="TargetPanel.noWhitespaces" value="true"/>
 	</variables>
 
