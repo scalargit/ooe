@@ -29,7 +29,13 @@ meta.system.widgetTypes = [
     icon: 'images/icons/table.png',
     properName: 'Grid View',
     category: 'normal'
-}, {
+},{
+    widgetTypeId: 'hcline',
+    className: 'o2e.HCLineChartWidget',
+    icon: 'images/icons/chart_line.png',
+    properName: 'HighCharts Line',
+    category: 'normal'
+},{
     widgetTypeId: 'area',
     className: 'o2e.AreaChartWidget',
     icon: 'images/icons/chart_area.png',
