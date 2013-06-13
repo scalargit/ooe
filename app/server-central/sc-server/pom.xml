@@ -45,6 +45,11 @@
 			<artifactId>o2e-util</artifactId>
 			<version>${o2e.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.o2e</groupId>
+			<artifactId>o2e-xmpp</artifactId>
+			<version>${o2e.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.aspectj</groupId>
