@@ -3,9 +3,9 @@ package org.o2e.cometd.service;
 import com.mongodb.BasicDBObject;
 import org.apache.http.HttpStatus;
 import org.cometd.bayeux.server.*;
-import org.cometd.java.annotation.Configure;
-import org.cometd.java.annotation.Listener;
-import org.cometd.java.annotation.Session;
+import org.cometd.annotation.Configure;
+import org.cometd.annotation.Listener;
+import org.cometd.annotation.Session;
 import org.jivesoftware.smackx.muc.HostedRoom;
 import org.o2e.xmpp.XmppConnectionManager;
 import org.o2e.xmpp.XmppSession;
@@ -26,7 +26,7 @@ import java.util.*;
  */
 @Named
 @Singleton
-@org.cometd.java.annotation.Service("xmpp")
+@org.cometd.annotation.Service("xmpp")
 public class XmppService {
 
     public static final String PACKET_TYPE_PARAM = "packetType";

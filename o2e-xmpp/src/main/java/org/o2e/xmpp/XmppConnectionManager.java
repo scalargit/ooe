@@ -2,7 +2,7 @@ package org.o2e.xmpp;
 
 import org.cometd.bayeux.server.BayeuxServer;
 import org.cometd.bayeux.server.ServerSession;
-import org.cometd.java.annotation.Session;
+import org.cometd.annotation.Session;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -35,7 +35,7 @@ import java.util.concurrent.ExecutionException;
  */
 @Named
 @Singleton
-@org.cometd.java.annotation.Service("xmppConnectionManager")
+@org.cometd.annotation.Service("xmppConnectionManager")
 public class XmppConnectionManager {
 
     final Logger log = LoggerFactory.getLogger(this.getClass());

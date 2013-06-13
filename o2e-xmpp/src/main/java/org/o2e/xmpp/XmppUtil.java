@@ -6,7 +6,7 @@ import com.mongodb.DBObject;
 import org.apache.http.HttpStatus;
 import org.cometd.bayeux.server.BayeuxServer;
 import org.cometd.bayeux.server.ServerSession;
-import org.cometd.java.annotation.Session;
+import org.cometd.annotation.Session;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.PacketExtension;
@@ -33,7 +33,7 @@ import java.util.UUID;
  */
 @Named
 @Singleton
-@org.cometd.java.annotation.Service("xmppUtil")
+@org.cometd.annotation.Service("xmppUtil")
 public class XmppUtil {
 
     final Logger log = LoggerFactory.getLogger(this.getClass());
