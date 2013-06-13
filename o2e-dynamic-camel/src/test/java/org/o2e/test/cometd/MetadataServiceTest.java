@@ -88,8 +88,7 @@ public class MetadataServiceTest extends CometdBaseTest {
 	    dynamicRouteTestHelper.saveService(client, "/service/metadata/save", dynamicRouteTestHelper.constructRestService(
              "http://198.186.190.22/render?target=system.bb.port1.hash1.port.all.bytes&target=system.bb.port1." +
                "hash1.port.119.bytes&target=system.bb.port1.hash1.port.20000.bytes&target=system.bb.port1." +
-               "hash1.port.7788.bytes&from=-1minutes&format=json&until=now&targets=all%2C119%2C20000&jsonp=&_=" +
-               "1370279924660",
+               "hash1.port.7788.bytes&from=-1minutes&format=json&until=now&targets=all%2C119%2C20000",
              HttpMethods.GET, 60, "sensor", new HashMap<String, Object>(), null));
     }
 
