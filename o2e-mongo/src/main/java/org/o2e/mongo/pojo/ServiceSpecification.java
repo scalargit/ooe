@@ -31,7 +31,7 @@ public class ServiceSpecification extends BaseDocument {
     protected String dataType;
 
     @NotNull
-    @Min(5)
+    @Min(1)
     protected long refreshIntervalSeconds;
 
     protected Map<String, Object> requestParameters;
