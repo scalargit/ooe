@@ -47,9 +47,14 @@ Ext.define('o2e.HCLineChartWidget', {
                         }
 
                         this.chart = new Highcharts.Chart({
-                            chart: { zoomType: 'x', spacingRight: 20, renderTo: this.panel.body.id, type: 'line', marginRight: 25, marginBottom: 50 },
+                            chart: {
+                                zoomType: 'x', spacingRight: 20,
+                                renderTo: this.panel.body.id,
+                                type: 'line'
+                            },
                             xAxis: { title: { text: this.xLabel }, type: 'datetime', maxZoom: 6000 },
                             yAxis: { title: { text: this.yLabel }},
+                            title: { text: null },
                             tooltip: { shared: true },
                             legend: this.chartFields.length > 1 ? {
                                 layout: 'horizontal',
@@ -61,6 +66,12 @@ Ext.define('o2e.HCLineChartWidget', {
                         });
 
                         this.setReady();
+                    },
+                    scope: this
+                },
+                afterlayout: {
+                    fn: function() {
+                        this.chart.setSize(this.panel.body.getWidth(), this.panel.body.getHeight());
                     },
                     scope: this
                 }
