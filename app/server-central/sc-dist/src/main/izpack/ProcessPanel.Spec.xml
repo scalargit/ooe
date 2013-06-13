@@ -33,14 +33,18 @@
 			<arg>$org.o2e.server.http.port</arg>
 			<arg>org.o2e.server.https.port</arg>
 			<arg>$org.o2e.server.https.port</arg>
-			<!--<arg>org.o2e.server.start.includes.jetty-ssl</arg>-->
-			<!--<arg>$org.o2e.server.start.includes.jetty-ssl</arg>-->
 			<arg>org.o2e.server.mongod.host</arg>
 			<arg>$org.o2e.server.mongod.host</arg>
 			<arg>org.o2e.server.mongod.port</arg>
 			<arg>$org.o2e.server.mongod.port</arg>
 			<arg>com.scalar.ps.sc.version</arg>
 			<arg>$APP_VER</arg>
+			<arg>org.o2e.server.xmpp.conferenceService</arg>
+			<arg>$org.o2e.server.xmpp.conferenceService</arg>
+			<arg>org.o2e.server.xmpp.host</arg>
+			<arg>$org.o2e.server.xmpp.host</arg>
+			<arg>org.o2e.server.xmpp.port</arg>
+			<arg>$org.o2e.server.xmpp.port</arg>
 		</executefile>
 		<executefile name="$INSTALL_PATH/scripts/insert-timestamp.bat">
 			<arg>"$INSTALL_PATH\jetty\webapps\sc-ui\WEB-INF\web.xml"</arg>
@@ -106,6 +110,9 @@
 			<arg>org.o2e.server.mongod.host=$org.o2e.server.mongod.host</arg>
 			<arg>org.o2e.server.mongod.port=$org.o2e.server.mongod.port</arg>
 			<arg>com.scalar.ps.sc.version=$APP_VER</arg>
+			<arg>org.o2e.server.xmpp.conferenceService=$org.o2e.server.xmpp.conferenceService</arg>
+			<arg>org.o2e.server.xmpp.host=$org.o2e.server.xmpp.host</arg>
+			<arg>org.o2e.server.xmpp.port=$org.o2e.server.xmpp.port</arg>
 		</executefile>
 		<executefile name="$INSTALL_PATH/scripts/replace-variables.sh">
 			<arg>jetty-unix</arg>
