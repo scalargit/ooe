@@ -33,8 +33,17 @@ $toolbar-text-color: #ffffff;
 $tip-body-color: #ffffff;
 
 // GRID overrides
+$grid-header-background-color: #404040;
+$grid-header-over-border-color: #202020;
+$grid-row-wrap-border-color: #505050;
 $grid-row-cell-selected-border-color: #cccccc;
-$grid-row-cell-selected-background-color: #cdcdcd;
+$grid-row-cell-selected-background-color: #404040;
+$grid-row-cell-over-background-color: #404040;
+$grid-row-cell-background: #000 !default;
+$grid-row-cell-color: #fff !default;
+
+// FORM overrides
+$fieldset-header-color: #ffffff;
 
 @import 'ext4/default/all';
 

@@ -39,7 +39,7 @@
     position: absolute !important;
 }
 .x-portlet .x-panel-body {
-    background: #fff;
+    background: #000;
 }
 .portlet-content {
     padding: 10px;
