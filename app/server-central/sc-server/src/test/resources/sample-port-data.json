@@ -1,4 +1,4 @@
-([
+[
 	{
 		"target": "system.bb.port1.hash1.port.all.bytes",
 		"datapoints": [
@@ -259,4 +259,4 @@
 			[682278.0, 1370281730]
 		]
 	}
-])
+]
