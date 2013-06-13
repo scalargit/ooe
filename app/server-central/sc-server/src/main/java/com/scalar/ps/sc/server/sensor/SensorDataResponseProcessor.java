@@ -77,6 +77,7 @@ public class SensorDataResponseProcessor extends AbstractOoeResponseProcessor {
 				Map<String, Double> values = entry.getValue();
 				Map data = new HashMap();
 				data.put("time", dateFormat.format(new Date(timestamp * 1000)));
+                data.put("timestamp", timestamp * 1000);
 				for (Map.Entry<String, Double> valuesEntry : values.entrySet()) {
 					String target = valuesEntry.getKey();
 					Double value = valuesEntry.getValue();
