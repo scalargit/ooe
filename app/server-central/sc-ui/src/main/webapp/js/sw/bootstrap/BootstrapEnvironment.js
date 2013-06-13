@@ -37,44 +37,6 @@ Ext.define('sw.bootstrap.BootstrapEnvironment', {
                                 tplArray.push(tplMeta);
                             }
                             o2e.tplRegistry.load(tplArray);
-
-                            o2e.connectorMgr.query({
-                                componentId: 'console',
-                                serviceId: 'SYSTEM_data_getSynch',
-                                serviceKey: 'Loader|getSynch|MetaRepositoryService|search',
-                                params: {
-                                    name: 'synchtest',
-                                    prestoHostname: o2e.env.prestoHost,
-                                    prestoPort: o2e.env.prestoPort,
-                                    refreshIntervalSeconds: 300,
-                                    prestoSid: 'MetaRepositoryService',
-                                    prestoOid: 'search',
-                                    append: false,
-                                    version: '1.1',
-                                    svcVersion: '0.1',
-                                    paramMap: {
-                                        "searchRequest":
-                                        {
-                                            "sortBy": "name.toLowerCase() asc, lastChangeTimestamp desc",
-                                            "filter":
-                                            {
-                                                "subtype":
-                                                {
-                                                    "values": "App", "operator": "IN"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    paramList: null,
-                                    isSecure: o2e.env.prestoSecure,
-                                    dataType: 'presto'
-                                },
-                                success: function(s, r, fr) {
-                                    o2e.appRegistry.load(r.response || []);
-                                },
-                                failure: this._onError,
-                                scope: this
-                            });
                         },
                         failure: this._onError,
                         scope: o2e.tplRegistry

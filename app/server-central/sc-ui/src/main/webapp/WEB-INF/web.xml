@@ -127,22 +127,6 @@
     </context-param>
 
     <context-param>
-        <description>Default Integrated Presto Server Host</description>
-        <param-name>prestoHost</param-name>
-        <param-value>sw-dev.jackbe.com</param-value>
-    </context-param>
-    <context-param>
-        <description>Default Integrated Presto Server Port</description>
-        <param-name>prestoPort</param-name>
-        <param-value>443</param-value>
-    </context-param>
-    <context-param>
-        <description>Default Integrated Presto Server Protocol</description>
-        <param-name>prestoSecure</param-name>
-        <param-value>true</param-value>
-    </context-param>
-
-    <context-param>
         <description>Default Messaging Service Base</description>
         <param-name>messagingServiceBase</param-name>
         <param-value>http://www.google.com</param-value>

@@ -100,44 +100,6 @@ Ext.define('sw.Application', {
                         iconCls: 'icon-maplayer',
                         hideCollapseTool: true
                     },{
-                        xtype: 'appstree',
-                        title: 'Presto Apps',
-                        registry: o2e.appRegistry,
-                        iconCls: 'icon-jackbe',
-                        hideCollapseTool: true,
-                        // need to put query here because o2e.env doesn't exist before this
-                        refreshQuery: {
-                            serviceId: 'SYSTEM_data_getSynch',
-                            serviceKey: 'Loader|getSynch|MetaRepositoryService|search',
-                            params: {
-                                name: 'synchtest',
-                                prestoHostname: o2e.env.prestoHost,
-                                prestoPort: o2e.env.prestoPort,
-                                refreshIntervalSeconds: 300,
-                                prestoSid: 'MetaRepositoryService',
-                                prestoOid: 'search',
-                                append: false,
-                                version: '1.1',
-                                svcVersion: '0.1',
-                                paramMap: {
-                                    "searchRequest":
-                                    {
-                                        "sortBy": "name.toLowerCase() asc, lastChangeTimestamp desc",
-                                        "filter":
-                                        {
-                                            "subtype":
-                                            {
-                                                "values": "App", "operator": "IN"
-                                            }
-                                        }
-                                    }
-                                },
-                                paramList: null,
-                                isSecure: o2e.env.prestoSecure,
-                                dataType: 'presto'
-                            }
-                        }
-                    },{
                         xtype: 'udoptree',
                         title: 'Dashboards',
                         registry: o2e.udopRegistry,
