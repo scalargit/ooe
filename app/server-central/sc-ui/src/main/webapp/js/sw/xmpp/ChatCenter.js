@@ -12,8 +12,7 @@ Ext.define('o2e.xmpp.ChatCenter', {
                 collapsible: true,
                 hideCollapseTool: true,
                 split: true,
-                width: 103,
-                margins: '0 3 0 0'
+                width: 103
             },{
                 region: 'center',
                 border: 0,
