@@ -125,11 +125,37 @@
 			<validator class="com.izforge.izpack.util.IsPortValidator" txt="Please enter a valid port number."/>
 		</field>
 		<field type="space"/>
+		<field type="text" variable="org.o2e.server.xmpp.serviceName">
+			<spec txt="XMPP Service Name" size="30" set="${org.o2e.server.xmpp.serviceName}"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+			           txt="Please enter a valid XMPP Service name."/>
+		</field>
+		<field type="space"/>
 		<field type="text" variable="org.o2e.server.xmpp.conferenceService">
 			<spec txt="XMPP Conference Server" size="30" set="${org.o2e.server.xmpp.conferenceService}"/>
 			<validator class="com.izforge.izpack.util.NotEmptyValidator"
 			           txt="Please enter a valid XMPP Conference server host address."/>
 		</field>
+
+		<field type="space"/>
+		<field type="text" variable="com.scalar.ps.sc.server.ldap.url">
+			<spec txt="LDAP URL" size="50" set="${com.scalar.ps.sc.server.ldap.url}"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+			           txt="Please enter a valid LDAP URL."/>
+		</field>
+		<field type="space"/>
+		<field type="text" variable="com.scalar.ps.sc.server.ldap.manager-dn">
+			<spec txt="LDAP Manager DN" size="30" set="${com.scalar.ps.sc.server.ldap.manager-dn}"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+			           txt="Please enter a valid LDAP Manager DN."/>
+		</field>
+		<field type="space"/>
+		<field type="password" align="left" variable="com.scalar.ps.sc.server.ldap.manager-password">
+      <spec>
+          <pwd txt="LDAP Manager Password" size="20"/>
+      </spec>
+      <validator class="com.izforge.izpack.util.NotEmptyValidator" txt="You must enter a non-empty password."/>
+    </field>
 
 		<field type="divider" align="bottom"/>
 	</panel>

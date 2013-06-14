@@ -16,19 +16,19 @@
 
 	<authentication-manager alias="authenticationManager">
 		<ldap-authentication-provider user-dn-pattern="${com.scalar.ps.sc.server.ldap.user-dn-pattern}"
-		                              role-prefix="${com.scalar.ps.sc.server.ldap.role-prefix}"
+		                              role-prefix="none"
 		                              group-role-attribute="${com.scalar.ps.sc.server.ldap.group-role-attribute}"
 		                              group-search-base="${com.scalar.ps.sc.server.ldap.group-search-base}"
 		                              group-search-filter="${com.scalar.ps.sc.server.ldap.group-search-filter}"/>
 	</authentication-manager>
 
 	<ldap-server id="ldapServer"
-	             url="ldap://tools.scalar.io:10389/dc=scalar,dc=com"
-	             manager-dn="uid=admin,ou=system"
-	             manager-password="secret"/>
+	             url="${com.scalar.ps.sc.server.ldap.url}"
+	             manager-dn="${com.scalar.ps.sc.server.ldap.manager-dn}"
+	             manager-password="${com.scalar.ps.sc.server.ldap.manager-password}"/>
 
 	<ldap-user-service id="userService"
-	                   role-prefix="${com.scalar.ps.sc.server.ldap.role-prefix}"
+	                   role-prefix="none"
 	                   group-search-base="${com.scalar.ps.sc.server.ldap.group-search-base}"
 	                   group-search-filter="${com.scalar.ps.sc.server.ldap.group-search-filter}"
 	                   group-role-attribute="${com.scalar.ps.sc.server.ldap.group-role-attribute}"

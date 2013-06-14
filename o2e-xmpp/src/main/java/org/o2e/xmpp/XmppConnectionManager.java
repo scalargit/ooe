@@ -48,6 +48,9 @@ public class XmppConnectionManager {
     @Value("${org.o2e.server.xmpp.port}")
     int port;
 
+		@Value("${org.o2e.server.xmpp.serviceName}")
+	  String serviceName;
+
     @Value("${org.o2e.server.xmpp.conferenceService}")
     String conferenceService;
 
@@ -121,6 +124,7 @@ public class XmppConnectionManager {
             // Create new connection and login
             if (host == null) host = this.host;
             if (port < 1) port = this.port;
+	          if (serviceName == null) serviceName = this.serviceName;
             ConnectionConfiguration config = null;
             if (serviceName == null) config = new ConnectionConfiguration(host, port);
             else config = new ConnectionConfiguration(host, port, serviceName);
