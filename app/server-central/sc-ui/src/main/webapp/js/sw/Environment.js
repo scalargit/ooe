@@ -30,6 +30,7 @@ Ext.define('sw.Environment', {
             }
 
             this.username = authData.username;
+            this.userAuthorities = authData.authorities;
             this.notifyMgr = Ext.create('sw.notify.NotifyManager', { connector: this.connector });
 
             var userCN = this.username, attrs = userCN.split(",");
@@ -45,7 +46,7 @@ Ext.define('sw.Environment', {
 
             var banner = Ext.get('banner');
             if (banner) {
-                banner.dom.innerHTML = 'Welcome, ' + userCN + '!';
+                banner.dom.innerHTML = 'You are logged in as ' + userCN + '.';
             }
 
             Ext.MessageBox.updateProgress(0.4, 'Loading UDOPs...');
