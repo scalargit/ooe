@@ -38,49 +38,19 @@ Ext.define('sw.plugin.ChatAlerting', {
     },
     
     startAlert: function(jid) {
-        var ct = this.widget.widgetCt;
-        ct.blinkTask = ct.blinkTask || Ext.TaskManager.start({
-            run: function() {
-                var btn = this.header.getEl().down('.x-panel-header-text-default-framed');
-                if (btn.hasCls('sw-alert-header')) {
-                    btn.removeCls('sw-alert-header')
-                } else {
-                    btn.addCls('sw-alert-header');
-                }
-            },
-            scope: ct,
-            interval: 500
-        });
-        
         //Make UDOP alert too
         this.widget.fireEvent('alertstart', this.widget);
     },    
     
     hookEvents: function() {
-        this.widget.widgetCt.header.on('click', this.endAlert, this);
         this.widget.on('beforedestroy', this.forceEndAlert, this);
     },
 
     endAlert: function() {
-        var ct = this.widget.widgetCt, header = ct.header.getEl().down('.x-panel-header-text-default-framed');
-        if (ct.blinkTask) {
-            Ext.TaskManager.stop(ct.blinkTask);
-            ct.blinkTask = null;
-        }
-        if (header.hasCls('sw-alert-header')) {
-            header.removeCls('sw-alert-header');
-        }
-        
         this.widget.fireEvent('alertend', this.widget);
     }, 
     
     forceEndAlert: function() {
-        var ct = this.widget.widgetCt;
-        if (ct.blinkTask) {
-            Ext.TaskManager.stop(ct.blinkTask);
-            ct.blinkTask = null;
-        }
-
         //TODO: this seems to fail because the widget has already closed and it leaves the udop blinking. Boo
         this.widget.fireEvent('alertend', this.widget);
     },    

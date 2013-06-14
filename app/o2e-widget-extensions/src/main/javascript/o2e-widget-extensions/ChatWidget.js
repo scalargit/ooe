@@ -160,6 +160,7 @@ Ext.define('o2e.ChatWidget', {
                 afterrender: {
                     fn: function() {
                         this.initializeDropTarget(outgoingBox);
+                        outgoingBox.focus();
                     },
                     scope: this
                 }
@@ -224,12 +225,12 @@ Ext.define('o2e.ChatWidget', {
                 lv.getStore().removeAll();
                 o2e.env.xmppMgr.joinMuc(p, chatCfg.toUser, chatCfg.nickname, chatCfg.password, Ext.emptyFn, Ext.emptyFn, this);
             }
-            lv.getEl().unmask();
+            //lv.getEl().unmask();
             b.enable();
             this.fireEvent('servicestatus', 'Chat Status', o2e.data.DataUtils.serviceStatus.INFO, 'Connected to server.');
         }, this, [listView, outgoingBox, panel, cfg], 0);
         var disconnectCb = Ext.bind(function(lv, b) {
-            lv.getEl().mask('Not Connected');
+            //lv.getEl().mask('Not Connected');
             b.disable();
             this.fireEvent('servicestatus', 'Chat Status', o2e.data.DataUtils.serviceStatus.ERROR, 'Disconnected from server.');
         }, this, [listView, outgoingBox], 0);
@@ -296,11 +297,7 @@ Ext.define('o2e.ChatWidget', {
                     embedPath = '?embed=true&hideToolbar=true&hideTitleBar=true',
                     widgetParam = '&widget=',
                     widgetInstanceParam = '&widi=',
-                    udopParam = '&udop=',
-                    // Presto URL
-                    prestoUrl = (o2e.env.prestoSecure ? 'https' : 'http') + '://' + o2e.env.prestoHost + ':' + o2e.env.prestoPort,
-                    prestoFiles = prestoUrl + '/presto/files/system/mashlets/' + id + '/index.html',
-                    appLauncher = prestoUrl + '/presto/hub/applauncher.html?mid=' + id;
+                    udopParam = '&udop=';
 
                 if (group === 'services') {
                     cmp.setValue(baseUrl + embedPath + widgetParam + id);
@@ -310,57 +307,6 @@ Ext.define('o2e.ChatWidget', {
                     cmp.setValue(baseUrl + udopParam + id);
                     cmp.attachment = { type: group, id: id, metadata: metadata };
                     cmp.focus();
-                } else if (group === 'apps') {
-                    var mdid = 'PrestoApp_' + id,
-                        md;
-
-                    Ext.Ajax.request({
-                        url: prestoFiles,
-                        success: function() {
-                            md = {
-                                "_id": mdid,
-                                "id": mdid,
-                                "clientConnector":"ungoverned",
-                                "connectorAction":"invoke",
-                                "connectionType":"HTML",
-                                "name":metadata.name,
-                                "description":metadata.description,
-                                "category":metadata.categories && metadata.categories.length ? metadata.categories[0] : 'Uncategorized',
-                                "tags":metadata.tags,
-                                "recordBreak":"html.info",
-                                "request":[{"name":"url","header":"URL","defaultValue":prestoFiles}],
-                                "response":[{"name":"url","header":"URL","defaultValue":"","annotations":[],"ignore":false}],
-                                "refreshIntervalSeconds":60,
-                                "type":'html',
-                                "viz":{"html":{}}
-                            };
-                            cmp.setValue(prestoFiles);
-                            cmp.attachment = { type: group, id: id, metadata: md };
-                            cmp.focus();
-                        },
-                        failure: function() {
-                            md = {
-                                "_id": mdid,
-                                "id": mdid,
-                                "clientConnector":"ungoverned",
-                                "connectorAction":"invoke",
-                                "connectionType":"HTML",
-                                "name":metadata.name,
-                                "description":metadata.description,
-                                "category":metadata.categories && metadata.categories.length ? metadata.categories[0] : 'Uncategorized',
-                                "tags":metadata.tags,
-                                "recordBreak":"html.info",
-                                "request":[{"name":"url","header":"URL","defaultValue":appLauncher}],
-                                "response":[{"name":"url","header":"URL","defaultValue":"","annotations":[],"ignore":false}],
-                                "refreshIntervalSeconds":60,
-                                "type":'html',
-                                "viz":{"html":{}}
-                            };
-                            cmp.setValue(appLauncher);
-                            cmp.attachment = { type: group, id: id, metadata: md };
-                            cmp.focus();
-                        }
-                    });
                 } else if (group === 'gmapKml') {
                     // TODO: figure this out
                 }
@@ -369,7 +315,6 @@ Ext.define('o2e.ChatWidget', {
             }
         });
 
-        cmp.ddTarget.addToGroup('apps');
         cmp.ddTarget.addToGroup('udops');
         // TODO: support KML // cmp.ddTarget.addToGroup('gmapKml');
     },

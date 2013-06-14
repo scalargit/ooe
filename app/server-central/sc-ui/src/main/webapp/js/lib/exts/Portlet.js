@@ -34,41 +34,43 @@ Ext.define('Ext.app.Portlet', {
 
     // CUSTOM LOGIC FOR SW HERE
     initComponent: function() {
-        this.tools = [{
-            type: 'restore',
-            itemId: 'restore',
-            hidden: true,
-            handler: this.onRestore,
-            scope: this
-        },{
-            type: 'maximize',
-            itemId: 'maximize',
-            handler: function(e, el, header, btn) {
-                btn.hide();
-                header.getComponent('restore').show();
+        if (this.preventMaximize !== true) {
+            this.tools = [{
+                type: 'restore',
+                itemId: 'restore',
+                hidden: true,
+                handler: this.onRestore,
+                scope: this
+            },{
+                type: 'maximize',
+                itemId: 'maximize',
+                handler: function(e, el, header, btn) {
+                    btn.hide();
+                    header.getComponent('restore').show();
 
-                var tab = this.up('portalpanel');
-                tab.items.each(function(col) {
-                    col.items.each(function(hbox) {
-                        if (Ext.Array.indexOf(hbox.items.items, this) === -1) {
-                            hbox.hide();
-                        } else {
-                            hbox.items.each(function(portlet) {
-                                if (portlet !== this) {
-                                    portlet.hide();
-                                }
-                            }, this);
-                        }
-                    },this);
-                }, this);
-                this.ownerCt.restoreSize = this.getSize();
-                this.ownerCt.restorePosition = this.getPosition(true);
-                this.ownerCt.setSize(tab.body.getWidth() - 28, tab.body.getHeight() - 15);
-                this.ownerCt.setPagePosition(tab.body.getX() + 5, tab.body.getY() + 5, true);
-                this.maximized = true;
-            },
-            scope: this
-        }]
+                    var tab = this.up('portalpanel');
+                    tab.items.each(function(col) {
+                        col.items.each(function(hbox) {
+                            if (Ext.Array.indexOf(hbox.items.items, this) === -1) {
+                                hbox.hide();
+                            } else {
+                                hbox.items.each(function(portlet) {
+                                    if (portlet !== this) {
+                                        portlet.hide();
+                                    }
+                                }, this);
+                            }
+                        },this);
+                    }, this);
+                    this.ownerCt.restoreSize = this.getSize();
+                    this.ownerCt.restorePosition = this.getPosition(true);
+                    this.ownerCt.setSize(tab.body.getWidth() - 28, tab.body.getHeight() - 15);
+                    this.ownerCt.setPagePosition(tab.body.getX() + 5, tab.body.getY() + 5, true);
+                    this.maximized = true;
+                },
+                scope: this
+            }]
+        }
 
         this.callParent();
     },
