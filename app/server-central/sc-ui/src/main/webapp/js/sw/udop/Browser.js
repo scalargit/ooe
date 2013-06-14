@@ -7,17 +7,16 @@ Ext.define('sw.udop.Browser', {
             layout: 'card',
             dockedItems: [{
                 xtype: 'toolbar',
-                dock: 'bottom',
+                dock: 'top',
                 itemId: 'startBar',
                 layout: {
                     overflowHandler: 'Menu'
                 },
-                plugins : [Ext.create('Ext.ux.BoxReorderer', {})],
                 items: [{
                     xtype: 'button',
-                    text: 'Start',
+                    text: 'File',
                     iconCls: 'icon-application-home',
-                    menuAlign: 'bl-tl',
+                    menuAlign: 'tl-bl',
                     menu: [{
                         text: 'New Dashboard',
                         iconCls: 'icon-pageadd',
@@ -25,8 +24,8 @@ Ext.define('sw.udop.Browser', {
                             this.createUdop();
                         },
                         scope: this
-                    },'-',{
-                        text: 'Admin Console',
+                    },{
+                        text: 'Add Service',
                         iconCls: 'icon-manage-edit',
                         handler: function() {
                             var console = Ext.create('sw.admin.Console', {});
@@ -34,7 +33,15 @@ Ext.define('sw.udop.Browser', {
                         },
                         scope: this
                     },{
-                        text: 'Templates',
+                        text: 'Add Map Layer',
+                        iconCls: 'icon-maplayer-edit',
+                        handler: function() {
+                            var console = Ext.create('sw.admin.Console', { initTab: 1 });
+                            console.show();
+                        },
+                        scope: this
+                    },{
+                        text: 'Manage Templates',
                         iconCls: 'icon-pagecode-white',
                         handler: function() {
                             Ext.create('Ext.window.Window', {
@@ -133,30 +140,134 @@ Ext.define('sw.udop.Browser', {
                             });
                         }
                     },'-',{
-                        text: 'Help',
-                        iconCls: 'icon-help',
-                        handler: function() {
-                            window.open("/strategicwatch-help/index.html","mywindow","scrollbars=1,width=600,height=800");
-                        }
-                    },{
                         text: 'Logout',
                         iconCls: 'icon-logout',
                         handler: function() {
                             window.location = o2e.env.redirectPage;
                         }
                     }]
-                }, '-']
+                }]
             }],
             items: [{
                 bodyStyle: {
                     fontSize: '24px',
                     padding: '20px'
                 },
-                html: '<b>Click on a Dashboard, Registered Service, or Map Layer to begin. Or, click the Start button for more options.</b>'
+                html: '<b>Welcome to Accelerated Servers Monitor. Use the Menus above to begin.</b>'
             }]
         });
 
         this.callParent();
+
+        o2e.udopRegistry.on('insert', this.handleUdopInsert, this);
+        o2e.udopRegistry.on('update', this.handleUdopUpdate, this);
+        o2e.udopRegistry.on('remove', this.handleUdopRemove, this);
+        o2e.udopRegistry.on('load', this.handleUdopLoad, this);
+    },
+
+    removeAdminFunctionality: function() {
+        var x=4, startMenu = this.getDockedComponent('startBar').getComponent(0).menu;
+        for (;x>=0;x--) {
+            startMenu.getComponent(x).hide();
+        }
+    },
+
+    handleUdopInsert: function(metadata) {
+        // don't display invalid data
+        if (Ext.isEmpty(metadata.uuid) ||
+            Ext.isEmpty(metadata.udopTitle) ||
+            Ext.String.trim(metadata.udopTitle) === '') {
+
+            return;
+        }
+
+        // normalize data
+        metadata = this.normalizeData(metadata);
+
+        // get category node
+        var tbar = this.getDockedComponent('startBar'),
+            category = metadata.udopCategory,
+            search = tbar.down('#udopCategory-'+category.replace(/./g,'-')),
+            categoryMenu = search ? search.menu : this.getParentCategoryObject(category);
+
+        // insert node under category menu
+        categoryMenu.add({
+            xtype: 'menuitem',
+            text: metadata.udopTitle,
+            itemId: metadata.uuid,
+            metadata: metadata,
+            listeners: {
+                click: {
+                    fn: this.handleItemClick,
+                    scope: this
+                }
+            }
+        });
+    },
+
+    handleUdopUpdate: function(metadata) {
+        var menuItem = Ext.ComponentQuery.query('#'+metadata.uuid)[0];
+        if (menuItem.metadata.udopCategory !== metadata.udopCategory) {
+            this.handleUdopRemove(metadata.uuid);
+            this.handleUdopInsert(metadata);
+        } else if (menuItem.text !== metadata.udopTitle) {
+            menuItem.setText(metadata.udopTitle);
+        }
+    },
+
+    handleUdopRemove: function(id) {
+        var menuItem = Ext.ComponentQuery.query('#'+id)[0],
+            menu = menuItem.ownerCt,
+            parentItem = menu.parentItem;
+
+        menu.remove(menuItem);
+        if (menu.items.getCount() === 0) {
+            this.handleUdopRemove(parentItem.itemId || parentItem.id);
+        }
+    },
+
+    handleUdopLoad: function(metadata) {
+        Ext.Array.each(metadata, Ext.Function.bind(this.handleUdopInsert, this));
+    },
+
+    normalizeData: function(metadata) {
+        if (Ext.isEmpty(metadata.udopCategory)) {
+            metadata.udopCategory = 'Uncategorized';
+        }
+
+        if (Ext.isEmpty(metadata.udopDescription)) {
+            metadata.udopDescription = 'No description provided.';
+        }
+
+        return metadata;
+    },
+
+    getParentCategoryObject: function(category) {
+        var i, ilen, fullCategory = '', last = this.getDockedComponent('startBar'), nest = category.split('.');
+        for (i=0,ilen=nest.length; i<ilen; i++) {
+            fullCategory = fullCategory + nest[i];
+            if (!Ext.ComponentQuery.query('#udopCategory-'+fullCategory)[0]) {
+                last = last.add({
+                    xtype: last.itemId === 'startBar' ? 'button' : 'menuitem',
+                    itemId: 'udopCategory-'+fullCategory,
+                    text: nest[i],
+                    menu: []
+                });
+                last.menu.parentItem = last;
+                last = last.menu;
+            }
+            fullCategory = fullCategory + '-';
+        }
+        return last;
+    },
+
+    handleItemClick: function(item) {
+        var openUdop = o2e.app.findOpenUdop(item.metadata.uuid);
+        if (openUdop === null) {
+            this.loadUdop(Ext.clone(item.metadata));
+        } else {
+            this.getLayout().setActiveItem(openUdop);
+        }
     },
 
     addWidgetFromService: function(serviceId, widgetType) {
