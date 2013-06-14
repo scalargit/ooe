@@ -49,6 +49,8 @@ Ext.define('sw.Environment', {
                 banner.dom.innerHTML = 'You are logged in as ' + userCN + '.';
             }
 
+            this.fireEvent('userauth', authData);
+
             Ext.MessageBox.updateProgress(0.4, 'Loading UDOPs...');
             // Now that we have username, load UDOPs
             o2e.connectorMgr.query({
@@ -146,6 +148,13 @@ Ext.define('sw.Environment', {
         }
     },
 
+    hasAuthority: function(auth) {
+        if (this.userAuthorities && this.userAuthorities.length && Ext.Array.contains(this.userAuthorities, auth)) {
+            return true;
+        }
+        return false;
+    },
+
     application: 'sw.Application',
     username: 'guest',
 
@@ -177,11 +186,6 @@ Ext.define('sw.Environment', {
         insertKey: 'json',
         updateKey: 'json',
         defaultParams: { collection: 'udop' }
-    },
-    appRegistry: {
-        type: 'app',
-        isRemote: false,
-        primaryKey: 'id'
     },
     widgetRegistry: {
         type: 'widget',
