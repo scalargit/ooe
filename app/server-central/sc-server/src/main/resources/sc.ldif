@@ -1,52 +1,149 @@
 version: 1
 
-dn: dc=jackbe, dc=com
-objectClass: organization
-objectClass: dcObject
+dn: cn=afreedman,ou=sc,dc=scalar,dc=com
 objectClass: top
-dc: jackbe
-o: JackBe Corporation
-description: Top level Organization for JackBe
-
-dn: ou=ps, dc=jackbe, dc=com
-objectClass: organizationalUnit
-objectClass: top
-ou: ps
-
-dn: cn=jsegal, ou=ps, dc=jackbe, dc=com
-objectClass: organizationalPerson
-objectClass: person
 objectClass: inetOrgPerson
-objectClass: top
-cn: jsegal
+objectClass: person
+objectClass: organizationalPerson
+cn: afreedman
 sn: Segal
 givenName: Jeffrey
-mail: jsegal@jackbe.com
+mail: jsegal@scalar.com
 uid: jsegal
 userPassword:: e1NIQX1XNnBoNU1tNVB6OEdnaVVMYlBnekczN21qOWc9
 
-dn: cn=mho,ou=ps,dc=jackbe,dc=com
-objectClass: organizationalPerson
-objectClass: person
-objectClass: inetOrgPerson
+dn: ou=test,ou=groups,dc=scalar,dc=com
 objectClass: top
-cn: mho
-sn: Ho
-givenName: Michael
-mail: mho@jackbe.com
+objectClass: groupOfNames
+cn: users
+member: cn=jsegal, ou=parishweb, dc=scalar, dc=com
+member: cn=mho, ou=parishweb,dc=scalar,dc=com
+member: cn=jsegal, ou=sc, dc=scalar, dc=com
+member: cn=mho, ou=sc, dc=scalar, dc=com
+member: cn=mtriner, ou=parishweb, dc=scalar, dc=com
+member: cn=mtriner, ou=sc, dc=scalar, dc=com
+member: cn=afreedman, ou=sc, dc=scalar, dc=com
+ou: test
+
+dn: cn=mtriner,ou=parishweb,dc=scalar,dc=com
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: person
+objectClass: organizationalPerson
+cn: mtriner
+sn: Triner
+givenName: Matthew
+mail: matt@scalar.io
 uid: mho
 userPassword:: e1NIQX1XNnBoNU1tNVB6OEdnaVVMYlBnekczN21qOWc9
 
-dn: ou=groups,dc=jackbe,dc=com
-objectClass: organizationalUnit
+dn: ou=admins,ou=groups,dc=scalar,dc=com
 objectClass: top
+objectClass: groupOfNames
+cn: users
+member: cn=jsegal, ou=parishweb, dc=scalar, dc=com
+member: cn=mho, ou=parishweb,dc=scalar,dc=com
+member: cn=jsegal, ou=sc, dc=scalar, dc=com
+member: cn=mho, ou=sc, dc=scalar, dc=com
+member: cn=mtriner, ou=parishweb, dc=scalar, dc=com
+member: cn=mtriner, ou=sc, dc=scalar, dc=com
+ou: admins
+
+dn: cn=jsegal,ou=sc,dc=scalar,dc=com
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: person
+objectClass: organizationalPerson
+cn: jsegal
+sn: Segal
+givenName: Jeffrey
+mail: jsegal@scalar.com
+uid: jsegal
+userPassword:: e1NIQX1XNnBoNU1tNVB6OEdnaVVMYlBnekczN21qOWc9
+
+dn: ou=groups,dc=scalar,dc=com
+objectClass: top
+objectClass: organizationalUnit
 ou: groups
 
-dn: ou=users,ou=groups,dc=jackbe,dc=com
-objectClass: groupOfNames
+dn: cn=jsegal, ou=parishweb, dc=scalar, dc=com
 objectClass: top
+objectClass: inetOrgPerson
+objectClass: person
+objectClass: organizationalPerson
+cn: jsegal
+sn: Segal
+givenName: Jeffrey
+mail: jsegal@scalar.com
+uid: jsegal
+userPassword:: e1NIQX1XNnBoNU1tNVB6OEdnaVVMYlBnekczN21qOWc9
+
+dn: cn=mho,ou=sc,dc=scalar,dc=com
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: person
+objectClass: organizationalPerson
+cn: mho
+sn: Ho
+givenName: Michael
+mail: mho@scalar.com
+uid: mho
+userPassword:: e1NIQX1XNnBoNU1tNVB6OEdnaVVMYlBnekczN21qOWc9
+
+dn: ou=parishweb, dc=scalar, dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: ps
+ou: parishweb
+
+dn: cn=mtriner,ou=sc,dc=scalar,dc=com
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: person
+objectClass: organizationalPerson
+cn: mtriner
+sn: Triner
+givenName: Matthew
+mail: matt@scalar.io
+uid: mho
+userPassword:: e1NIQX1XNnBoNU1tNVB6OEdnaVVMYlBnekczN21qOWc9
+
+dn: ou=users,ou=groups,dc=scalar,dc=com
+objectClass: top
+objectClass: groupOfNames
 cn: users
-member: cn=jsegal, ou=ps, dc=jackbe, dc=com
-member: cn=mho, ou=ps,dc=jackbe,dc=com
+member: cn=jsegal, ou=parishweb, dc=scalar, dc=com
+member: cn=mho, ou=parishweb,dc=scalar,dc=com
+member: cn=jsegal, ou=sc, dc=scalar, dc=com
+member: cn=mho, ou=sc, dc=scalar, dc=com
+member: cn=mtriner, ou=parishweb, dc=scalar, dc=com
+member: cn=mtriner, ou=sc, dc=scalar, dc=com
+member: cn=afreedman, ou=sc, dc=scalar, dc=com
 ou: users
+
+dn: cn=mho,ou=parishweb,dc=scalar,dc=com
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: person
+objectClass: organizationalPerson
+cn: mho
+sn: Ho
+givenName: Michael
+mail: mho@scalar.com
+uid: mho
+userPassword:: e1NIQX1XNnBoNU1tNVB6OEdnaVVMYlBnekczN21qOWc9
+
+dn: dc=scalar,dc=com
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+dc: scalar
+o: Scalar Corporation
+description: Top level Organization for Scalar
+
+dn: ou=sc,dc=scalar,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: ps
+ou: sc
 
