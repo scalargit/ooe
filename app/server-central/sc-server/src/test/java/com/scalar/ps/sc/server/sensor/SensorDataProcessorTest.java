@@ -30,6 +30,8 @@ public class SensorDataProcessorTest {
 	public void testProcess() throws IOException {
 		String json = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("sample-port-data.json"), "UTF-8");
 		BasicDBObject allData = sensorDataProcessor.process(json);
+		String unmarshalled = JSON.serialize(allData);
+		log.info(unmarshalled);
 		log.info("Done.");
 	}
 

@@ -4,7 +4,6 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
-import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.util.ajax.JSON;
 import org.o2e.camel.processors.AbstractOoeResponseProcessor;
 import org.o2e.mongo.annotations.MappedByDataType;
@@ -40,7 +39,7 @@ public class SensorDataResponseProcessor extends AbstractOoeResponseProcessor {
 	}
 
 	public BasicDBObject process(String body) {
-		List<Map> allData = new ArrayList<>();
+		Set<Map> allData = new TreeSet<Map>(new MapComparator());
 		if (body != null && body.length() > 0) {
 			Object o = JSON.getDefault().fromJSON(body);
 			Map<Long, Map> flow = new HashMap<>();
@@ -64,8 +63,7 @@ public class SensorDataResponseProcessor extends AbstractOoeResponseProcessor {
 										flow.put(timestamp, values);
 									}
 									values.put(target, value);
-								}
-								else log.warn("Expected datapoints array of size 2.");
+								} else log.warn("Expected datapoints array of size 2.");
 							}
 						}
 					}
@@ -75,9 +73,10 @@ public class SensorDataResponseProcessor extends AbstractOoeResponseProcessor {
 			for (Map.Entry<Long, Map> entry : flow.entrySet()) {
 				Long timestamp = entry.getKey();
 				Map<String, Double> values = entry.getValue();
-				Map data = new HashMap();
+				Map data = new TreeMap();
+
 				data.put("time", dateFormat.format(new Date(timestamp * 1000)));
-                data.put("timestamp", timestamp * 1000);
+				data.put("timestamp", timestamp * 1000);
 				for (Map.Entry<String, Double> valuesEntry : values.entrySet()) {
 					String target = valuesEntry.getKey();
 					Double value = valuesEntry.getValue();
@@ -90,11 +89,11 @@ public class SensorDataResponseProcessor extends AbstractOoeResponseProcessor {
 		BasicDBList list = new BasicDBList();
 		list.addAll(allData);
 
-        BasicDBObject dataWrapper = new BasicDBObject();
-        dataWrapper.append("data", list);
+		BasicDBObject dataWrapper = new BasicDBObject();
+		dataWrapper.append("data", list);
 
-        BasicDBObject resp = new BasicDBObject();
-        resp.append("response", dataWrapper);
+		BasicDBObject resp = new BasicDBObject();
+		resp.append("response", dataWrapper);
 		return resp;
 	}
 
@@ -108,6 +107,20 @@ public class SensorDataResponseProcessor extends AbstractOoeResponseProcessor {
 			}
 		}
 		return null;
+	}
+
+	private class MapComparator implements Comparator {
+		@Override
+		public int compare(Object o1, Object o2) {
+			if (o1 instanceof Map && o2 instanceof Map) {
+				Map m1 = (Map) o1;
+				Map m2 = (Map) o2;
+				Long t1 = (Long) m1.get("timestamp");
+				Long t2 = (Long) m2.get("timestamp");
+				return t1.compareTo(t2);
+			}
+			return 0;
+		}
 	}
 
 }
