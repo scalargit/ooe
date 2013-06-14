@@ -4,7 +4,6 @@ Ext.define('sw.udop.Browser', {
 
     initComponent: function() {
         Ext.apply(this, {
-            layout: 'card',
             dockedItems: [{
                 xtype: 'toolbar',
                 dock: 'top',
@@ -148,12 +147,30 @@ Ext.define('sw.udop.Browser', {
                     }]
                 }]
             }],
+            layout: {
+                type: 'hbox',
+                align: 'stretch'
+            },
             items: [{
-                bodyStyle: {
-                    fontSize: '24px',
-                    padding: '20px'
-                },
-                html: '<b>Welcome to Accelerated Servers Monitor. Use the Menus above to begin.</b>'
+                layout: 'fit',
+                itemId: 'udopList',
+                html: 'Coming soon',
+                width: 0, //100
+                border: 0,
+                bodyStyle: { border: '0 none' }
+            },{
+                layout: 'card',
+                itemId: 'udopCards',
+                flex: 1,
+                border: 0,
+                bodyStyle: { border: '0 none' },
+                items: [{
+                    bodyStyle: {
+                        fontSize: '24px',
+                        padding: '20px'
+                    },
+                    html: '<b>Welcome to Accelerated Servers Monitor. Use the Menus above to begin.</b>'
+                }]
             }]
         });
 
@@ -266,12 +283,12 @@ Ext.define('sw.udop.Browser', {
         if (openUdop === null) {
             this.loadUdop(Ext.clone(item.metadata));
         } else {
-            this.getLayout().setActiveItem(openUdop);
+            this.getComponent('udopCards').getLayout().setActiveItem(openUdop);
         }
     },
 
     addWidgetFromService: function(serviceId, widgetType) {
-        var u, c = this.getLayout().getActiveItem();
+        var u, c = this.getComponent('udopCards').getLayout().getActiveItem();
         if (!c.udopTitle) {
             u = this.createUdop();
             u.addWidgetFromService(serviceId, widgetType);
@@ -281,7 +298,7 @@ Ext.define('sw.udop.Browser', {
     },
 
     addWidget: function(widgetType, widgetCfg) {
-        var u, c = this.getLayout().getActiveItem();
+        var u, c = this.getComponent('udopCards').getLayout().getActiveItem();
         if (!c.udopTitle) {
             u = this.createUdop();
             u.addWidget(widgetType, widgetCfg);
@@ -291,16 +308,18 @@ Ext.define('sw.udop.Browser', {
     },
 
     createUdop: function(cfg) {
-        var button, newUdop = this.add(cfg || {
-            xtype: 'sw-udop',
-            udopTitle: 'Untitled UDOP',
-            udopDescription: 'No description provided.',
-            udopCategory: 'Uncategorized',
-            udopTags: ''
-        });
-        this.getLayout().setActiveItem(newUdop);
-        button = this.createUdopButton(newUdop);
-        button.toggle();
+        var button,
+            cards = this.getComponent('udopCards'),
+            newUdop = cards.add(cfg || {
+                xtype: 'sw-udop',
+                udopTitle: 'Untitled UDOP',
+                udopDescription: 'No description provided.',
+                udopCategory: 'Uncategorized',
+                udopTags: ''
+            });
+        cards.getLayout().setActiveItem(newUdop);
+        //button = this.createUdopButton(newUdop);
+        //button.toggle();
         newUdop.on('alertstart', function() {
             this.blinkTask = this.blinkTask || Ext.TaskManager.start({
                 run: function() {
