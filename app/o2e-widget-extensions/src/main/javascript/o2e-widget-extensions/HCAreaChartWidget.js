@@ -9,12 +9,14 @@ Ext.define('o2e.HCAreaChartWidget', {
     requiredMetaFields: {
         xLabel: 'X Axis',
         yLabel: 'Y Axis',
-        maxPoints: '100'
+        maxPoints: '100',
+        fillOpacity: '0.5'
     },
 
     xLabel: 'X Axis',
     yLabel: 'Y Axis',
     maxPoints: 100,
+    fillOpacity: 0.5,
 
     useOwnStores: true,
     unionData: false,
@@ -60,6 +62,7 @@ Ext.define('o2e.HCAreaChartWidget', {
                             tooltip: { shared: true },
                             plotOptions: {
                                 area: {
+                                    fillOpacity: Number(this.fillOpacity) || 0.5,
                                     marker: {
                                         enabled: false,
                                         symbol: 'circle',
