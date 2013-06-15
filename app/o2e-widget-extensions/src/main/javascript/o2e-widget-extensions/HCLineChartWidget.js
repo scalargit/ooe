@@ -8,11 +8,13 @@ Ext.define('o2e.HCLineChartWidget', {
 
     requiredMetaFields: {
         xLabel: 'X Axis',
-        yLabel: 'Y Axis'
+        yLabel: 'Y Axis',
+        maxPoints: '100'
     },
 
     xLabel: 'X Axis',
     yLabel: 'Y Axis',
+    maxPoints: 100,
 
     useOwnStores: true,
     unionData: false,
@@ -95,7 +97,10 @@ Ext.define('o2e.HCLineChartWidget', {
                 for (y=0,ylen=this.chartFields.length;y<ylen;y++) {
                     field = this.chartFields[y];
                     if (record.get(field)) {
-                        series[field].addPoint([record.get('timestamp'), record.get(field)], false);
+                        series[field].addPoint(
+                            [record.get('timestamp'), record.get(field)],
+                            false,
+                            series[field].data.length >= (Number(this.maxPoints) || 100));
                     }
                 }
             }
