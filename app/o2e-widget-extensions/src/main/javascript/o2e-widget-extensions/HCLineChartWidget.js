@@ -9,12 +9,14 @@ Ext.define('o2e.HCLineChartWidget', {
     requiredMetaFields: {
         xLabel: 'X Axis',
         yLabel: 'Y Axis',
-        maxPoints: '100'
+        maxPoints: '100',
+        lineWidth: '1'
     },
 
     xLabel: 'X Axis',
     yLabel: 'Y Axis',
     maxPoints: 100,
+    lineWidth: 1,
 
     useOwnStores: true,
     unionData: false,
@@ -58,6 +60,11 @@ Ext.define('o2e.HCLineChartWidget', {
                             yAxis: { title: { text: this.yLabel }},
                             title: { text: null },
                             tooltip: { shared: true },
+                            plotOptions: {
+                                line: {
+                                    lineWidth: Number(this.lineWidth) || 1
+                                }
+                            },
                             legend: this.chartFields.length > 1 ? {
                                 layout: 'horizontal',
                                 align: 'center',
