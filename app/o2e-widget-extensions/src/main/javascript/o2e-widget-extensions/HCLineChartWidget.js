@@ -103,7 +103,7 @@ Ext.define('o2e.HCLineChartWidget', {
                 record = data.add[x];
                 for (y=0,ylen=this.chartFields.length;y<ylen;y++) {
                     field = this.chartFields[y];
-                    if (record.get(field)) {
+                    if (record.get(field) !== undefined) {
                         series[field].addPoint(
                             [record.get('timestamp'), record.get(field)],
                             false,
