@@ -233,13 +233,15 @@ Ext.define('sw.udop.Browser', {
     },
 
     handleUdopRemove: function(id) {
-        var menuItem = Ext.ComponentQuery.query('#'+id)[0],
-            menu = menuItem.ownerCt,
-            parentItem = menu.parentItem;
+        var menu,parentItem,menuItem = Ext.ComponentQuery.query('#'+id)[0];
 
-        menu.remove(menuItem);
-        if (menu.items.getCount() === 0) {
-            this.handleUdopRemove(parentItem.itemId || parentItem.id);
+        if (menuItem) {
+            menu = menuItem.ownerCt;
+            menu.remove(menuItem);
+            if (menu.items.getCount() === 0) {
+                parentItem = menu.parentItem;
+                this.handleUdopRemove(parentItem.itemId || parentItem.id);
+            }
         }
     },
 
