@@ -142,12 +142,31 @@
             },{
                 xtype: 'textfield',
                 fieldLabel: 'Username',
-                name: 'username'
+                name: 'username',
+                enableKeyEvents: true,
+                listeners: {
+                    afterrender: function(f) {
+                        f.focus();
+                    },
+                    keypress: function(f, e) {
+                        if (e.getCharCode() == 13) {
+                            f.ownerCt.down('button').fireHandler();
+                        }
+                    }
+                }
             },{
                 xtype: 'textfield',
                 inputType: 'password',
                 fieldLabel: 'Password',
-                name: 'password'
+                enableKeyEvents: true,
+                name: 'password',
+                listeners: {
+                    keypress: function(f, e) {
+                        if (e.getCharCode() == 13) {
+                            f.ownerCt.down('button').fireHandler();
+                        }
+                    }
+                }
             }],
             bbar: ['->', {
                 text: 'Login',
