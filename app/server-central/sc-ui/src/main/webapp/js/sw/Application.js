@@ -224,7 +224,7 @@ Ext.define('sw.Application', {
     },
 
     findOpenUdop: function(uuid) {
-        var udops = this.viewport.getComponent('mainContentPanel').items;
+        var udops = this.viewport.getComponent('mainContentPanel').getComponent('udopCards').items;
         for (var x=0,xlen=udops.getCount();x<xlen;x++) {
             if (udops.getAt(x).uuid === uuid) {
                 return udops.getAt(x);
