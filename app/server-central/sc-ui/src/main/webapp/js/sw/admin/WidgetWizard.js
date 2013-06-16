@@ -4,9 +4,14 @@ Ext.define('sw.admin.WidgetWizard', {
 
     dataSources: [
         { name: 'Flow Data Sensor', value: 'sensor' },
-        { name: 'REST/RSS Feed', value: 'rest' },
+        { name: 'REST Feed', value: 'rest' },
         { name: 'URL (HTML)', value: 'url'}
         //,{ name: 'Messaging Topic', value: 'em'}
+    ],
+
+    restMethods: [
+        { name: 'GET', value: 'GET' },
+        { name: 'POST', value: 'POST' }
     ],
 
     wid: null,
@@ -601,7 +606,7 @@ Ext.define('sw.admin.WidgetWizard', {
                     value: 'all'
                 },
                 {
-                    fieldLabel: 'Refresh rate (s):',
+                    fieldLabel: 'Refresh rate (s)',
                     name: 'refreshInterval',
                     allowBlank: false,
                     value: '1'
@@ -635,160 +640,37 @@ Ext.define('sw.admin.WidgetWizard', {
         } else if (sType === 'rest') {
             f.add([
                 {
-                    fieldLabel: 'Name',
-                    name: 'name',
-                    allowBlank: false
-                },
-                {
-                    fieldLabel: 'Description',
-                    name: 'description',
-                    allowBlank: false
-                },
-                {
-                    fieldLabel: 'Tags',
-                    name: 'tags',
-                    allowBlank: false
-                },
-                {
                     fieldLabel: 'URL',
                     name: 'url',
                     allowBlank: false
+                },{
+                    xtype: 'combobox',
+                    fieldLabel: 'HTTP Method',
+                    name: 'method',
+                    store: Ext.create('Ext.data.Store', { fields: ['name', 'value'], data: this.restMethods }),
+                    queryMode: 'local',
+                    displayField: 'name',
+                    valueField: 'value',
+                    value: 'GET'
+                },
+                {
+                    fieldLabel: 'Refresh rate (s)',
+                    name: 'refreshInterval',
+                    allowBlank: false,
+                    value: '60'
                 },
                 {
                     xtype: 'button',
                     text: 'Save Data Source',
                     handler: function () {
-                        this.ownerCt.getEl().mask('Registering URL, please wait...');
                         var meta = this.serviceFormPanel.getForm().getValues();
-
-                        o2e.connectorMgr.query({
-                            componentId: 'console',
-                            serviceId: 'SYSTEM_data_getSynch',
-                            serviceKey: 'AdminConsole|getSynch|RDSService|registerRESTService',
-                            params: {
-                                name: 'registerRESTService',
-                                prestoHostname: o2e.env.prestoHost,
-                                prestoPort: o2e.env.prestoPort,
-                                refreshIntervalSeconds: 300,
-                                prestoSid: 'RDSService',
-                                prestoOid: 'registerRESTService',
-                                append: false,
-                                version: '1.1',
-                                svcVersion: '1',
-                                paramMap: {
-                                    svcRegInfo: {
-                                        name: meta.name,
-                                        description: meta.description,
-                                        tags: meta.tags.split(','),
-                                        providerName: 'NONE',
-                                        categories: [],
-                                        republish: false,
-                                        registerUsingAuthProtocol: false,
-                                        authProtocol: '',
-                                        authParams: { map: {} }
-                                    },
-                                    restUrl: meta.url,
-                                    opName: '',
-                                    outputSample: ''
-                                },
-                                paramList: null,
-                                isSecure: o2e.env.prestoSecure,
-                                dataType: 'presto'
-                            },
-                            success: function (serviceKey, response) {
-                                this.ownerCt.getEl().unmask();
-                                if (response.error != null && response.error.code === 500) {
-                                    Ext.Msg.alert('Error', 'An error occurred. ' + response.error.details);
-                                } else if (response.response.hasOwnProperty('id')) {
-                                    this.ownerCt.getEl().mask('Activating URL, please wait...');
-                                    o2e.connectorMgr.query({
-                                        componentId: 'console',
-                                        serviceId: 'SYSTEM_data_getSynch',
-                                        serviceKey: 'AdminConsole|getSynch|RDSService|activateService',
-                                        params: {
-                                            name: 'activateService',
-                                            prestoHostname: o2e.env.prestoHost,
-                                            prestoPort: o2e.env.prestoPort,
-                                            refreshIntervalSeconds: 300,
-                                            prestoSid: 'RDSService',
-                                            prestoOid: 'activateService',
-                                            append: false,
-                                            version: '1.1',
-                                            svcVersion: '1',
-                                            paramMap: null,
-                                            paramList: [response.response.id],
-                                            isSecure: o2e.env.prestoSecure,
-                                            dataType: 'presto'
-                                        },
-                                        success: function (sKey, resp) {
-                                            this.ownerCt.getEl().unmask();
-                                            if (resp.error != null && resp.error.code === 500) {
-                                                Ext.Msg.alert('Error', 'An error occurred. ' + resp.error.details);
-                                            } else {
-                                                this.ownerCt.getEl().mask('Setting Permissions on URL, please wait...');
-                                                o2e.connectorMgr.query({
-                                                    componentId: 'console',
-                                                    serviceId: 'SYSTEM_data_getSynch',
-                                                    serviceKey: 'AdminConsole|getSynch|PolicyService|setPrincipalsAllowedToExecuteService',
-                                                    params: {
-                                                        name: 'setPrincipalsAllowedToExecuteService',
-                                                        prestoHostname: o2e.env.prestoHost,
-                                                        prestoPort: o2e.env.prestoPort,
-                                                        refreshIntervalSeconds: 300,
-                                                        prestoSid: 'PolicyService',
-                                                        prestoOid: 'setPrincipalsAllowedToExecuteService',
-                                                        append: false,
-                                                        version: '1.1',
-                                                        svcVersion: '1',
-                                                        paramMap: {
-                                                            principals: [
-                                                                {
-                                                                    principalId: 'Presto_Guest',
-                                                                    principalTypeId: 'SpecialGroup'
-                                                                }
-                                                            ],
-                                                            serviceId: response.response.id
-                                                        },
-                                                        paramList: null,
-                                                        isSecure: o2e.env.prestoSecure,
-                                                        dataType: 'presto'
-                                                    },
-                                                    success: function (sk, r) {
-                                                        if (r.error != null && r.error.code === 500) {
-                                                            this.ownerCt.getEl().unmask();
-                                                            Ext.Msg.alert('Error', 'An error occurred. ' + r.error.details);
-                                                        } else {
-                                                            this.prestoServiceOverride = {
-                                                                sid: response.response.id,
-                                                                oid: response.response.operations[0].id
-                                                            };
-
-                                                            var dsCombo = this.serviceFormPanel.getComponent('dsCombo'),
-                                                                dsComboStore = dsCombo.store,
-                                                                dsRecord = dsComboStore.getAt(dsComboStore.findExact('value', 'presto'));
-                                                            dsCombo.select(dsRecord);
-                                                            dsCombo.fireEvent('select', dsCombo, [dsRecord]);
-
-                                                            var dsfs = this.serviceFormPanel.getComponent('dsFieldSet'),
-                                                                dsBtn = dsfs.items.getAt(2);
-                                                            dsBtn.fireHandler(null);
-                                                        }
-                                                    },
-                                                    failure: this._onError,
-                                                    scope: this
-                                                });
-                                            }
-                                        },
-                                        failure: this._onError,
-                                        scope: this
-                                    });
-                                } else {
-                                    Ext.Msg.alert('Error', 'An error occurred. ');
-                                }
-                            },
-                            failure: this._onError,
-                            scope: this
+                        Ext.apply(meta, {
+                            dataType: 'rest',
+                            append: false,
+                            refreshIntervalSeconds: Number(vals.refreshInterval) || 1
                         });
+                        delete meta.refreshInterval;
+                        this.saveDataSource(meta);
                     },
                     scope: this
                 }
