@@ -204,7 +204,7 @@ Ext.define('sw.udop.Browser', {
         // get category node
         var tbar = this.getDockedComponent('startBar'),
             category = metadata.udopCategory,
-            search = tbar.down('#udopCategory-'+category.replace(/./g,'-')),
+            search = tbar.down('#udopCategory-'+category.replace(/.\s/g,'-')),
             categoryMenu = search ? search.menu : this.getParentCategoryObject(category);
 
         // insert node under category menu
@@ -233,13 +233,15 @@ Ext.define('sw.udop.Browser', {
     },
 
     handleUdopRemove: function(id) {
-        var menuItem = Ext.ComponentQuery.query('#'+id)[0],
-            menu = menuItem.ownerCt,
-            parentItem = menu.parentItem;
+        var menu,parentItem,menuItem = Ext.ComponentQuery.query('#'+id)[0];
 
-        menu.remove(menuItem);
-        if (menu.items.getCount() === 0) {
-            this.handleUdopRemove(parentItem.itemId || parentItem.id);
+        if (menuItem) {
+            menu = menuItem.ownerCt;
+            menu.remove(menuItem);
+            if (menu.items.getCount() === 0) {
+                parentItem = menu.parentItem;
+                this.handleUdopRemove(parentItem.itemId || parentItem.id);
+            }
         }
     },
 
@@ -260,10 +262,11 @@ Ext.define('sw.udop.Browser', {
     },
 
     getParentCategoryObject: function(category) {
-        var i, ilen, fullCategory = '', last = this.getDockedComponent('startBar'), nest = category.split('.');
+        var i, ilen, fullCategory = '', search, last = this.getDockedComponent('startBar'), nest = category.split('.');
         for (i=0,ilen=nest.length; i<ilen; i++) {
-            fullCategory = fullCategory + nest[i];
-            if (!Ext.ComponentQuery.query('#udopCategory-'+fullCategory)[0]) {
+            fullCategory = fullCategory + nest[i].replace(/\s/g, '-');
+            search = Ext.ComponentQuery.query('#udopCategory-'+fullCategory)[0];
+            if (!search) {
                 last = last.add({
                     xtype: last.itemId === 'startBar' ? 'button' : 'menuitem',
                     itemId: 'udopCategory-'+fullCategory,
@@ -272,6 +275,8 @@ Ext.define('sw.udop.Browser', {
                 });
                 last.menu.parentItem = last;
                 last = last.menu;
+            } else {
+                last = search.menu;
             }
             fullCategory = fullCategory + '-';
         }

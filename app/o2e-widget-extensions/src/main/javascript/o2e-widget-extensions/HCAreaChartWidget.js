@@ -1,21 +1,23 @@
-Ext.define('o2e.HCLineChartWidget', {
+Ext.define('o2e.HCAreaChartWidget', {
     extend: 'o2e.widget.AbstractWidget',
 
-    type: 'hcline',
+    type: 'hcarea',
 
-    requiredAnnotations: ['hc_line_x_axis', 'hc_line_y_axis'],
+    requiredAnnotations: ['hc_area_x_axis', 'hc_area_y_axis'],
     optionalAnnotations: [],
 
     requiredMetaFields: {
         xLabel: 'X Axis',
         yLabel: 'Y Axis',
         maxPoints: '100',
+        fillOpacity: '0.25',
         lineWidth: '1'
     },
 
     xLabel: 'X Axis',
     yLabel: 'Y Axis',
     maxPoints: 100,
+    fillOpacity: 0.25,
     lineWidth: 1,
 
     useOwnStores: true,
@@ -28,8 +30,8 @@ Ext.define('o2e.HCLineChartWidget', {
         for (serviceKey in this.services) {
             if (this.services.hasOwnProperty(serviceKey)) {
                 metadata = this.services[serviceKey].metadata;
-                if (metadata.viz && metadata.viz.hcline) {
-                    Ext.apply(this, metadata.viz.hcline);
+                if (metadata.viz && metadata.viz.hcarea) {
+                    Ext.apply(this, metadata.viz.hcarea);
                 }
             }
         }
@@ -54,15 +56,22 @@ Ext.define('o2e.HCLineChartWidget', {
                             chart: {
                                 zoomType: 'x', spacingRight: 20,
                                 renderTo: this.panel.body.id,
-                                type: 'line'
+                                type: 'area'
                             },
                             xAxis: { title: { text: this.xLabel }, type: 'datetime', maxZoom: 6000 },
                             yAxis: { title: { text: this.yLabel }},
                             title: { text: null },
                             tooltip: { shared: true },
                             plotOptions: {
-                                line: {
-                                    lineWidth: Number(this.lineWidth) || 1
+                                area: {
+                                    fillOpacity: Number(this.fillOpacity) || 0.25,
+                                    lineWidth: Number(this.lineWidth) || 1,
+                                    marker: {
+                                        enabled: false,
+                                        symbol: 'circle',
+                                        radius: 2,
+                                        states: { hover: { enabled: true }}
+                                    }
                                 }
                             },
                             legend: this.chartFields.length > 1 ? {
@@ -123,7 +132,7 @@ Ext.define('o2e.HCLineChartWidget', {
             this.chartFields = [];
             for (serviceKey in this.services) {
                 if (this.services.hasOwnProperty(serviceKey)) {
-                    this.chartFields = this.chartFields.concat(o2e.data.DataUtils.getFieldsWithAnnotation('hc_line_y_axis',this.services[serviceKey].metadata));
+                    this.chartFields = this.chartFields.concat(o2e.data.DataUtils.getFieldsWithAnnotation('hc_area_y_axis',this.services[serviceKey].metadata));
                 }
             }
         }

@@ -12,7 +12,7 @@ Ext.define('sw.plugins.ChatSendWidget', {
     init: Ext.emptyFn,
 
     handleMenuItemClick: function(item, e) {
-        var widgetArr = [], widgets = Ext.Array.remove(this.widget.widgetCt.up('viewport').down('sw-udop').getWidgets(), this.widget.widgetCt),
+        var widgetArr = [], widgets = this.widget.widgetCt.up('viewport').down('sw-udopBrowser').getComponent('udopCards').getLayout().getActiveItem().getWidgets(),
             x=0, xlen=widgets.length;
 
         for (;x<xlen;x++) {

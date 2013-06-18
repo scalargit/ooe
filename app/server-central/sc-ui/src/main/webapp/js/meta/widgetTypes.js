@@ -36,6 +36,12 @@ meta.system.widgetTypes = [
     properName: 'HighCharts Line',
     category: 'normal'
 },{
+    widgetTypeId: 'hcarea',
+    className: 'o2e.HCAreaChartWidget',
+    icon: 'images/icons/chart_area.png',
+    properName: 'HighCharts Area',
+    category: 'normal'
+},{
     widgetTypeId: 'area',
     className: 'o2e.AreaChartWidget',
     icon: 'images/icons/chart_area.png',
