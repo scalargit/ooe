@@ -30,11 +30,14 @@ public class XmppServiceTest extends CometdBaseTest {
     @Override
     public CometDTestConfig getConfig() {
         CometDTestConfig config = new CometDTestConfig();
-        config.setCometdUrl("http://localhost:8080/exec-server/cometd");
-        config.setUsername("jsegal");
-        config.setUserPassword("password");
-        config.setKeyManagerPassword("password");
-        return config;
+	    config.setCometdUrl("https://localhost:8443/sc-server/cometd");
+//        config.setCometdUrl("http://localhost:9191/turnkey-server/cometd");
+//        config.setUsername("CN=sw-user, OU=DISA, OU=PKI, OU=DoD, O=U.S. Government, C=US");
+     config.setUsername("jsegal");
+     config.setUserPassword("password");
+     config.setKeyManagerPassword("password");
+     config.setUseBasicAuth(true);
+     return config;
     }
 
     public void connect() throws InterruptedException {
@@ -48,14 +51,15 @@ public class XmppServiceTest extends CometdBaseTest {
 //            request.put(XmppService.HOST_PARAM, "talk.google.com");
 //            request.put(XmppService.PORT_PARAM, "5222");
 //            request.put(XmppService.SERVICE_NAME_PARAM, "gmail.com");
-//            request.put(XmppService.USERNAME_PARAM, "jeffrey.segal.test@gmail.com");
-//            request.put(XmppService.PASSWORD_PARAM, "J@ckb3Pr3st0!");
+            request.put(XmppService.USERNAME_PARAM, "jeffrey.segal.test@gmail.com");
+            request.put(XmppService.PASSWORD_PARAM, "J@ckb3Pr3st0!");
 //            request.put(XmppService.USERNAME_PARAM, "jeffrey.segal");
-//            request.put(XmppService.PASSWORD_PARAM, "Dk52%$lwp2%^pdlss");
-            request.put(XmppService.USERNAME_PARAM, "michael.ho1");
-            request.put(XmppService.PASSWORD_PARAM, "Jackb3Pr3st0!@!@");
+//            request.put(XmppService.PASSWORD_PARAM, "fake");
+//            request.put(XmppService.USERNAME_PARAM, "michael.ho1");
+//            request.put(XmppService.PASSWORD_PARAM, "Jackb3Pr3st0!@!@");
 //            request.put(XmppService.USERNAME_PARAM, "jsegal");
 //            request.put(XmppService.PASSWORD_PARAM, "P@$$w0rd");
+//	        request.put(XmppService.SERVICE_NAME_PARAM, "gmail");
             client.getChannel(serviceChannel).publish(request);
             Message message = listener.get();
             client.getChannel(serviceChannel).unsubscribe(listener);
@@ -83,7 +87,7 @@ public class XmppServiceTest extends CometdBaseTest {
             connect();
             if (connected) {
                 Map<String, String> request = new HashMap<String, String>();
-                request.put(XmppService.CONFERENCE_SERVICE_PARAM, "conference2.chat.dco.dod.mil");
+                request.put(XmppService.CONFERENCE_SERVICE_PARAM, "groupchat.google.com");
                 String serviceChannel = "/service/xmpp/listMucs";
                 client.getChannel(serviceChannel).subscribe(listener);
                 client.getChannel(serviceChannel).publish(request);
@@ -129,7 +133,7 @@ public class XmppServiceTest extends CometdBaseTest {
         }
     }
 
-    @Test
+//    @Test
     public void sendToMuc() throws InterruptedException {
         if (handshaken) {
             connect();
@@ -190,7 +194,7 @@ public class XmppServiceTest extends CometdBaseTest {
         }
     }
 
-//    @Test
+    @Test
     public void sendToUser() throws InterruptedException {
         if (handshaken) {
             connect();
@@ -208,8 +212,9 @@ public class XmppServiceTest extends CometdBaseTest {
                 Thread.sleep(1000 * 5);
 
                 Map<String, String> sendRequest = new HashMap<String, String>();
-//                sendRequest.put(XmppService.TO_USER_PARAM, "jeffrey.segal@gmail.com");
-                sendRequest.put(XmppService.TO_USER_PARAM, "jeffrey.segal@chat.dco.dod.mil");
+	            sendRequest.put(XmppService.TO_USER_PARAM, "jeffrey.segal@gmail.com");
+//	            sendRequest.put(XmppService.TO_USER_PARAM, "michael.j.ho@gmail.com");
+//	            sendRequest.put(XmppService.TO_USER_PARAM, "jeffrey.segal@chat.dco.dod.mil");
                 sendRequest.put(XmppService.TEXT_PARAM, "a message");
                 log.info("Sending sendToUser request...");
                 client.getChannel(sendToUser).publish(sendRequest);

@@ -3,6 +3,9 @@ package org.o2e.camel.builders;
 import org.apache.camel.Exchange;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.commons.httpclient.ProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.o2e.camel.RoutePropertyManager;
 import org.o2e.camel.processors.AbstractOoeRequestProcessor;
 import org.o2e.camel.processors.AbstractOoeResponseProcessor;
@@ -11,6 +14,7 @@ import org.o2e.camel.processors.RestResponseProcessor;
 import org.o2e.mongo.annotations.MappedByDataType;
 import org.o2e.mongo.pojo.RestServiceSpecification;
 
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -52,14 +56,10 @@ public class RestRouteBuilder extends AbstractOoeRouteBuilder {
 			}
 		}
 
-		String url = restServiceSpecification.getUrl();
-		String params = "";
-		if (url.contains("https")) {
-			params += url.contains("?") ? "&" : "?";
-			params += "httpClientConfigurer=ooeHttpClientConfigurer";
-			url = url.replace("https", "https4");
-		} else url = url.replace("http", "http4");
+		String url = BuilderUtil.toUrl(restServiceSpecification);
 
-		return routeDefinition.to(url + params);
+		return routeDefinition.to(url);
 	}
+
+
 }

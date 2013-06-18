@@ -97,7 +97,7 @@ public class DataServiceTest extends CometdBaseTest {
         if (handshaken) {
 //            String localRssServiceId = "4eb921e4535c8eea89b41f93";
             String localPrestoServiceId = "50cf28a2656f1436d499277a";
-            String localRestServiceId = "51b8d2825917984752d959d7";
+            String localRestServiceId = "51c08894591707ba788b50d3";
             String serviceSpecificationId = localRestServiceId;
             String widgetMetadataId = DataService.DEFAULT_WIDGETMETADATA_ID;
 
